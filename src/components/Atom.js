@@ -202,8 +202,8 @@ const Atom = (props) => {
     const electronsDataArray = [];
 
     for (let num of nums) {
-      console.log("nums is", nums);
-      console.log("this iteration num is", num);
+      // console.log("nums is", nums);
+      // console.log("this iteration num is", num);
       const xDisplace = electronPositionDisplacements[numElectrons][num].x;
       const yDisplace = electronPositionDisplacements[numElectrons][num].y;
       const entry = {
@@ -212,13 +212,13 @@ const Atom = (props) => {
         y: atomPosition.y + yDisplace,
       };
       electronsDataArray.push(entry);
-      console.log("entry is", entry);
+      // console.log("entry is", entry);
     }
 
     const getElectronDataJSX = electronsDataArray.map((electron) => {
-      console.log(electron.electronId);
-      console.log(electron.x);
-      console.log(electron.y);
+      // console.log(electron.electronId);
+      // console.log(electron.x);
+      // console.log(electron.y);
       return (
         <Electron id={electron.electronId} x={electron.x} y={electron.y} />
       );

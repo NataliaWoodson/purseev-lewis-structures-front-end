@@ -1,7 +1,7 @@
 import React from "react";
 
 const Electron = (props) => {
-  console.log(props);
+  // console.log(props);
   const x = props.x;
   const y = props.y;
 
