@@ -22,7 +22,7 @@ const numElectronsObj = {
 const pixelsDisplacement = 40;
 const pixelsLonePairShift = 20;
 
-const electronPositions = {
+const electronPositionDisplacements = {
   1: {
     1: {
       x: 0,
@@ -193,24 +193,35 @@ const Atom = (props) => {
 
   const elementSymbol = props.elementSymbolApp;
 
+  // const arrayOfNumsInRange = ()
+
   const electronsJSX = (elementSymbol) => {
-    const numElectrons = numElectronsObj.elementSymbol;
-    const nums = Array.from({ length: numElectrons }, (_, i) => i + 1); // gets array from 1 - numElectrons inclusive
+    const numElectrons = numElectronsObj[elementSymbol];
+    const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
+    nums.shift();
     const electronsDataArray = [];
 
     for (let num of nums) {
-      const xDisplace = electronPositions.numElectrons.num.x;
-      const yDisplace = electronPositions.numElectrons.num.y;
+      console.log("nums is", nums);
+      console.log("this iteration num is", num);
+      const xDisplace = electronPositionDisplacements[numElectrons][num].x;
+      const yDisplace = electronPositionDisplacements[numElectrons][num].y;
       const entry = {
         electronId: num,
         x: atomPosition.x + xDisplace,
         y: atomPosition.y + yDisplace,
       };
       electronsDataArray.push(entry);
+      console.log("entry is", entry);
     }
 
     const getElectronDataJSX = electronsDataArray.map((electron) => {
-      return <Electron id={electron.id} x={electron.x} y={electron.y} />;
+      console.log(electron.electronId);
+      console.log(electron.x);
+      console.log(electron.y);
+      return (
+        <Electron id={electron.electronId} x={electron.x} y={electron.y} />
+      );
     });
     return <div>{getElectronDataJSX}</div>;
   };
@@ -218,7 +229,7 @@ const Atom = (props) => {
   return (
     <div>
       <ElementSymbol elementSymbolAtom={elementSymbol} />
-      {electronsJSX}
+      <div>{electronsJSX(elementSymbol)}</div>
     </div>
   );
 };
