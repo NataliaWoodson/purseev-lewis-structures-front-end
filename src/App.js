@@ -5,7 +5,7 @@ import { Stage, Layer } from "react-konva";
 import React, { useState, useEffect } from "react";
 // import axios from 'axios';
 
-const chemicalFormula = "Cl3C4";
+const chemicalFormula = "C";
 
 const getFormulaComponents = () => {
   let formula = chemicalFormula.slice();
