@@ -1,11 +1,197 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Atom from "./components/Atom";
-import { Stage, Layer } from "react-konva";
+import { Stage, Layer, Text, Circle, Star, Group } from "react-konva";
+import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 // import axios from 'axios';
 
-const chemicalFormula = "C";
+const chemicalFormula = "CH2O";
+
+const numElectronsObj = {
+  H: 1,
+  B: 3,
+  C: 4,
+  N: 5,
+  O: 6,
+  F: 7,
+  Al: 3,
+  Si: 4,
+  P: 5,
+  S: 6,
+  Cl: 7,
+};
+
+const pixelsDisplacement = 40;
+const pixelsLonePairShift = 20;
+
+const electronPositionDisplacements = {
+  1: {
+    1: {
+      x: 0,
+      y: pixelsDisplacement,
+    },
+  },
+  2: {
+    1: {
+      x: 0,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: 0,
+    },
+  },
+  3: {
+    1: {
+      x: 0,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: 0,
+    },
+    3: {
+      x: 0,
+      y: -pixelsDisplacement,
+    },
+  },
+  4: {
+    1: {
+      x: 0,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: 0,
+    },
+    3: {
+      x: 0,
+      y: -pixelsDisplacement,
+    },
+    4: {
+      x: -pixelsDisplacement,
+      y: 0,
+    },
+  },
+  5: {
+    1: {
+      x: -pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: 0,
+    },
+    3: {
+      x: 0,
+      y: -pixelsDisplacement,
+    },
+    4: {
+      x: -pixelsDisplacement,
+      y: 0,
+    },
+    5: {
+      x: pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+  },
+  6: {
+    1: {
+      x: -pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: pixelsLonePairShift,
+    },
+    3: {
+      x: 0,
+      y: -pixelsDisplacement,
+    },
+    4: {
+      x: -pixelsDisplacement,
+      y: 0,
+    },
+    5: {
+      x: pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    6: {
+      x: pixelsDisplacement,
+      y: -pixelsLonePairShift,
+    },
+  },
+  7: {
+    1: {
+      x: -pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: pixelsLonePairShift,
+    },
+    3: {
+      x: pixelsLonePairShift,
+      y: -pixelsDisplacement,
+    },
+    4: {
+      x: -pixelsDisplacement,
+      y: 0,
+    },
+    5: {
+      x: pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    6: {
+      x: pixelsDisplacement,
+      y: -pixelsLonePairShift,
+    },
+    7: {
+      x: -pixelsLonePairShift,
+      y: -pixelsDisplacement,
+    },
+  },
+  8: {
+    1: {
+      x: -pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    2: {
+      x: pixelsDisplacement,
+      y: pixelsLonePairShift,
+    },
+    3: {
+      x: pixelsLonePairShift,
+      y: -pixelsDisplacement,
+    },
+    4: {
+      x: -pixelsDisplacement,
+      y: -pixelsLonePairShift,
+    },
+    5: {
+      x: pixelsLonePairShift,
+      y: pixelsDisplacement,
+    },
+    6: {
+      x: pixelsDisplacement,
+      y: -pixelsLonePairShift,
+    },
+    7: {
+      x: -pixelsLonePairShift,
+      y: -pixelsDisplacement,
+    },
+    8: {
+      x: -pixelsDisplacement,
+      y: pixelsLonePairShift,
+    },
+  },
+};
+
+const atomPosition = {
+  x: 100,
+  y: 100,
+};
 
 const getFormulaComponents = () => {
   let formula = chemicalFormula.slice();
@@ -25,13 +211,13 @@ const getFormulaComponents = () => {
     let thisComponentLength = thisComponent[0].length;
     // console.log(thisComponentLength);
     formula = formula.slice(thisComponentLength);
-    console.log(formula);
+    // console.log(formula);
   }
 
   return components;
 };
 
-console.log(getFormulaComponents());
+// console.log(getFormulaComponents());
 
 const generateNumAtomsDict = () => {
   let formulaObj = {};
@@ -51,13 +237,13 @@ const generateNumAtomsDict = () => {
     } else {
       console.log("Formula components not parsed correctly");
     }
-    console.log("element is", element);
-    console.log("numInc is", numInc);
+    // console.log("element is", element);
+    // console.log("numInc is", numInc);
     if (formulaObj[element] === undefined) {
       formulaObj[element] = numInc;
-      console.log("formulaObj[element] is", formulaObj[element]);
+      // console.log("formulaObj[element] is", formulaObj[element]);
     } else {
-      console.log("formulaObj[element] is", formulaObj[element]);
+      // console.log("formulaObj[element] is", formulaObj[element]);
       formulaObj[element] = parseInt(formulaObj[element]) + numInc;
     }
   }
@@ -66,24 +252,41 @@ const generateNumAtomsDict = () => {
 
 const atomObj = generateNumAtomsDict();
 
-console.log("atomObj is", atomObj);
+// console.log("atomObj is", atomObj);
 
 // Atom object will come from API call
-const elementSymbolArray = (atomObj) => {
+// const elementSymbolArray = () => {
+//   let elementArray = [];
+
+//   for (const element in atomObj) {
+//     for (let i = 0; i < atomObj[element]; i++) {
+//       elementArray.push(element);
+//     }
+//   }
+//   console.log("elementArray is", elementArray);
+//   return elementArray;
+// };
+
+const elementSymbolArray = () => {
   let elementArray = [];
 
   for (const element in atomObj) {
     for (let i = 0; i < atomObj[element]; i++) {
-      elementArray.push(element);
+      elementArray.push({
+        elementSymbol: element,
+        atomId: i,
+      });
     }
   }
 
   return elementArray;
 };
 
+console.log("elementSymbolArray is", elementSymbolArray());
+
 const allAtoms = () => {
   // console.log("inside allAtoms");
-  const elementArray = elementSymbolArray(atomObj);
+  const elementArray = elementSymbolArray();
   const getAtomDataJSX = elementArray.map((elementSymbol) => {
     return <Atom elementSymbolApp={elementSymbol} />;
   });
@@ -91,26 +294,101 @@ const allAtoms = () => {
   return <div>{getAtomDataJSX}</div>;
 };
 
-function App() {
-  return (
-    <div className="App">
-      {/* <header className="App-header"> */}
-      {/* <img src={logo} className="App-logo" alt="logo" /> */}
-      {/* </header> */}
-      <main className="main">
-        {allAtoms(elementSymbolArray)}
+// const numElectrons = numElectronsObj[elementSymbol];
 
-        {/* props will include list of atoms */}
-        {/* <Stage
-          className="stage"
-          width={window.innerWindow}
-          height={window.innerHeight}
-        >
-          <Layer>{allAtoms}</Layer>
-        </Stage> */}
-      </main>
-    </div>
+const getElectronDataArray = (numElectrons) => {
+  const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
+  nums.shift();
+  const electronsDataArray = [];
+
+  for (let num of nums) {
+    // console.log("nums is", nums);
+    // console.log("this iteration num is", num);
+    const xDisplace = electronPositionDisplacements[numElectrons][num].x;
+    const yDisplace = electronPositionDisplacements[numElectrons][num].y;
+    const entry = {
+      electronId: num,
+      xDisplayce: xDisplace,
+      yDisplace: yDisplace,
+    };
+    electronsDataArray.push(entry);
+    // console.log("entry is", entry);
+  }
+  return electronsDataArray;
+};
+
+// console.log("electronDataArray is", getElectronDataArray(3));
+
+const getOneSetOfElectronsData = (elementSymbol, electronNum) => {};
+
+const getOneAtom = (elementSymbol, atomId) => {
+  // const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
+  // nums.shift();
+  const numElectrons = numElectronsObj[elementSymbol];
+  const electronsDataArray = getElectronDataArray(numElectrons);
+
+  return {
+    id: atomId,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    text: elementSymbol,
+    isDragging: false,
+    electrons: electronsDataArray,
+  };
+};
+
+console.log(getOneAtom("H", 1));
+
+const generateAtoms = () => {
+  return elementSymbolArray().map((element) => ({
+    id: element.id,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    text: element.elementSymbol,
+    isDragging: false,
+    electrons: element.electrons,
+    // element.electrons.map((electron) => {
+    //   x:
+    // })
+  }));
+};
+
+const INITIAL_STATE = generateAtoms();
+
+function App() {
+  const [atoms, setAtoms] = useState(INITIAL_STATE);
+
+  console.log("INITIAL_STATE is", INITIAL_STATE);
+
+  return (
+    <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Layer>
+        <Group>
+          {atoms.map((atom) => (
+            <Group>
+              <Text
+                x={atom.x}
+                y={atom.y}
+                text={atom.text}
+                draggable
+                fontSize={30}
+              />
+              {/* {atom.electrons.map((electron) => (
+              xE={x + xDisplace}
+              
+            ))} */}
+              <Circle></Circle>
+            </Group>
+          ))}
+          {}
+        </Group>
+      </Layer>
+    </Stage>
   );
 }
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<App />);
 
 export default App;

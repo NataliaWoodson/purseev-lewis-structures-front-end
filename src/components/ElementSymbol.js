@@ -6,7 +6,7 @@ const ElementSymbol = (props) => {
   const elementSymbol = props.elementSymbolAtom;
   // console.log(elementSymbol);
   // return <Text text={elementSymbol} />;
-  return <h1>{elementSymbol}</h1>;
+  return <Text text={elementSymbol} fontSize={30} />;
 };
 
 export default ElementSymbol;

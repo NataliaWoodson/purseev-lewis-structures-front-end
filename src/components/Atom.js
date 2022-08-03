@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, Layer } from "react-konva";
+import { Text, Layer, Circle, KonvaRenderer, Group, Stage } from "react-konva";
 import PropTypes from "prop-types";
 import "../Atom.css";
 import ElementSymbol from "./ElementSymbol";
 import Electron from "./Electron";
+import { createRoot } from "react-dom/client";
 
 const numElectronsObj = {
   H: 1,
@@ -220,18 +221,19 @@ const Atom = (props) => {
       // console.log(electron.x);
       // console.log(electron.y);
       return (
-        <Electron id={electron.electronId} x={electron.x} y={electron.y} />
+        <Circle id={`${electron.electronId}`} x={electron.x} y={electron.y} />
       );
     });
-    return <div>{getElectronDataJSX}</div>;
+    return getElectronDataJSX;
   };
 
-  return (
-    <div>
-      <ElementSymbol elementSymbolAtom={elementSymbol} />
-      <div>{electronsJSX(elementSymbol)}</div>
-    </div>
-  );
+  const aThing = <Text text={"hello"} />;
+
+  return aThing;
 };
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<Atom />);
 
 export default Atom;
