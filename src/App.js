@@ -22,8 +22,8 @@ const numElectronsObj = {
   Cl: 7,
 };
 
-const pixelsDisplacement = 40;
-const pixelsLonePairShift = 20;
+const pixelsDisplacement = 30;
+const pixelsLonePairShift = 10;
 
 const electronPositionDisplacements = {
   1: {
@@ -308,7 +308,7 @@ const getElectronDataArray = (numElectrons) => {
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
     const entry = {
       electronId: num,
-      xDisplayce: xDisplace,
+      xDisplace: xDisplace,
       yDisplace: yDisplace,
     };
     electronsDataArray.push(entry);
@@ -346,7 +346,7 @@ const generateAtoms = () => {
     y: Math.random() * window.innerHeight,
     text: element.elementSymbol,
     isDragging: false,
-    electrons: element.electrons,
+    electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
     // element.electrons.map((electron) => {
     //   x:
     // })
@@ -363,25 +363,22 @@ function App() {
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
-        <Group>
-          {atoms.map((atom) => (
-            <Group>
-              <Text
+        {atoms.map((atom) => (
+          <Group draggable>
+            {atom.electrons.map((electron) => (
+              <Circle
                 x={atom.x}
                 y={atom.y}
-                text={atom.text}
-                draggable
-                fontSize={30}
+                offsetX={electron.xDisplace}
+                offsetY={electron.yDisplace}
+                radius={5}
+                fill="black"
               />
-              {/* {atom.electrons.map((electron) => (
-              xE={x + xDisplace}
-              
-            ))} */}
-              <Circle></Circle>
-            </Group>
-          ))}
-          {}
-        </Group>
+            ))}
+            {/* <Circle x={atom.x + 15} y={atom.y} radius={10} fill="black" /> */}
+            <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+          </Group>
+        ))}
       </Layer>
     </Stage>
   );
