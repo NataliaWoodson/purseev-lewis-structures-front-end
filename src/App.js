@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 // import axios from 'axios';
 
-const chemicalFormula = "CH2O";
+const chemicalFormula = "H2O";
 
 const numElectronsObj = {
   H: 1,
@@ -30,6 +30,7 @@ const electronPositionDisplacements = {
     1: {
       x: 0,
       y: pixelsDisplacement,
+      isPaired: false,
     },
   },
   2: {
@@ -252,6 +253,8 @@ const generateNumAtomsDict = () => {
 
 const atomObj = generateNumAtomsDict();
 
+console.log(atomObj);
+
 // console.log("atomObj is", atomObj);
 
 // Atom object will come from API call
@@ -365,6 +368,13 @@ function App() {
       <Layer>
         {atoms.map((atom) => (
           <Group draggable>
+            <Circle
+              x={atom.x + 10}
+              y={atom.y + 13}
+              fill="red"
+              radius={50}
+              opacity={0.2}
+            ></Circle>
             {atom.electrons.map((electron) => (
               <Circle
                 x={atom.x}
@@ -375,7 +385,6 @@ function App() {
                 fill="black"
               />
             ))}
-            {/* <Circle x={atom.x + 15} y={atom.y} radius={10} fill="black" /> */}
             <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
           </Group>
         ))}
