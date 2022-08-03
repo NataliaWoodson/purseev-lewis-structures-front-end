@@ -3,7 +3,12 @@ import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 
-const chemicalFormula = "CSi2H2";
+const STATE = {
+  atomId: 0,
+  electronId: 0,
+};
+
+const chemicalFormula = "CF3H";
 
 const numElectronsObj = {
   H: 1,
@@ -200,26 +205,17 @@ const getFormulaComponents = () => {
   return components;
 };
 
-console.log(getFormulaComponents());
-
 const generateNumAtomsDict = () => {
   let formulaObj = {};
   const components = getFormulaComponents();
   for (let component of components) {
     let element;
     let numInc;
-    console.log(
-      "Component is",
-      component,
-      ". Component length is",
-      component.length
-    );
     if (component.length === 3) {
       numInc = parseInt(component[2]);
       element = component.slice(0, 2);
     } else if (component.length === 2) {
       if (isNaN(component[1])) {
-        console.log("entered second character is not a number if statement");
         numInc = 1;
         element = component;
       } else {
@@ -238,29 +234,11 @@ const generateNumAtomsDict = () => {
     } else {
       formulaObj[element] = parseInt(formulaObj[element]) + numInc;
     }
-
-    console.log("formulaObj is now", formulaObj);
   }
   return formulaObj;
 };
 
 const atomObj = generateNumAtomsDict();
-console.log("atomObj is", atomObj);
-
-const elementSymbolArray = () => {
-  let elementArray = [];
-
-  for (const element in atomObj) {
-    for (let i = 0; i < atomObj[element]; i++) {
-      elementArray.push({
-        elementSymbol: element,
-        atomId: i,
-      });
-    }
-  }
-
-  return elementArray;
-};
 
 const getElectronDataArray = (numElectrons) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
@@ -270,14 +248,32 @@ const getElectronDataArray = (numElectrons) => {
   for (let num of nums) {
     const xDisplace = electronPositionDisplacements[numElectrons][num].x;
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
+    const isPaired = electronPositionDisplacements[numElectrons][num].isPaired;
     const entry = {
-      electronId: num,
+      id: STATE.electronId,
       xDisplace: xDisplace,
       yDisplace: yDisplace,
+      isPaired: isPaired,
     };
     electronsDataArray.push(entry);
+    STATE.electronId++;
   }
   return electronsDataArray;
+};
+
+const elementSymbolArray = () => {
+  let elementArray = [];
+
+  for (const element in atomObj) {
+    for (let i = 0; i < atomObj[element]; i++) {
+      elementArray.push({
+        elementSymbol: element,
+        id: STATE.atomId,
+      });
+      STATE.atomId++;
+    }
+  }
+  return elementArray;
 };
 
 const generateAtoms = () => {
@@ -291,12 +287,18 @@ const generateAtoms = () => {
   }));
 };
 
-const INITIAL_STATE = generateAtoms();
-
 function App() {
-  const [atoms, setAtoms] = useState(INITIAL_STATE);
+  const [atoms, setAtoms] = useState([]);
 
-  console.log("INITIAL_STATE is", INITIAL_STATE);
+  useEffect(() => {
+    createAtoms();
+    STATE.atomId = 0;
+    STATE.electronId = 0;
+  }, []);
+
+  const createAtoms = () => {
+    setAtoms(generateAtoms());
+  };
 
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
