@@ -307,7 +307,7 @@ function App() {
               x={atom.x + 10}
               y={atom.y + 13}
               fill="red"
-              radius={50}
+              radius={45}
               opacity={0.2}
             ></Circle>
             {atom.electrons.map((electron) => (
