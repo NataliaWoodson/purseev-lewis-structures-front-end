@@ -258,7 +258,6 @@ const elementSymbolArray = () => {
       });
     }
   }
-
   return elementArray;
 };
 
@@ -295,8 +294,14 @@ const INITIAL_STATE = generateAtoms();
 
 function App() {
   const [atoms, setAtoms] = useState(INITIAL_STATE);
+  const [clickedElectron, setClickedElectron] = useState(null);
 
   console.log("INITIAL_STATE is", INITIAL_STATE);
+
+  function handleSelectElectron(e) {
+    console.log(e.target);
+    const electron = e.target.attrs;
+  }
 
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
@@ -318,6 +323,7 @@ function App() {
                 offsetY={electron.yDisplace - 12}
                 radius={5}
                 fill="black"
+                onClick={handleSelectElectron}
               />
             ))}
             <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
