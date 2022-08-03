@@ -3,7 +3,7 @@ import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 
-const chemicalFormula = "CSH2";
+const chemicalFormula = "CSi2H2";
 
 const numElectronsObj = {
   H: 1,
@@ -200,18 +200,32 @@ const getFormulaComponents = () => {
   return components;
 };
 
+console.log(getFormulaComponents());
+
 const generateNumAtomsDict = () => {
   let formulaObj = {};
   const components = getFormulaComponents();
   for (let component of components) {
     let element;
     let numInc;
+    console.log(
+      "Component is",
+      component,
+      ". Component length is",
+      component.length
+    );
     if (component.length === 3) {
       numInc = parseInt(component[2]);
       element = component.slice(0, 2);
     } else if (component.length === 2) {
-      numInc = parseInt(component[1]);
-      element = component.slice(0, 1);
+      if (isNaN(component[1])) {
+        console.log("entered second character is not a number if statement");
+        numInc = 1;
+        element = component;
+      } else {
+        numInc = parseInt(component[1]);
+        element = component.slice(0, 1);
+      }
     } else if (component.length === 1) {
       numInc = 1;
       element = component[0];
@@ -224,11 +238,14 @@ const generateNumAtomsDict = () => {
     } else {
       formulaObj[element] = parseInt(formulaObj[element]) + numInc;
     }
+
+    console.log("formulaObj is now", formulaObj);
   }
   return formulaObj;
 };
 
 const atomObj = generateNumAtomsDict();
+console.log("atomObj is", atomObj);
 
 const elementSymbolArray = () => {
   let elementArray = [];
