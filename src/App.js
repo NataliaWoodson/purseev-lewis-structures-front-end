@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 // import axios from 'axios';
 
-const chemicalFormula = "H2O";
+const chemicalFormula = "CH2O";
 
 const numElectronsObj = {
   H: 1,
@@ -37,154 +37,147 @@ const electronPositionDisplacements = {
     1: {
       x: 0,
       y: pixelsDisplacement,
+      isPaired: false,
     },
     2: {
       x: pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
   },
   3: {
     1: {
       x: 0,
       y: pixelsDisplacement,
+      isPaired: false,
     },
     2: {
       x: pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     3: {
       x: 0,
       y: -pixelsDisplacement,
+      isPaired: false,
     },
   },
   4: {
     1: {
       x: 0,
       y: pixelsDisplacement,
+      isPaired: false,
     },
     2: {
       x: pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     3: {
       x: 0,
       y: -pixelsDisplacement,
+      isPaired: false,
     },
     4: {
       x: -pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
   },
   5: {
     1: {
       x: -pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
     2: {
       x: pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     3: {
       x: 0,
       y: -pixelsDisplacement,
+      isPaired: false,
     },
     4: {
       x: -pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     5: {
       x: pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
   },
   6: {
     1: {
       x: -pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
     2: {
       x: pixelsDisplacement,
       y: pixelsLonePairShift,
+      isPaired: true,
     },
     3: {
       x: 0,
       y: -pixelsDisplacement,
+      isPaired: false,
     },
     4: {
       x: -pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     5: {
       x: pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
     6: {
       x: pixelsDisplacement,
       y: -pixelsLonePairShift,
+      isPaired: true,
     },
   },
   7: {
     1: {
       x: -pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
     2: {
       x: pixelsDisplacement,
       y: pixelsLonePairShift,
+      isPaired: true,
     },
     3: {
       x: pixelsLonePairShift,
       y: -pixelsDisplacement,
+      isPaired: true,
     },
     4: {
       x: -pixelsDisplacement,
       y: 0,
+      isPaired: false,
     },
     5: {
       x: pixelsLonePairShift,
       y: pixelsDisplacement,
+      isPaired: true,
     },
     6: {
       x: pixelsDisplacement,
       y: -pixelsLonePairShift,
+      isPaired: true,
     },
     7: {
       x: -pixelsLonePairShift,
       y: -pixelsDisplacement,
-    },
-  },
-  8: {
-    1: {
-      x: -pixelsLonePairShift,
-      y: pixelsDisplacement,
-    },
-    2: {
-      x: pixelsDisplacement,
-      y: pixelsLonePairShift,
-    },
-    3: {
-      x: pixelsLonePairShift,
-      y: -pixelsDisplacement,
-    },
-    4: {
-      x: -pixelsDisplacement,
-      y: -pixelsLonePairShift,
-    },
-    5: {
-      x: pixelsLonePairShift,
-      y: pixelsDisplacement,
-    },
-    6: {
-      x: pixelsDisplacement,
-      y: -pixelsLonePairShift,
-    },
-    7: {
-      x: -pixelsLonePairShift,
-      y: -pixelsDisplacement,
-    },
-    8: {
-      x: -pixelsDisplacement,
-      y: pixelsLonePairShift,
+      isPaired: true,
     },
   },
 };
