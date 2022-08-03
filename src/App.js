@@ -1,12 +1,9 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Atom from "./components/Atom";
-import { Stage, Layer, Text, Circle, Star, Group } from "react-konva";
+import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
-// import axios from 'axios';
 
-const chemicalFormula = "CH2O";
+const chemicalFormula = "CSH2";
 
 const numElectronsObj = {
   H: 1,
@@ -182,11 +179,6 @@ const electronPositionDisplacements = {
   },
 };
 
-const atomPosition = {
-  x: 100,
-  y: 100,
-};
-
 const getFormulaComponents = () => {
   let formula = chemicalFormula.slice();
 
@@ -200,18 +192,13 @@ const getFormulaComponents = () => {
 
   while (getOneComponent() != null) {
     let thisComponent = getOneComponent();
-    // console.log("thisComponent is", thisComponent);
     components.push(thisComponent[0]);
     let thisComponentLength = thisComponent[0].length;
-    // console.log(thisComponentLength);
     formula = formula.slice(thisComponentLength);
-    // console.log(formula);
   }
 
   return components;
 };
-
-// console.log(getFormulaComponents());
 
 const generateNumAtomsDict = () => {
   let formulaObj = {};
@@ -231,13 +218,10 @@ const generateNumAtomsDict = () => {
     } else {
       console.log("Formula components not parsed correctly");
     }
-    // console.log("element is", element);
-    // console.log("numInc is", numInc);
+
     if (formulaObj[element] === undefined) {
       formulaObj[element] = numInc;
-      // console.log("formulaObj[element] is", formulaObj[element]);
     } else {
-      // console.log("formulaObj[element] is", formulaObj[element]);
       formulaObj[element] = parseInt(formulaObj[element]) + numInc;
     }
   }
@@ -245,23 +229,6 @@ const generateNumAtomsDict = () => {
 };
 
 const atomObj = generateNumAtomsDict();
-
-console.log(atomObj);
-
-// console.log("atomObj is", atomObj);
-
-// Atom object will come from API call
-// const elementSymbolArray = () => {
-//   let elementArray = [];
-
-//   for (const element in atomObj) {
-//     for (let i = 0; i < atomObj[element]; i++) {
-//       elementArray.push(element);
-//     }
-//   }
-//   console.log("elementArray is", elementArray);
-//   return elementArray;
-// };
 
 const elementSymbolArray = () => {
   let elementArray = [];
@@ -278,28 +245,12 @@ const elementSymbolArray = () => {
   return elementArray;
 };
 
-console.log("elementSymbolArray is", elementSymbolArray());
-
-const allAtoms = () => {
-  // console.log("inside allAtoms");
-  const elementArray = elementSymbolArray();
-  const getAtomDataJSX = elementArray.map((elementSymbol) => {
-    return <Atom elementSymbolApp={elementSymbol} />;
-  });
-
-  return <div>{getAtomDataJSX}</div>;
-};
-
-// const numElectrons = numElectronsObj[elementSymbol];
-
 const getElectronDataArray = (numElectrons) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
   nums.shift();
   const electronsDataArray = [];
 
   for (let num of nums) {
-    // console.log("nums is", nums);
-    // console.log("this iteration num is", num);
     const xDisplace = electronPositionDisplacements[numElectrons][num].x;
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
     const entry = {
@@ -308,32 +259,9 @@ const getElectronDataArray = (numElectrons) => {
       yDisplace: yDisplace,
     };
     electronsDataArray.push(entry);
-    // console.log("entry is", entry);
   }
   return electronsDataArray;
 };
-
-// console.log("electronDataArray is", getElectronDataArray(3));
-
-const getOneSetOfElectronsData = (elementSymbol, electronNum) => {};
-
-const getOneAtom = (elementSymbol, atomId) => {
-  // const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
-  // nums.shift();
-  const numElectrons = numElectronsObj[elementSymbol];
-  const electronsDataArray = getElectronDataArray(numElectrons);
-
-  return {
-    id: atomId,
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    text: elementSymbol,
-    isDragging: false,
-    electrons: electronsDataArray,
-  };
-};
-
-console.log(getOneAtom("H", 1));
 
 const generateAtoms = () => {
   return elementSymbolArray().map((element) => ({
@@ -343,9 +271,6 @@ const generateAtoms = () => {
     text: element.elementSymbol,
     isDragging: false,
     electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
-    // element.electrons.map((electron) => {
-    //   x:
-    // })
   }));
 };
 
