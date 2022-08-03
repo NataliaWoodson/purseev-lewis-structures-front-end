@@ -270,10 +270,12 @@ const getElectronDataArray = (numElectrons) => {
   for (let num of nums) {
     const xDisplace = electronPositionDisplacements[numElectrons][num].x;
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
+    const isPaired = electronPositionDisplacements[numElectrons][num].isPaired;
     const entry = {
       electronId: num,
       xDisplace: xDisplace,
       yDisplace: yDisplace,
+      isPaired: isPaired,
     };
     electronsDataArray.push(entry);
   }
