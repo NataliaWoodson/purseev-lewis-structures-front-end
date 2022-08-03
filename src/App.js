@@ -369,8 +369,8 @@ function App() {
               <Circle
                 x={atom.x}
                 y={atom.y}
-                offsetX={electron.xDisplace}
-                offsetY={electron.yDisplace}
+                offsetX={electron.xDisplace - 10}
+                offsetY={electron.yDisplace - 12}
                 radius={5}
                 fill="black"
               />
