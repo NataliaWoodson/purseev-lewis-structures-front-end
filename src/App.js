@@ -8,7 +8,7 @@ const STATE = {
   electronId: 0,
 };
 
-const chemicalFormula;
+const chemicalFormula = "H2O";
 
 const numElectronsObj = {
   H: 1,
@@ -27,21 +27,21 @@ const numElectronsObj = {
 const kBaseUrl =
   "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main/molecules/";
 
-const getMolecules = async (e) => {
-  e.preventDefault();
-  try {
-    await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
-      const formulas = response.data.molecules;
-      // console.log(formulas.length);
-      const rand_formula =
-        formulas[Math.floor(Math.random() * formulas.length)];
-      const  chemicalFormula = rand_formula["molecular_formula"];
-      return chemicalFormula;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+// const getMolecules = async (e) => {
+//   e.preventDefault();
+//   try {
+//     await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+//       const formulas = response.data.molecules;
+//       // console.log(formulas.length);
+//       const rand_formula =
+//         formulas[Math.floor(Math.random() * formulas.length)];
+//       const chemicalFormula = rand_formula["molecular_formula"];
+//       return chemicalFormula;
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 const pixelsDisplacement = 30;
 const pixelsLonePairShift = 10;
@@ -360,21 +360,20 @@ function App() {
   }
 
   return (
-    
     <Stage width={window.innerWidth} height={window.innerHeight}>
-      <button value="nextMolecule" onClick={getMolecules}></button>
+      {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
       <Layer>
         {connectors.map((con) => {
           const from = atoms.find((f) => f.id === con.from);
           const to = atoms.find((f) => f.id === con.to);
 
           // return (
-            
-            // <Line
-            //   key={con.id}
-            //   points={[from.x, from.y, to.x, to.y]}
-            //   stroke="black"
-            // />
+
+          // <Line
+          //   key={con.id}
+          //   points={[from.x, from.y, to.x, to.y]}
+          //   stroke="black"
+          // />
           // );
         })}
         {atoms.map((atom) => (
