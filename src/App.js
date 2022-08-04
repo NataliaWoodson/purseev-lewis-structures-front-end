@@ -318,6 +318,7 @@ function App() {
       // }
     }
     console.log({ electronList });
+
     setElectrons(electronList);
   }, [atoms]);
 
