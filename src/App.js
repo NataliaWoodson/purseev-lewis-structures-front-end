@@ -1,14 +1,14 @@
 import "./App.css";
-import { Stage, Layer, Text, Circle, Group } from "react-konva";
+import { Stage, Layer, Text, Circle, Line, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const STATE = {
   atomId: 0,
   electronId: 0,
 };
 
-const chemicalFormula = "CF3H";
+const chemicalFormula = "H2";
 
 const numElectronsObj = {
   H: 1,
@@ -239,6 +239,7 @@ const generateNumAtomsDict = () => {
 };
 
 const atomObj = generateNumAtomsDict();
+console.log("atomObj is", atomObj);
 
 const getElectronDataArray = (numElectrons) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
@@ -277,7 +278,7 @@ const elementSymbolArray = () => {
 };
 
 const generateAtoms = () => {
-  return elementSymbolArray().map((element) => ({
+  const result = elementSymbolArray().map((element) => ({
     id: element.id,
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -285,10 +286,44 @@ const generateAtoms = () => {
     isDragging: false,
     electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
   }));
+  console.log(result);
+  return result;
 };
 
 function App() {
+  // const [atoms, setAtoms] = useState(INITIAL_STATE);
+  const [connectors, setConnectors] = React.useState([]);
+  const [fromShapeId, setFromShapeId] = React.useState(null);
+  const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
+
+  const getElectronsArray = useCallback(() => {
+    console.log("hello");
+    let electronList = [];
+    for (let atom of atoms) {
+      console.log(`this is atom ${JSON.stringify(atom)}`);
+      console.log(typeof atom);
+      electronList.push(...atom.electrons);
+      // const thisElectron = atom.electrons.map((electron) => ({
+      //   id: electron.id,
+      //   xDisplace: electron.xDisplace,
+      //   yDisplace: electron.yDisplace,
+      //   isPaired: electron.isPaired,
+      // })
+
+      // console.log(`this electron: ${thisElectron.id}`);
+      // for (let electron of atom.electrons) {
+      //   console.log(`electron is: ${electron}`);
+      //   electronList.push(electron);
+      // }
+    }
+    console.log({ electronList });
+    setElectrons(electronList);
+  }, [atoms]);
+
+  const createAtoms = () => {
+    setAtoms(generateAtoms());
+  };
 
   useEffect(() => {
     createAtoms();
@@ -296,13 +331,30 @@ function App() {
     STATE.electronId = 0;
   }, []);
 
-  const createAtoms = () => {
-    setAtoms(generateAtoms());
-  };
+  useEffect(() => {
+    getElectronsArray();
+  }, [getElectronsArray]);
+
+  function handleSelectElectron(e) {
+    console.log(e.target);
+    const electron = e.target.attrs;
+  }
 
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
+        {connectors.map((con) => {
+          const from = atoms.find((f) => f.id === con.from);
+          const to = atoms.find((f) => f.id === con.to);
+
+          return (
+            <Line
+              key={con.id}
+              points={[from.x, from.y, to.x, to.y]}
+              stroke="black"
+            />
+          );
+        })}
         {atoms.map((atom) => (
           <Group draggable>
             <Circle
@@ -320,6 +372,7 @@ function App() {
                 offsetY={electron.yDisplace - 12}
                 radius={5}
                 fill="black"
+                onClick={handleSelectElectron}
               />
             ))}
             <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
