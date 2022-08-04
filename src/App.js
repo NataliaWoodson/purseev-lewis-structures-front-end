@@ -8,7 +8,7 @@ const STATE = {
   electronId: 0,
 };
 
-const chemicalFormula = "H2";
+const chemicalFormula;
 
 const numElectronsObj = {
   H: 1,
@@ -22,6 +22,25 @@ const numElectronsObj = {
   P: 5,
   S: 6,
   Cl: 7,
+};
+
+const kBaseUrl =
+  "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main/molecules/";
+
+const getMolecules = async (e) => {
+  e.preventDefault();
+  try {
+    await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+      const formulas = response.data.molecules;
+      // console.log(formulas.length);
+      const rand_formula =
+        formulas[Math.floor(Math.random() * formulas.length)];
+      const  chemicalFormula = rand_formula["molecular_formula"];
+      return chemicalFormula;
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const pixelsDisplacement = 30;
@@ -200,23 +219,7 @@ const getFormulaComponents = () => {
     components.push(thisComponent[0]);
     let thisComponentLength = thisComponent[0].length;
     formula = formula.slice(thisComponentLength);
-const kBaseUrl = "http://127.0.0.1:8000/lewis_structures_main";
-
-const getMolecules = async (e) => {
-  e.preventDefault();
-  try {
-    await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
-      const formulas = response.data.molecules;
-      // console.log(formulas.length);
-      const rand_formula =
-        formulas[Math.floor(Math.random() * formulas.length)];
-      const chosen_formula = rand_formula["molecular_formula"];
-      return chosen_formula;
-    });
-  } catch (err) {
-    console.log(err);
   }
-
   return components;
 };
 
@@ -357,19 +360,22 @@ function App() {
   }
 
   return (
+    
     <Stage width={window.innerWidth} height={window.innerHeight}>
+      <button value="nextMolecule" onClick={getMolecules}></button>
       <Layer>
         {connectors.map((con) => {
           const from = atoms.find((f) => f.id === con.from);
           const to = atoms.find((f) => f.id === con.to);
 
-          return (
-            <Line
-              key={con.id}
-              points={[from.x, from.y, to.x, to.y]}
-              stroke="black"
-            />
-          );
+          // return (
+            
+            // <Line
+            //   key={con.id}
+            //   points={[from.x, from.y, to.x, to.y]}
+            //   stroke="black"
+            // />
+          // );
         })}
         {atoms.map((atom) => (
           <Group draggable>
