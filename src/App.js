@@ -1,13 +1,35 @@
 import "./App.css";
+import axios from "axios";
 import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
+// import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
 };
 
-const chemicalFormula = "CF3H";
+const chemicalFormula = "H2O";
+
+const kBaseUrl =
+  "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
+
+const getMolecules = async (e) => {
+  // e.preventDefault();
+  try {
+    await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+      const formulas = response.data.molecules;
+      // console.log(formulas.length);
+      const rand_formula =
+        formulas[Math.floor(Math.random() * formulas.length)];
+      const chemicalFormula = rand_formula["molecular_formula"];
+      console.log(chemicalFormula);
+      return chemicalFormula;
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const numElectronsObj = {
   H: 1,
@@ -299,32 +321,35 @@ function App() {
   };
 
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
-      <Layer>
-        {atoms.map((atom) => (
-          <Group draggable>
-            <Circle
-              x={atom.x + 10}
-              y={atom.y + 13}
-              fill="red"
-              radius={45}
-              opacity={0.2}
-            ></Circle>
-            {atom.electrons.map((electron) => (
+    <main>
+      {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
+      <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Layer>
+          {atoms.map((atom) => (
+            <Group draggable>
               <Circle
-                x={atom.x}
-                y={atom.y}
-                offsetX={electron.xDisplace - 10}
-                offsetY={electron.yDisplace - 12}
-                radius={5}
-                fill="black"
-              />
-            ))}
-            <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-          </Group>
-        ))}
-      </Layer>
-    </Stage>
+                x={atom.x + 10}
+                y={atom.y + 13}
+                fill="red"
+                radius={45}
+                opacity={0.2}
+              ></Circle>
+              {atom.electrons.map((electron) => (
+                <Circle
+                  x={atom.x}
+                  y={atom.y}
+                  offsetX={electron.xDisplace - 10}
+                  offsetY={electron.yDisplace - 12}
+                  radius={5}
+                  fill="black"
+                />
+              ))}
+              <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+            </Group>
+          ))}
+        </Layer>
+      </Stage>
+    </main>
   );
 }
 
