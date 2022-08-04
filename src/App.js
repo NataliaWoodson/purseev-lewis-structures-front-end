@@ -4,8 +4,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
 
 const STATE = {
-  atomId: 0,
-  electronId: 0,
+  ids: 0,
 };
 
 const chemicalFormula = "CF3H";
@@ -250,13 +249,13 @@ const getElectronDataArray = (numElectrons) => {
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
     const isPaired = electronPositionDisplacements[numElectrons][num].isPaired;
     const entry = {
-      id: STATE.electronId,
+      id: STATE.ids,
       xDisplace: xDisplace,
       yDisplace: yDisplace,
       isPaired: isPaired,
     };
     electronsDataArray.push(entry);
-    STATE.electronId++;
+    STATE.ids++;
   }
   return electronsDataArray;
 };
@@ -268,9 +267,9 @@ const elementSymbolArray = () => {
     for (let i = 0; i < atomObj[element]; i++) {
       elementArray.push({
         elementSymbol: element,
-        id: STATE.atomId,
+        id: STATE.ids,
       });
-      STATE.atomId++;
+      STATE.ids++;
     }
   }
   return elementArray;
@@ -292,8 +291,7 @@ function App() {
 
   useEffect(() => {
     createAtoms();
-    STATE.atomId = 0;
-    STATE.electronId = 0;
+    STATE.ids = 0;
   }, []);
 
   const createAtoms = () => {
