@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+// import PropTypes from "prop-types";
 
 // const NextMoleculeButton = (props) => {
 //   const [chemicalFormula, setChemicalFormula] = useState("");
-//   const onUpdateMolecule = (event) => {
-//     event.preventDefault();
-//     setChemicalFormula(props.onGetNextMolecule());
+//   const onUpdateMolecule = async (event) => {
+//     let chemicalFormula = await props.onGetNextMolecule();
+//     setChemicalFormula(chemicalFormula);
+//     // event.preventDefault();
+//     // setChemicalFormula(props.onGetNextMolecule());
+//     console.log(chemicalFormula);
 //   };
 
 //   return (
@@ -13,4 +17,9 @@ import React, { useState } from "react";
 //     </section>
 //   );
 // };
+
+// NextMoleculeButton.propTypes = {
+//   onGetNextMolecule: PropTypes.func.isRequired,
+// };
+
 // export default NextMoleculeButton;

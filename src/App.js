@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
-// import NextMoleculeButton from "./components/NextMoleculeButton";
+import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
@@ -489,8 +489,8 @@ function App() {
   return (
     <main>
       <Header />
+      {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
       <Stage width={window.innerWidth} height={window.innerHeight}>
-        {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
           {connectors.map((con) => {
