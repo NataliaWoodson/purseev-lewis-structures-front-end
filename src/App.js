@@ -3,6 +3,7 @@ import axios from "axios";
 import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -322,6 +323,7 @@ function App() {
 
   return (
     <main>
+      <Header />
       {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
@@ -353,8 +355,8 @@ function App() {
   );
 }
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+// const container = document.getElementById("root");
+// const root = createRoot(container);
+// root.render(<App />);
 
 export default App;
