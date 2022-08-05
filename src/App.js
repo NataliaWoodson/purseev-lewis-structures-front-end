@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
+import SubmitButton from "./components/SubmitButton";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -65,6 +66,9 @@ const numElectronsObj = {
 
 const pixelsDisplacement = 30;
 const pixelsLonePairShift = 10;
+
+const windowSizeX = 1000;
+const windowSizeY = 800;
 
 const electronPositionDisplacements = {
   1: {
@@ -322,8 +326,8 @@ const elementSymbolArray = (atomObj) => {
 const generateAtoms = (atomObj) => {
   return elementSymbolArray(atomObj).map((element) => ({
     id: element.id,
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
+    x: (Math.random() * window.innerWidth) / 2,
+    y: (Math.random() * window.innerHeight) / 2,
     text: element.elementSymbol,
     isDragging: false,
     electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
@@ -454,7 +458,7 @@ function App() {
   };
   useEffect(() => {
     getMolecules().then((chemicalFormula) => {
-      const atomObj = generateNumAtomsDict(chemicalFormula);
+      const atomObj = generateNumAtomsDict("H2");
       console.log(chemicalFormula);
       // const createAtoms = (atomObj) => {
       setAtoms(generateAtoms(atomObj));
@@ -486,10 +490,22 @@ function App() {
     // bondElectron(electron);
   }
 
+  const verifyStructureValidity = () => {
+    console.log("Entered verifyStructureValidity function in App");
+    for (let electron of electrons) {
+      if (electron.isPaired === false) {
+        console.log("structure is invalid");
+        return false;
+      }
+    }
+    console.log("structure is valid");
+    return true;
+  };
+
   return (
     <main>
       <Header />
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage width={window.innerWidth / 2} height={window.innerHeight / 2}>
         {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
@@ -547,6 +563,7 @@ function App() {
           ))}
         </Layer>
       </Stage>
+      <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
     </main>
 
     // <main>
