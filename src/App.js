@@ -489,7 +489,11 @@ function App() {
   return (
     <main>
       <Header />
-      {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
+      <NextMoleculeButton
+        onGetNextMolecule={getMolecules}
+        // onGenerateAtomDict={generateNumAtomsDict}
+        // onGenerateAtom = {generateAtoms}
+      />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
