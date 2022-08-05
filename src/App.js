@@ -8,7 +8,7 @@ const STATE = {
   ids: 0,
 };
 
-const chemicalFormula = "H2";
+const chemicalFormula = "H2O";
 
 const numElectronsObj = {
   H: 1,
@@ -340,6 +340,7 @@ function App() {
     setElectrons(electronList);
   }, [atoms]);
 
+  // updates electrons state
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
       console.log("updating electron array");
@@ -389,6 +390,7 @@ function App() {
 
   const bondElectrons = (electronsArray) => {
     console.log("electronsArray passed into bondElectrons is", electronsArray);
+    // check if isPaired status of either electron is already true
     for (let checkElectron of electronsArray) {
       if (checkElectron.isPaired === true) {
         console.log(
@@ -401,6 +403,9 @@ function App() {
       }
     }
     console.log("Got past already-paired check");
+
+    // check if electron is being bonded to electron on same atom
+
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
       console.log("selectedElectron in second for-loop is", selectedElectron);
