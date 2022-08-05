@@ -19,6 +19,7 @@ const kBaseUrl =
 
 const getMolecules = async () => {
   // e.preventDefault();
+  console.log("entered getMolecules");
   try {
     return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
       const formulas = response.data.molecules;
@@ -456,7 +457,8 @@ function App() {
       }
     }
   };
-  useEffect(() => {
+
+  const updateMolecule = useCallback(() => {
     getMolecules().then((chemicalFormula) => {
       const atomObj = generateNumAtomsDict(chemicalFormula);
       console.log(chemicalFormula);
@@ -466,6 +468,17 @@ function App() {
     // createAtoms();
     STATE.ids = 0;
   }, []);
+
+  useEffect(() => {
+    getMolecules().then((chemicalFormula) => {
+      const atomObj = generateNumAtomsDict(chemicalFormula);
+      console.log(chemicalFormula);
+      // const createAtoms = (atomObj) => {
+      setAtoms(generateAtoms(atomObj));
+    });
+    // createAtoms();
+    STATE.ids = 0;
+  }, [updateMolecule]);
 
   // const atomObj = generateNumAtomsDict(chemicalFormula);
   // const createAtoms = (atomObj) => {
@@ -563,6 +576,7 @@ function App() {
           ))}
         </Layer>
       </Stage>
+      <button onClick={updateMolecule}> Next Molecule </button>
       <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
     </main>
 
