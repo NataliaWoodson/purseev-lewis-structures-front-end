@@ -557,7 +557,7 @@ function App() {
                   offsetX={electron.xDisplace - 10}
                   offsetY={electron.yDisplace - 12}
                   radius={5}
-                  fill="black"
+                  fill={fromShapeId === electron.id ? "red" : "black"}
                   onClick={() => {
                     if (fromShapeId) {
                       const prevElectron = getElectronById(fromShapeId);
