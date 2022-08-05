@@ -458,7 +458,7 @@ function App() {
   };
   useEffect(() => {
     getMolecules().then((chemicalFormula) => {
-      const atomObj = generateNumAtomsDict("H2");
+      const atomObj = generateNumAtomsDict(chemicalFormula);
       console.log(chemicalFormula);
       // const createAtoms = (atomObj) => {
       setAtoms(generateAtoms(atomObj));
