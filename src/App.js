@@ -10,21 +10,21 @@ const STATE = {
   ids: 0,
 };
 
-const chemicalFormula = "H2O";
+// const chemicalFormula = "H2O";
 
 const kBaseUrl =
   "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
 
-const getMolecules = async (e) => {
+const getMolecules = async () => {
   // e.preventDefault();
   try {
-    await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+    return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
       const formulas = response.data.molecules;
       // console.log(formulas.length);
       const rand_formula =
         formulas[Math.floor(Math.random() * formulas.length)];
       const chemicalFormula = rand_formula["molecular_formula"];
-      console.log(chemicalFormula);
+      // console.log(chemicalFormula);
       return chemicalFormula;
     });
   } catch (err) {
@@ -206,7 +206,7 @@ const electronPositionDisplacements = {
   },
 };
 
-const getFormulaComponents = () => {
+const getFormulaComponents = (chemicalFormula) => {
   let formula = chemicalFormula.slice();
 
   const getOneComponent = () => {
@@ -227,9 +227,9 @@ const getFormulaComponents = () => {
   return components;
 };
 
-const generateNumAtomsDict = () => {
+const generateNumAtomsDict = (chemicalFormula) => {
   let formulaObj = {};
-  const components = getFormulaComponents();
+  const components = getFormulaComponents(chemicalFormula);
   for (let component of components) {
     let element;
     let numInc;
@@ -260,7 +260,7 @@ const generateNumAtomsDict = () => {
   return formulaObj;
 };
 
-const atomObj = generateNumAtomsDict();
+// const atomObj = generateNumAtomsDict();
 
 const getElectronDataArray = (numElectrons) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
@@ -283,7 +283,7 @@ const getElectronDataArray = (numElectrons) => {
   return electronsDataArray;
 };
 
-const elementSymbolArray = () => {
+const elementSymbolArray = (atomObj) => {
   let elementArray = [];
 
   for (const element in atomObj) {
@@ -298,8 +298,8 @@ const elementSymbolArray = () => {
   return elementArray;
 };
 
-const generateAtoms = () => {
-  return elementSymbolArray().map((element) => ({
+const generateAtoms = (atomObj) => {
+  return elementSymbolArray(atomObj).map((element) => ({
     id: element.id,
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -313,13 +313,20 @@ function App() {
   const [atoms, setAtoms] = useState([]);
 
   useEffect(() => {
-    createAtoms();
+    getMolecules().then((chemicalFormula) => {
+      const atomObj = generateNumAtomsDict(chemicalFormula);
+      console.log(chemicalFormula);
+      // const createAtoms = (atomObj) => {
+      setAtoms(generateAtoms(atomObj));
+    });
+    // createAtoms();
     STATE.ids = 0;
   }, []);
 
-  const createAtoms = () => {
-    setAtoms(generateAtoms());
-  };
+  // const atomObj = generateNumAtomsDict(chemicalFormula);
+  // const createAtoms = (atomObj) => {
+  //   setAtoms(generateAtoms(atomObj));
+  // };
 
   return (
     <main>
@@ -328,8 +335,9 @@ function App() {
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {atoms.map((atom) => (
-            <Group draggable>
+            <Group key={atom.id} draggable>
               <Circle
+                key={atom.id}
                 x={atom.x + 10}
                 y={atom.y + 13}
                 fill="red"
@@ -338,6 +346,7 @@ function App() {
               ></Circle>
               {atom.electrons.map((electron) => (
                 <Circle
+                  key={electron.id}
                   x={atom.x}
                   y={atom.y}
                   offsetX={electron.xDisplace - 10}
