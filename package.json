@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
     "konva": "^8.3.10",
+    "package.json": "^2.0.1",
     "pretty-bytes": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

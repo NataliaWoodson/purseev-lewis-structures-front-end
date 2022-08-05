@@ -1,0 +1,76 @@
+Arguments: 
+  /usr/local/Cellar/node/18.7.0/bin/node /usr/local/Cellar/yarn/1.22.19/libexec/bin/yarn.js install
+
+PATH: 
+  /Users/nana/.pyenv/shims:/Users/nana/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/nana/.ebcli-virtual-env/executables:/Users/nana/.local/bin:/Users/nana/.local/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.7.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/nana/Developer/projects/purseev/lewis-structures/purseev-lewis-structures-front-end/package.json: Unexpected token < in JSON at position 282
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "lewis_structures_front_end",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@testing-library/jest-dom": "^5.14.1",
+      "@testing-library/react": "^13.0.0",
+      "@testing-library/user-event": "^13.2.1",
+      "axios": "^0.27.2",
+      "konva": "^8.3.10",
+  <<<<<<< HEAD
+      "package.json": "^2.0.1",
+  =======
+  >>>>>>> origin/MergeBondAndGetMolecule
+      "pretty-bytes": "^6.0.0",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-konva": "^18.2.1",
+      "react-scripts": "5.0.1",
+      "web-vitals": "^2.1.0"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

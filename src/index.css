@@ -11,3 +11,58 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.stage-container {
+  
+  height: calc(100vh - 50px);
+  width: calc(100vh - 100px);
+  padding: 20px;
+}
+
+nav ul {
+  margin-top: 0;
+  padding: 0;
+  align-items: center;
+}
+
+nav {
+  margin-top: 0;
+  padding-right: 15px;
+  overflow: hidden;
+  border-bottom: 1px solid black;
+  box-shadow: 1px 1px 2px black;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0x;
+  display: flex;
+}
+
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+}
+
+nav ul li:nth-child(2) {
+  margin-right: auto;
+}
+
+#logo-name {
+  font-size: 40px;
+}
+
+.hamburger-menu {
+  padding-top: 15px;;
+  padding-right: 10px;
+  text-align: center;;
+}
+
+#menu-header {
+  margin: 0;
+  font-size: 12px;
+}
+
+
+
+
