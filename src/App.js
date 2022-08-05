@@ -6,6 +6,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
+import SubmitButton from "./components/SubmitButton";
+// import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
@@ -18,6 +20,7 @@ const kBaseUrl =
 
 const getMolecules = async () => {
   // e.preventDefault();
+  console.log("entered getMolecules");
   try {
     return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
       const formulas = response.data.molecules;
@@ -65,6 +68,9 @@ const numElectronsObj = {
 
 const pixelsDisplacement = 30;
 const pixelsLonePairShift = 10;
+
+const windowSizeX = 1000;
+const windowSizeY = 800;
 
 const electronPositionDisplacements = {
   1: {
@@ -322,8 +328,8 @@ const elementSymbolArray = (atomObj) => {
 const generateAtoms = (atomObj) => {
   return elementSymbolArray(atomObj).map((element) => ({
     id: element.id,
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
+    x: (Math.random() * window.innerWidth) / 2,
+    y: (Math.random() * window.innerHeight) / 2,
     text: element.elementSymbol,
     isDragging: false,
     electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
@@ -452,7 +458,8 @@ function App() {
       }
     }
   };
-  useEffect(() => {
+
+  const updateMolecule = useCallback(() => {
     getMolecules().then((chemicalFormula) => {
       const atomObj = generateNumAtomsDict(chemicalFormula);
       console.log(chemicalFormula);
@@ -462,6 +469,17 @@ function App() {
     // createAtoms();
     STATE.ids = 0;
   }, []);
+
+  useEffect(() => {
+    getMolecules().then((chemicalFormula) => {
+      const atomObj = generateNumAtomsDict(chemicalFormula);
+      console.log(chemicalFormula);
+      // const createAtoms = (atomObj) => {
+      setAtoms(generateAtoms(atomObj));
+    });
+    // createAtoms();
+    STATE.ids = 0;
+  }, [updateMolecule]);
 
   // const atomObj = generateNumAtomsDict(chemicalFormula);
   // const createAtoms = (atomObj) => {
@@ -486,14 +504,23 @@ function App() {
     // bondElectron(electron);
   }
 
+  const verifyStructureValidity = () => {
+    console.log("Entered verifyStructureValidity function in App");
+    for (let electron of electrons) {
+      if (electron.isPaired === false) {
+        console.log("structure is invalid");
+        return false;
+      }
+    }
+    console.log("structure is valid");
+    return true;
+  };
+
   return (
     <main>
       <Header />
-      <NextMoleculeButton
-        onGetNextMolecule={getMolecules}
-        // onGenerateAtomDict={generateNumAtomsDict}
-        // onGenerateAtom = {generateAtoms}
-      />
+      <NextMoleculeButton onGetNextMolecule={updateMolecule} />
+      <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
@@ -551,6 +578,7 @@ function App() {
           ))}
         </Layer>
       </Stage>
+      {/* <button onClick={updateMolecule}> Next Molecule </button> */}
     </main>
 
     // <main>
