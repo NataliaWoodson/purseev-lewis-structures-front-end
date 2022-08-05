@@ -1,14 +1,37 @@
 import "./App.css";
-import { Stage, Layer, Text, Circle, Line, Group } from "react-konva";
+import axios from "axios";
+import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback } from "react";
+import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
+// import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
 };
 
-const chemicalFormula = "H2O";
+// const chemicalFormula = "H2O";
+
+const kBaseUrl =
+  "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
+
+const getMolecules = async () => {
+  // e.preventDefault();
+  try {
+    return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+      const formulas = response.data.molecules;
+      // console.log(formulas.length);
+      const rand_formula =
+        formulas[Math.floor(Math.random() * formulas.length)];
+      const chemicalFormula = rand_formula["molecular_formula"];
+      // console.log(chemicalFormula);
+      return chemicalFormula;
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const numElectronsObj = {
   H: 1,
@@ -23,9 +46,6 @@ const numElectronsObj = {
   S: 6,
   Cl: 7,
 };
-
-const kBaseUrl =
-  "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main/molecules/";
 
 // const getMolecules = async (e) => {
 //   e.preventDefault();
@@ -203,7 +223,7 @@ const electronPositionDisplacements = {
   },
 };
 
-const getFormulaComponents = () => {
+const getFormulaComponents = (chemicalFormula) => {
   let formula = chemicalFormula.slice();
 
   const getOneComponent = () => {
@@ -223,9 +243,9 @@ const getFormulaComponents = () => {
   return components;
 };
 
-const generateNumAtomsDict = () => {
+const generateNumAtomsDict = (chemicalFormula) => {
   let formulaObj = {};
-  const components = getFormulaComponents();
+  const components = getFormulaComponents(chemicalFormula);
   for (let component of components) {
     let element;
     let numInc;
@@ -256,8 +276,9 @@ const generateNumAtomsDict = () => {
   return formulaObj;
 };
 
-const atomObj = generateNumAtomsDict();
-console.log("atomObj is", atomObj);
+// const atomObj = generateNumAtomsDict();
+// console.log("atomObj is", atomObj);
+// const atomObj = generateNumAtomsDict();
 
 const getElectronDataArray = (numElectrons) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
@@ -280,7 +301,7 @@ const getElectronDataArray = (numElectrons) => {
   return electronsDataArray;
 };
 
-const elementSymbolArray = () => {
+const elementSymbolArray = (atomObj) => {
   let elementArray = [];
 
   for (const element in atomObj) {
@@ -295,8 +316,11 @@ const elementSymbolArray = () => {
   return elementArray;
 };
 
-const generateAtoms = () => {
-  const result = elementSymbolArray().map((element) => ({
+// const generateAtoms = () => {
+//   const result = elementSymbolArray().map((element) => ({
+
+const generateAtoms = (atomObj) => {
+  return elementSymbolArray(atomObj).map((element) => ({
     id: element.id,
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -304,8 +328,8 @@ const generateAtoms = () => {
     isDragging: false,
     electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
   }));
-  console.log(result);
-  return result;
+  // console.log(result);
+  // return result;
 };
 
 function App() {
@@ -428,15 +452,26 @@ function App() {
       }
     }
   };
-
-  const createAtoms = () => {
-    setAtoms(generateAtoms());
-  };
-
   useEffect(() => {
-    createAtoms();
+    getMolecules().then((chemicalFormula) => {
+      const atomObj = generateNumAtomsDict(chemicalFormula);
+      console.log(chemicalFormula);
+      // const createAtoms = (atomObj) => {
+      setAtoms(generateAtoms(atomObj));
+    });
+    // createAtoms();
     STATE.ids = 0;
   }, []);
+
+  // const atomObj = generateNumAtomsDict(chemicalFormula);
+  // const createAtoms = (atomObj) => {
+  //   setAtoms(generateAtoms(atomObj));
+  // };
+
+  // useEffect(() => {
+  //   createAtoms();
+  //   STATE.ids = 0;
+  // }, []);
 
   useEffect(() => {
     getElectronsArray();
@@ -452,66 +487,105 @@ function App() {
   }
 
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
-      {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
-      <Layer>
-        {connectors.map((con) => {
-          const from = atoms.find((f) => f.id === con.from);
-          const to = atoms.find((f) => f.id === con.to);
+    <main>
+      <Header />
+      <Stage width={window.innerWidth} height={window.innerHeight}>
+        {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
+        {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
+        <Layer>
+          {connectors.map((con) => {
+            const from = atoms.find((f) => f.id === con.from);
+            const to = atoms.find((f) => f.id === con.to);
 
-          // return (
+            // return (
 
-          // <Line
-          //   key={con.id}
-          //   points={[from.x, from.y, to.x, to.y]}
-          //   stroke="black"
-          // />
-          // );
-        })}
-        {atoms.map((atom) => (
-          <Group draggable>
-            <Circle
-              id={atom.id.toString()}
-              x={atom.x + 10}
-              y={atom.y + 13}
-              fill="red"
-              radius={45}
-              opacity={0.2}
-            ></Circle>
-            {atom.electrons.map((electron) => (
+            // <Line
+            //   key={con.id}
+            //   points={[from.x, from.y, to.x, to.y]}
+            //   stroke="black"
+            // />
+            // );
+          })}
+          {atoms.map((atom) => (
+            <Group key={atom.id} draggable>
               <Circle
-                id={electron.id.toString()}
-                x={atom.x}
-                y={atom.y}
-                offsetX={electron.xDisplace - 10}
-                offsetY={electron.yDisplace - 12}
-                radius={5}
-                fill="black"
-                onClick={() => {
-                  if (fromShapeId) {
-                    const prevElectron = getElectronById(fromShapeId);
-                    bondElectrons([prevElectron, electron]);
-                    setFromShapeId(null);
-                    // const newConnector = {
-                    //   from: fromShapeId,
-                    //   to: electron.id
-                    // }
-                  } else {
-                    setFromShapeId(electron.id);
-                  }
-                }}
-              />
-            ))}
-            <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-          </Group>
-        ))}
-      </Layer>
-    </Stage>
+                key={atom.id}
+                id={atom.id.toString()}
+                x={atom.x + 10}
+                y={atom.y + 13}
+                fill="red"
+                radius={45}
+                opacity={0.2}
+              ></Circle>
+              {atom.electrons.map((electron) => (
+                <Circle
+                  key={electron.id}
+                  id={electron.id.toString()}
+                  x={atom.x}
+                  y={atom.y}
+                  offsetX={electron.xDisplace - 10}
+                  offsetY={electron.yDisplace - 12}
+                  radius={5}
+                  fill="black"
+                  onClick={() => {
+                    if (fromShapeId) {
+                      const prevElectron = getElectronById(fromShapeId);
+                      bondElectrons([prevElectron, electron]);
+                      setFromShapeId(null);
+                      // const newConnector = {
+                      //   from: fromShapeId,
+                      //   to: electron.id
+                      // }
+                    } else {
+                      setFromShapeId(electron.id);
+                    }
+                  }}
+                />
+              ))}
+              <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+            </Group>
+          ))}
+        </Layer>
+      </Stage>
+    </main>
+
+    // <main>
+    //   <Header />
+    //   {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
+    //   <Stage width={window.innerWidth} height={window.innerHeight}>
+    //     <Layer>
+    //       {atoms.map((atom) => (
+    //         <Group key={atom.id} draggable>
+    //           <Circle
+    //             key={atom.id}
+    //             x={atom.x + 10}
+    //             y={atom.y + 13}
+    //             fill="red"
+    //             radius={45}
+    //             opacity={0.2}
+    //           ></Circle>
+    //           {atom.electrons.map((electron) => (
+    //             <Circle
+    //               key={electron.id}
+    //               x={atom.x}
+    //               y={atom.y}
+    //               offsetX={electron.xDisplace - 10}
+    //               offsetY={electron.yDisplace - 12}
+    //               radius={5}
+    //               fill="black"
+    //             />
+    //           ))}
+    //           <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+    //         </Group>
+    //       ))}
+    //     </Layer>
+    //   </Stage>
+    // </main>
   );
 }
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+// const container = document.getElementById("root");
+// const root = createRoot(container);
+// root.render(<App />);
 
 export default App;
