@@ -4,8 +4,7 @@ import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback } from "react";
 
 const STATE = {
-  atomId: 0,
-  electronId: 0,
+  ids: 0,
 };
 
 const chemicalFormula = "H2O";
@@ -269,13 +268,13 @@ const getElectronDataArray = (numElectrons) => {
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
     const isPaired = electronPositionDisplacements[numElectrons][num].isPaired;
     const entry = {
-      id: STATE.electronId,
+      id: STATE.ids,
       xDisplace: xDisplace,
       yDisplace: yDisplace,
       isPaired: isPaired,
     };
     electronsDataArray.push(entry);
-    STATE.electronId++;
+    STATE.ids++;
   }
   return electronsDataArray;
 };
@@ -287,9 +286,9 @@ const elementSymbolArray = () => {
     for (let i = 0; i < atomObj[element]; i++) {
       elementArray.push({
         elementSymbol: element,
-        id: STATE.atomId,
+        id: STATE.ids,
       });
-      STATE.atomId++;
+      STATE.ids++;
     }
   }
   return elementArray;
@@ -319,8 +318,8 @@ function App() {
     console.log("hello");
     let electronList = [];
     for (let atom of atoms) {
-      console.log(`this is atom ${JSON.stringify(atom)}`);
-      console.log(typeof atom);
+      // console.log(`this is atom ${JSON.stringify(atom)}`);
+      // console.log(typeof atom);
       electronList.push(...atom.electrons);
       // const thisElectron = atom.electrons.map((electron) => ({
       //   id: electron.id,
@@ -340,14 +339,49 @@ function App() {
     setElectrons(electronList);
   }, [atoms]);
 
+  const updateElectronsArray = useCallback(
+    (updatedElectron) => {
+      console.log("updating electron array");
+      console.log("updatedElectron passed in is", updatedElectron);
+      let electronList = [];
+      for (let electron of electrons) {
+        if (electron.id.toString() === updatedElectron.id) {
+          electronList.push({
+            id: electron.id,
+            isPaired: updatedElectron.isPaired,
+            xDisplace: updatedElectron.xDisplace,
+            yDisplace: updatedElectron.yDisplace,
+          });
+        } else {
+          electronList.push(electron);
+        }
+      }
+      console.log("new electron list is", electronList);
+      setElectrons(electronList);
+    },
+    [electrons]
+  );
+
+  const bondElectron = (electron) => {
+    const bondedElectron = {
+      id: electron.id,
+      x: electron.x,
+      y: electron.y,
+      offsetX: electron.offsetX,
+      offsetY: electron.offsetY,
+      isPaired: true,
+    };
+    console.log("bonded electron data is", bondedElectron);
+    updateElectronsArray(bondedElectron);
+  };
+
   const createAtoms = () => {
     setAtoms(generateAtoms());
   };
 
   useEffect(() => {
     createAtoms();
-    STATE.atomId = 0;
-    STATE.electronId = 0;
+    STATE.ids = 0;
   }, []);
 
   useEffect(() => {
@@ -355,8 +389,11 @@ function App() {
   }, [getElectronsArray]);
 
   function handleSelectElectron(e) {
-    console.log(e.target);
+    // console.log(e.target);
     const electron = e.target.attrs;
+    console.log("selected electron is", electron);
+    console.log("electron.id is", electron.id);
+    bondElectron(electron);
   }
 
   return (
@@ -379,14 +416,16 @@ function App() {
         {atoms.map((atom) => (
           <Group draggable>
             <Circle
+              id={atom.id.toString()}
               x={atom.x + 10}
               y={atom.y + 13}
-              fill="red"
+              fill="white"
               radius={45}
-              opacity={0.2}
+              opacity={0.6}
             ></Circle>
             {atom.electrons.map((electron) => (
               <Circle
+                id={electron.id.toString()}
                 x={atom.x}
                 y={atom.y}
                 offsetX={electron.xDisplace - 10}
