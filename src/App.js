@@ -474,9 +474,9 @@ function App() {
               id={atom.id.toString()}
               x={atom.x + 10}
               y={atom.y + 13}
-              fill="white"
+              fill="red"
               radius={45}
-              opacity={0.6}
+              opacity={0.2}
             ></Circle>
             {atom.electrons.map((electron) => (
               <Circle
