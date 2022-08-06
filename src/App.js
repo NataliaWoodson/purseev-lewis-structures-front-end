@@ -11,6 +11,8 @@ import SubmitButton from "./components/SubmitButton";
 
 const STATE = {
   ids: 0,
+  numRounds: 0,
+  submissions: [],
 };
 
 // const chemicalFormula = "H2O";
@@ -460,14 +462,31 @@ function App() {
   };
 
   const updateMolecule = useCallback(() => {
-    getMolecules().then((chemicalFormula) => {
-      const atomObj = generateNumAtomsDict(chemicalFormula);
-      console.log(chemicalFormula);
-      // const createAtoms = (atomObj) => {
-      setAtoms(generateAtoms(atomObj));
-    });
-    // createAtoms();
-    STATE.ids = 0;
+    console.log(
+      "round number is",
+      STATE.numRounds,
+      ". Submissions are",
+      STATE.submissions
+    );
+    if (STATE.submissions.length === STATE.numRounds) {
+      console.log("entered call skip if statement");
+      updateSubmissions("skip");
+    }
+    STATE.numRounds++;
+    console.log("increased num rounds", STATE.numRounds);
+    if (STATE.numRounds < 5) {
+      getMolecules().then((chemicalFormula) => {
+        const atomObj = generateNumAtomsDict(chemicalFormula);
+        console.log(chemicalFormula);
+        // const createAtoms = (atomObj) => {
+        setAtoms(generateAtoms(atomObj));
+      });
+      // createAtoms();
+      STATE.ids = 0;
+    } else {
+      // returnScore();
+      console.log("played five rounds");
+    }
   }, []);
 
   useEffect(() => {
@@ -504,17 +523,69 @@ function App() {
     // bondElectron(electron);
   }
 
+  const updateSubmissions = (result) => {
+    if (result === true) {
+      if (STATE.submissions.length === 0) {
+        STATE.submissions.push({
+          round: STATE.numRounds,
+          score: true,
+        });
+      } else if (STATE.submissions.length === STATE.numRounds) {
+        STATE.submissions.push({
+          round: STATE.numRounds,
+          score: true,
+        });
+      }
+    } else if (result === false) {
+      STATE.submissions.push({
+        round: STATE.numRounds,
+        score: false,
+      });
+    } else if (result === "skip") {
+      STATE.submissions.push({
+        round: STATE.numRounds,
+        score: "skip",
+      });
+    }
+
+    console.log(
+      "round number is",
+      STATE.numRounds,
+      ". Submissions are",
+      STATE.submissions
+    );
+  };
+
   const verifyStructureValidity = () => {
     console.log("Entered verifyStructureValidity function in App");
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
+        updateSubmissions(false);
         return false;
       }
     }
     console.log("structure is valid");
+    // if (STATE.submissions.length === 0) {
+    //   STATE.submissions.push({
+    //     round: STATE.numRounds,
+    //     score: true,
+    //   });
+    // } else if (
+    //   STATE.submissions[STATE.submissions.length - 1].round === STATE.numRounds
+    // ) {
+    //   STATE.submissions.push({
+    //     round: STATE.numRounds,
+    //     score: true,
+    //   });
+    // }
+    updateSubmissions(true);
     return true;
   };
+
+  // const returnScore = () => {
+  //   if ()
+  // }
 
   return (
     <main>
@@ -580,44 +651,7 @@ function App() {
       </Stage>
       {/* <button onClick={updateMolecule}> Next Molecule </button> */}
     </main>
-
-    // <main>
-    //   <Header />
-    //   {/* <NextMoleculeButton onGetNextMolecule={getMolecules} /> */}
-    //   <Stage width={window.innerWidth} height={window.innerHeight}>
-    //     <Layer>
-    //       {atoms.map((atom) => (
-    //         <Group key={atom.id} draggable>
-    //           <Circle
-    //             key={atom.id}
-    //             x={atom.x + 10}
-    //             y={atom.y + 13}
-    //             fill="red"
-    //             radius={45}
-    //             opacity={0.2}
-    //           ></Circle>
-    //           {atom.electrons.map((electron) => (
-    //             <Circle
-    //               key={electron.id}
-    //               x={atom.x}
-    //               y={atom.y}
-    //               offsetX={electron.xDisplace - 10}
-    //               offsetY={electron.yDisplace - 12}
-    //               radius={5}
-    //               fill="black"
-    //             />
-    //           ))}
-    //           <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-    //         </Group>
-    //       ))}
-    //     </Layer>
-    //   </Stage>
-    // </main>
   );
 }
-
-// const container = document.getElementById("root");
-// const root = createRoot(container);
-// root.render(<App />);
 
 export default App;
