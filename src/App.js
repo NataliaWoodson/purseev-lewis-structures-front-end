@@ -449,6 +449,7 @@ function App() {
       return null;
     }
 
+    console.log("valid bond");
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
       // console.log("selectedElectron in second for-loop is", selectedElectron);
@@ -457,11 +458,29 @@ function App() {
         xDisplace: selectedElectron.xDisplace,
         yDisplace: selectedElectron.yDisplace,
         isPaired: true,
+        atomId: selectedElectron.atomId,
       };
       // console.log("bondedElectron on line 387 is", bondedElectron);
       bondedElectronsArray.push(bondedElectron);
     }
     updateElectronsArray(bondedElectronsArray);
+  };
+
+  const breakBonds = (electronsArray) => {
+    const unbondedElectronsArray = [];
+    for (let selectedElectron of electronsArray) {
+      // console.log("selectedElectron in second for-loop is", selectedElectron);
+      const unbondedElectron = {
+        id: selectedElectron.id,
+        xDisplace: selectedElectron.xDisplace,
+        yDisplace: selectedElectron.yDisplace,
+        isPaired: false,
+        atomId: selectedElectron.atomId,
+      };
+      // console.log("bondedElectron on line 387 is", bondedElectron);
+      unbondedElectronsArray.push(unbondedElectron);
+    }
+    updateElectronsArray(unbondedElectronsArray);
   };
 
   const getElectronById = (id) => {
@@ -663,6 +682,7 @@ function App() {
                       setFromShapeId(electron.id);
                     }
                   }}
+                  onDblClick={() => {}}
                 />
               ))}
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
