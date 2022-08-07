@@ -428,7 +428,9 @@ function App() {
   const bondElectrons = (electronsArray) => {
     // console.log("electronsArray passed into bondElectrons is", electronsArray);
     // check if isPaired status of either electron is already true
+    const atomIds = [];
     for (let checkElectron of electronsArray) {
+      atomIds.push(checkElectron.atomId);
       if (checkElectron.isPaired === true) {
         console.log(
           "Invalid bond. Electron with id",
@@ -439,9 +441,13 @@ function App() {
         return null;
       }
     }
-    // console.log("Got past already-paired check");
-
     // check if electron is being bonded to electron on same atom
+    const atomIdsSet = new Set(atomIds);
+    if (atomIds.length !== atomIdsSet.size) {
+      console.log("Invalid bond. Cannot bond electrons in the same atom.");
+      setFromShapeId(null);
+      return null;
+    }
 
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
