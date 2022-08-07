@@ -409,6 +409,7 @@ function App() {
                 isPaired: updatedElectron.isPaired,
                 xDisplace: updatedElectron.xDisplace,
                 yDisplace: updatedElectron.yDisplace,
+                atomId: electron.atomId,
               });
             }
           }
