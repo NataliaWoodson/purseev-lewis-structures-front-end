@@ -2,17 +2,19 @@ import "./App.css";
 import axios from "axios";
 import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
+import UserMessages from "./components/UserMessages";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
   numRounds: 0,
   submissions: [],
+  message: "Hello this is a test message.",
 };
 
 // const chemicalFormula = "H2O";
@@ -350,6 +352,7 @@ function App() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
+  const [message, setMessage] = useState("Startup message.");
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -426,12 +429,15 @@ function App() {
   );
 
   const bondElectrons = (electronsArray) => {
-    // console.log("electronsArray passed into bondElectrons is", electronsArray);
+    console.log("electronsArray passed into bondElectrons is", electronsArray);
     // check if isPaired status of either electron is already true
     const atomIds = [];
     for (let checkElectron of electronsArray) {
       atomIds.push(checkElectron.atomId);
       if (checkElectron.isPaired === true) {
+        setMessage(
+          "Invalid bond. You can only form a bond between two electrons if they are both unpaired."
+        );
         console.log(
           "Invalid bond. Electron with id",
           checkElectron.id,
@@ -444,11 +450,13 @@ function App() {
     // check if electron is being bonded to electron on same atom
     const atomIdsSet = new Set(atomIds);
     if (atomIds.length !== atomIdsSet.size) {
+      setMessage("Invalid bond. Cannot bond electrons in the same atom.");
       console.log("Invalid bond. Cannot bond electrons in the same atom.");
       setFromShapeId(null);
       return null;
     }
 
+    setMessage("That was a valid bond.");
     console.log("valid bond");
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
@@ -466,6 +474,7 @@ function App() {
     updateElectronsArray(bondedElectronsArray);
   };
 
+  // To be used as a helper function once we have a record of the connectors and their corresponding electrons.
   const breakBonds = (electronsArray) => {
     const unbondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
@@ -494,6 +503,7 @@ function App() {
   const updateMolecule = useCallback(() => {
     if (STATE.submissions.length === STATE.numRounds) {
       // console.log("entered call skip if statement");
+      setMessage("You have skipped this question.");
       updateSubmissions("skip");
       console.log(
         "round number is",
@@ -505,6 +515,7 @@ function App() {
     if (STATE.submissions.length > 5) {
       return null;
     }
+    setMessage("");
     STATE.numRounds++;
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
@@ -559,6 +570,9 @@ function App() {
   const updateSubmissions = (result) => {
     if (STATE.submissions.length === 5) {
       console.log("Game completed. Start new game.");
+      setMessage(
+        "Thanks for playing! Press the New Game button if you'd like to play again!"
+      );
       return "Game completed. Start new game.";
     }
     if (result === true) {
@@ -600,6 +614,9 @@ function App() {
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
+        setMessage(
+          "This structure is invalid. See if you can find a way to bond electrons so that every single one is paired."
+        );
         updateSubmissions(false);
         return false;
       }
@@ -618,6 +635,7 @@ function App() {
     //     score: true,
     //   });
     // }
+    setMessage("Great job! This structure is correct!");
     updateSubmissions(true);
     return true;
   };
@@ -626,12 +644,22 @@ function App() {
   //   if ()
   // }
 
+  // let nextMoleculeRef = useRef(null);
+
+  // const hideComponent = () => {
+
+  // }
+
   return (
     <main>
       <Header />
       <p>`${JSON.stringify(STATE.submissions)}`</p>
-      <NextMoleculeButton onGetNextMolecule={updateMolecule} />
-      <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
+      <UserMessages message={message} />
+      <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
+      <SubmitButton
+        className="show"
+        verifyStructureValidityApp={verifyStructureValidity}
+      />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
@@ -670,9 +698,11 @@ function App() {
                   radius={5}
                   fill={fromShapeId === electron.id ? "red" : "black"}
                   onClick={() => {
+                    setMessage("");
                     if (fromShapeId) {
                       const prevElectron = getElectronById(fromShapeId);
-                      bondElectrons([prevElectron, electron]);
+                      const thisElectron = getElectronById(electron.id);
+                      bondElectrons([prevElectron, thisElectron]);
                       setFromShapeId(null);
                       // const newConnector = {
                       //   from: fromShapeId,
