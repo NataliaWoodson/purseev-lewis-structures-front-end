@@ -288,7 +288,7 @@ const generateNumAtomsDict = (chemicalFormula) => {
 // console.log("atomObj is", atomObj);
 // const atomObj = generateNumAtomsDict();
 
-const getElectronDataArray = (numElectrons) => {
+const getElectronDataArray = (numElectrons, atomId) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
   nums.shift();
   const electronsDataArray = [];
@@ -302,6 +302,7 @@ const getElectronDataArray = (numElectrons) => {
       xDisplace: xDisplace,
       yDisplace: yDisplace,
       isPaired: isPaired,
+      atomId: atomId,
     };
     electronsDataArray.push(entry);
     STATE.ids++;
@@ -334,7 +335,10 @@ const generateAtoms = (atomObj) => {
     y: (Math.random() * window.innerHeight) / 2,
     text: element.elementSymbol,
     isDragging: false,
-    electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
+    electrons: getElectronDataArray(
+      numElectronsObj[element.elementSymbol],
+      element.id
+    ),
   }));
   // console.log(result);
   // return result;
