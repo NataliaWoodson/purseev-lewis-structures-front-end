@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { Stage, Layer, Text, Circle, Group } from "react-konva";
+import { Stage, Layer, Text, Circle, Group, Line } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
@@ -345,7 +345,7 @@ function App() {
   const [connectors, setConnectors] = React.useState([]);
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
-  const [atoms, setAtoms] = useState([]);
+  const [atoms, setAtoms] = useState(generateAtoms());
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -596,6 +596,43 @@ function App() {
   //   if ()
   // }
 
+  const cordinatesList = [];
+
+  const connectLine = (e) => {
+    console.log(e.target);
+    const x = e.target.attrs.x;
+    const y = e.target.attrs.y;
+    const id = e.target.index;
+    const offsetX = e.target.attrs.offsetX;
+    const offsetY = e.target.attrs.offsetY;
+    const bondedElectronDict = {
+      id: id,
+      x: x,
+      y: y,
+      offsetX: offsetX,
+      offsetY: offsetY,
+    };
+    cordinatesList.push(bondedElectronDict);
+    console.log({ cordinatesList });
+    // const dictLength = Object.keys(bondedElectronDict).length;
+
+    if (cordinatesList.length === 2) {
+      drawLine(cordinatesList);
+    }
+  };
+
+  function drawLine(cordinatesList) {
+    // console.log({ cordinatesList });
+    // console.log(cordinatesList[0]["x"]);
+    setConnectors([
+      cordinatesList[0]["x"] - cordinatesList[0]["offsetX"],
+      cordinatesList[0]["y"] - cordinatesList[0]["offsetY"],
+      cordinatesList[1]["x"] - cordinatesList[1]["offsetX"],
+      cordinatesList[1]["y"] - cordinatesList[1]["offsetY"],
+    ]);
+  }
+  console.log({ connectors });
+
   return (
     <main>
       <Header />
@@ -605,21 +642,21 @@ function App() {
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
-          {connectors.map((con) => {
-            const from = atoms.find((f) => f.id === con.from);
-            const to = atoms.find((f) => f.id === con.to);
+          {/* {connectors.map((con) => {
+            console.log("here we are");
+            const from = atoms.find((a) => a.id === con.from);
+            const to = atoms.find((a) => a.id === con.to);
 
-            // return (
-
-            // <Line
-            //   key={con.id}
-            //   points={[from.x, from.y, to.x, to.y]}
-            //   stroke="black"
-            // />
-            // );
-          })}
+            return (
+              <Line
+                key={con.id}
+                points={[from.x, from.y, to.x, to.y]}
+                stroke="black"
+              />
+            );
+          })} */}
           {atoms.map((atom) => (
-            <Group key={atom.id} draggable>
+            <Group key={atom.id}>
               <Circle
                 key={atom.id}
                 id={atom.id.toString()}
@@ -639,21 +676,24 @@ function App() {
                   offsetY={electron.yDisplace - 12}
                   radius={5}
                   fill={fromShapeId === electron.id ? "red" : "black"}
-                  onClick={() => {
-                    if (fromShapeId) {
-                      const prevElectron = getElectronById(fromShapeId);
-                      bondElectrons([prevElectron, electron]);
-                      setFromShapeId(null);
-                      // const newConnector = {
-                      //   from: fromShapeId,
-                      //   to: electron.id
-                      // }
-                    } else {
-                      setFromShapeId(electron.id);
-                    }
-                  }}
+                  onClick={connectLine}
+                  // onClick={() => {
+                  //   if (fromShapeId) {
+                  //     const prevElectron = getElectronById(fromShapeId);
+                  //     bondElectrons([prevElectron, electron]);
+                  //     setFromShapeId(null);
+                  //     // const newConnector = {
+                  //     //   from: fromShapeId,
+                  //     //   to: electron.id
+                  //     // }
+                  //   } else {
+                  //     setFromShapeId(electron.id);
+                  //   }
+                  // }}
                 />
               ))}
+              <Line points={connectors} stroke="red" />
+
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
             </Group>
           ))}
