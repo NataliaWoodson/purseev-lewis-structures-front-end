@@ -348,7 +348,7 @@ function App() {
   const [atoms, setAtoms] = useState([]);
 
   const getElectronsArray = useCallback(() => {
-    console.log("hello");
+    // console.log("hello");
     let electronList = [];
     for (let atom of atoms) {
       // console.log(`this is atom ${JSON.stringify(atom)}`);
@@ -367,7 +367,7 @@ function App() {
       //   electronList.push(electron);
       // }
     }
-    console.log({ electronList });
+    // console.log({ electronList });
 
     setElectrons(electronList);
   }, [atoms]);
@@ -375,8 +375,8 @@ function App() {
   // updates electrons state
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
-      console.log("updating electron array");
-      console.log("updatedElectron passed in is", updatedElectronsArray);
+      // console.log("updating electron array");
+      // console.log("updatedElectron passed in is", updatedElectronsArray);
       const getUpdatedElectronIds = () => {
         let updatedIds = [];
         for (let passedElectron of updatedElectronsArray) {
@@ -386,7 +386,7 @@ function App() {
       };
 
       const updatedElectronIds = getUpdatedElectronIds();
-      console.log("updatedElectronIds is", updatedElectronIds);
+      // console.log("updatedElectronIds is", updatedElectronIds);
       let electronList = [];
       for (let electron of electrons) {
         // console.log(
@@ -395,9 +395,9 @@ function App() {
         //   ". updatedElectron.id is",
         //   updatedElectron.id
         // );
-        console.log("current electron.id is", electron.id);
+        // console.log("current electron.id is", electron.id);
         if (updatedElectronIds.includes(electron.id)) {
-          console.log("pusing updated electron to electronList");
+          // console.log("pusing updated electron to electronList");
           for (let updatedElectron of updatedElectronsArray) {
             if (updatedElectron.id === electron.id) {
               electronList.push({
@@ -409,19 +409,19 @@ function App() {
             }
           }
         } else {
-          console.log("pusing electron with no change to electronList");
+          // console.log("pusing electron with no change to electronList");
           electronList.push(electron);
         }
-        console.log("electronList in progress", electronList);
+        // console.log("electronList in progress", electronList);
       }
-      console.log("new electron list is", electronList);
+      // console.log("new electron list is", electronList);
       setElectrons(electronList);
     },
     [electrons]
   );
 
   const bondElectrons = (electronsArray) => {
-    console.log("electronsArray passed into bondElectrons is", electronsArray);
+    // console.log("electronsArray passed into bondElectrons is", electronsArray);
     // check if isPaired status of either electron is already true
     for (let checkElectron of electronsArray) {
       if (checkElectron.isPaired === true) {
@@ -434,20 +434,20 @@ function App() {
         return null;
       }
     }
-    console.log("Got past already-paired check");
+    // console.log("Got past already-paired check");
 
     // check if electron is being bonded to electron on same atom
 
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
-      console.log("selectedElectron in second for-loop is", selectedElectron);
+      // console.log("selectedElectron in second for-loop is", selectedElectron);
       const bondedElectron = {
         id: selectedElectron.id,
         xDisplace: selectedElectron.xDisplace,
         yDisplace: selectedElectron.yDisplace,
         isPaired: true,
       };
-      console.log("bondedElectron on line 387 is", bondedElectron);
+      // console.log("bondedElectron on line 387 is", bondedElectron);
       bondedElectronsArray.push(bondedElectron);
     }
     updateElectronsArray(bondedElectronsArray);
@@ -462,19 +462,22 @@ function App() {
   };
 
   const updateMolecule = useCallback(() => {
-    console.log(
-      "round number is",
-      STATE.numRounds,
-      ". Submissions are",
-      STATE.submissions
-    );
     if (STATE.submissions.length === STATE.numRounds) {
-      console.log("entered call skip if statement");
+      // console.log("entered call skip if statement");
       updateSubmissions("skip");
+      console.log(
+        "round number is",
+        STATE.numRounds,
+        ". Submissions are",
+        STATE.submissions
+      );
+    }
+    if (STATE.submissions.length > 5) {
+      return null;
     }
     STATE.numRounds++;
-    console.log("increased num rounds", STATE.numRounds);
-    if (STATE.numRounds < 5) {
+    // console.log("increased num rounds", STATE.numRounds);
+    if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
         const atomObj = generateNumAtomsDict(chemicalFormula);
         console.log(chemicalFormula);
@@ -518,12 +521,16 @@ function App() {
     // console.log(e.target);
     const electron = e.target.attrs;
 
-    console.log("selected electron is", electron);
-    console.log("electron.id is", electron.id);
+    // console.log("selected electron is", electron);
+    // console.log("electron.id is", electron.id);
     // bondElectron(electron);
   }
 
   const updateSubmissions = (result) => {
+    if (STATE.submissions.length === 5) {
+      console.log("Game completed. Start new game.");
+      return "Game completed. Start new game.";
+    }
     if (result === true) {
       if (STATE.submissions.length === 0) {
         STATE.submissions.push({
@@ -554,10 +561,12 @@ function App() {
       ". Submissions are",
       STATE.submissions
     );
+
+    return STATE.submissions;
   };
 
   const verifyStructureValidity = () => {
-    console.log("Entered verifyStructureValidity function in App");
+    // console.log("Entered verifyStructureValidity function in App");
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
@@ -590,6 +599,7 @@ function App() {
   return (
     <main>
       <Header />
+      <p>`${JSON.stringify(STATE.submissions)}`</p>
       <NextMoleculeButton onGetNextMolecule={updateMolecule} />
       <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
       <Stage width={window.innerWidth} height={window.innerHeight}>
