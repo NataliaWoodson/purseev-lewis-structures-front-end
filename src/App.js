@@ -453,14 +453,6 @@ function App() {
     updateElectronsArray(bondedElectronsArray);
   };
 
-  const getElectronById = (id) => {
-    for (let electron of electrons) {
-      if (electron.id === id) {
-        return electron;
-      }
-    }
-  };
-
   const updateMolecule = useCallback(() => {
     if (STATE.submissions.length === STATE.numRounds) {
       // console.log("entered call skip if statement");
@@ -476,6 +468,7 @@ function App() {
       return null;
     }
     STATE.numRounds++;
+    setConnectors([]);
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
@@ -595,29 +588,55 @@ function App() {
   // const returnScore = () => {
   //   if ()
   // }
+  const getElectronById = (id) => {
+    console.log("ID here", id);
+    for (let electron of electrons) {
+      if (electron.id === parseInt(id)) {
+        console.log("electron here", electron);
+        return electron;
+      }
+    }
+  };
+
+  const verifyUnpaired = (id) => {
+    const clickElectron = getElectronById(id);
+    console.log({ clickElectron });
+    if (clickElectron.isPaired === true) {
+      console.log("This paired already");
+      return true;
+    }
+    // const clickElectron = electron.id;
+  };
+
   let cordinatesList = [];
 
   const connectLine = (e) => {
     console.log(e.target);
-    const x = e.target.attrs.x;
-    const y = e.target.attrs.y;
-    const id = e.target.index;
-    const offsetX = e.target.attrs.offsetX;
-    const offsetY = e.target.attrs.offsetY;
-    const bondedElectronDict = {
-      id: id,
-      x: x,
-      y: y,
-      offsetX: offsetX,
-      offsetY: offsetY,
-    };
-    cordinatesList.push(bondedElectronDict);
-    console.log({ cordinatesList });
-    // const dictLength = Object.keys(bondedElectronDict).length;
+    const electronId = e.target.attrs.id;
+    if (verifyUnpaired(electronId) === true) {
+      console.log("you can't paired");
+      return;
+    } else {
+      const x = e.target.attrs.x;
+      const y = e.target.attrs.y;
+      const id = e.target.index;
+      const offsetX = e.target.attrs.offsetX;
+      const offsetY = e.target.attrs.offsetY;
+      const bondedElectronDict = {
+        id: id,
+        x: x,
+        y: y,
+        offsetX: offsetX,
+        offsetY: offsetY,
+      };
+      cordinatesList.push(bondedElectronDict);
+      console.log({ cordinatesList });
+      // const dictLength = Object.keys(bondedElectronDict).length;
 
-    if (cordinatesList.length === 2) {
-      drawLine(cordinatesList);
-      cordinatesList = [];
+      if (cordinatesList.length === 2) {
+        drawLine(cordinatesList);
+        cordinatesList = [];
+      }
     }
   };
 
@@ -626,8 +645,6 @@ function App() {
     // console.log(cordinatesList[0]["x"]);
 
     let newConnector = [];
-    console.log("enter drawline function");
-    console.log("connectors before push are", connectors);
     newConnector.push([
       Number(cordinatesList[0]["x"] - cordinatesList[0]["offsetX"]),
       Number(cordinatesList[0]["y"] - cordinatesList[0]["offsetY"]),
@@ -661,7 +678,7 @@ function App() {
             );
           })} */}
           {atoms.map((atom) => (
-            <Group key={atom.id}>
+            <Group key={atom.id} draggable>
               <Circle
                 key={atom.id}
                 id={atom.id.toString()}
