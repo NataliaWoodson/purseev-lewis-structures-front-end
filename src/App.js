@@ -624,15 +624,18 @@ function App() {
   function drawLine(cordinatesList) {
     // console.log({ cordinatesList });
     // console.log(cordinatesList[0]["x"]);
+
+    let newConnector = [];
     console.log("enter drawline function");
-    connectors.push([
-      cordinatesList[0]["x"] - cordinatesList[0]["offsetX"],
-      cordinatesList[0]["y"] - cordinatesList[0]["offsetY"],
-      cordinatesList[1]["x"] - cordinatesList[1]["offsetX"],
-      cordinatesList[1]["y"] - cordinatesList[1]["offsetY"],
+    console.log("connectors before push are", connectors);
+    newConnector.push([
+      Number(cordinatesList[0]["x"] - cordinatesList[0]["offsetX"]),
+      Number(cordinatesList[0]["y"] - cordinatesList[0]["offsetY"]),
+      Number(cordinatesList[1]["x"] - cordinatesList[1]["offsetX"]),
+      Number(cordinatesList[1]["y"] - cordinatesList[1]["offsetY"]),
     ]);
-    setConnectors(connectors);
-    console.log({ connectors });
+    setConnectors((current) => [...current, newConnector]);
+    // console.log({ connectors });
   }
 
   return (
@@ -694,12 +697,9 @@ function App() {
                   // }}
                 />
               ))}
-              {connectors.map((con) => {
-                return (
-                  <Line points={con} stroke="red" />
-                  // console.log(con)
-                );
-              })}
+              {connectors.map((con) => (
+                <Line points={con[0]} stroke="red" />
+              ))}
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
             </Group>
           ))}
