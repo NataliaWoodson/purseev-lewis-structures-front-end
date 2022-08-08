@@ -14,7 +14,7 @@ import UserMessages from "./components/UserMessages";
 const STATE = {
   ids: 0,
   numRounds: 0,
-  submissions: [],
+  submitClicked: false,
   message: "Hello this is a test message.",
 };
 
@@ -509,22 +509,18 @@ function App() {
       ". numRounds is",
       STATE.numRounds
     );
-    if (submissions.length <= STATE.numRounds) {
+
+    if (!STATE.submitClicked) {
       // console.log("entered call skip if statement");
       setMessage("You have skipped this question.");
       updateSubmissions("skip");
-      console.log(
-        "round number is",
-        STATE.numRounds,
-        ". Submissions are",
-        submissions
-      );
     }
     if (submissions.length > 5) {
       return null;
     }
     setMessage("");
     STATE.numRounds++;
+    STATE.submitClicked = false;
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
@@ -589,7 +585,7 @@ function App() {
           round: STATE.numRounds,
           score: true,
         });
-      } else if (submissions.length === STATE.numRounds) {
+      } else {
         setSubmissions((current) => [
           ...current,
           {
@@ -629,6 +625,7 @@ function App() {
 
   const verifyStructureValidity = () => {
     // console.log("Entered verifyStructureValidity function in App");
+    STATE.submitClicked = true;
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
