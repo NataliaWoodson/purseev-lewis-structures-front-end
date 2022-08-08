@@ -3,6 +3,7 @@ import axios from "axios";
 import { Stage, Layer, Text, Circle, Group } from "react-konva";
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import ReactDOM from "react-dom";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
@@ -353,6 +354,7 @@ function App() {
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
   const [message, setMessage] = useState("Startup message.");
+  const [submissions, setSubmissions] = useState([]);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -501,7 +503,13 @@ function App() {
   };
 
   const updateMolecule = useCallback(() => {
-    if (STATE.submissions.length === STATE.numRounds) {
+    console.log(
+      "submissions are",
+      submissions,
+      ". numRounds is",
+      STATE.numRounds
+    );
+    if (submissions.length <= STATE.numRounds) {
       // console.log("entered call skip if statement");
       setMessage("You have skipped this question.");
       updateSubmissions("skip");
@@ -509,10 +517,10 @@ function App() {
         "round number is",
         STATE.numRounds,
         ". Submissions are",
-        STATE.submissions
+        submissions
       );
     }
-    if (STATE.submissions.length > 5) {
+    if (submissions.length > 5) {
       return null;
     }
     setMessage("");
@@ -568,7 +576,7 @@ function App() {
   }
 
   const updateSubmissions = (result) => {
-    if (STATE.submissions.length === 5) {
+    if (submissions.length === 5) {
       console.log("Game completed. Start new game.");
       setMessage(
         "Thanks for playing! Press the New Game button if you'd like to play again!"
@@ -576,37 +584,47 @@ function App() {
       return "Game completed. Start new game.";
     }
     if (result === true) {
-      if (STATE.submissions.length === 0) {
-        STATE.submissions.push({
+      if (submissions.length === 0) {
+        submissions.push({
           round: STATE.numRounds,
           score: true,
         });
-      } else if (STATE.submissions.length === STATE.numRounds) {
-        STATE.submissions.push({
-          round: STATE.numRounds,
-          score: true,
-        });
+      } else if (submissions.length === STATE.numRounds) {
+        setSubmissions((current) => [
+          ...current,
+          {
+            round: STATE.numRounds,
+            score: true,
+          },
+        ]);
       }
     } else if (result === false) {
-      STATE.submissions.push({
-        round: STATE.numRounds,
-        score: false,
-      });
+      setSubmissions((current) => [
+        ...current,
+        {
+          round: STATE.numRounds,
+          score: false,
+        },
+      ]);
     } else if (result === "skip") {
-      STATE.submissions.push({
-        round: STATE.numRounds,
-        score: "skip",
-      });
+      console.log("In skipped submission update");
+      setSubmissions((current) => [
+        ...current,
+        {
+          round: STATE.numRounds,
+          score: "skip",
+        },
+      ]);
     }
 
     console.log(
       "round number is",
       STATE.numRounds,
       ". Submissions are",
-      STATE.submissions
+      submissions
     );
 
-    return STATE.submissions;
+    return submissions;
   };
 
   const verifyStructureValidity = () => {
@@ -653,12 +671,12 @@ function App() {
   return (
     <main>
       <Header />
-      <p>`${JSON.stringify(STATE.submissions)}`</p>
+      <p>`${JSON.stringify(submissions)}`</p>
       <UserMessages message={message} />
       <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
       <SubmitButton
-        className="show"
         verifyStructureValidityApp={verifyStructureValidity}
+        submissionData={submissions}
       />
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
