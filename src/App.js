@@ -595,7 +595,7 @@ function App() {
   // const returnScore = () => {
   //   if ()
   // }
-  const cordinatesList = [];
+  let cordinatesList = [];
 
   const connectLine = (e) => {
     console.log(e.target);
@@ -617,13 +617,14 @@ function App() {
 
     if (cordinatesList.length === 2) {
       drawLine(cordinatesList);
-      // cordinatesList = [];
+      cordinatesList = [];
     }
   };
 
   function drawLine(cordinatesList) {
     // console.log({ cordinatesList });
     // console.log(cordinatesList[0]["x"]);
+    console.log("enter drawline function");
     connectors.push([
       cordinatesList[0]["x"] - cordinatesList[0]["offsetX"],
       cordinatesList[0]["y"] - cordinatesList[0]["offsetY"],
@@ -631,8 +632,8 @@ function App() {
       cordinatesList[1]["y"] - cordinatesList[1]["offsetY"],
     ]);
     setConnectors(connectors);
+    console.log({ connectors });
   }
-  console.log({ connectors });
 
   return (
     <main>
@@ -693,11 +694,12 @@ function App() {
                   // }}
                 />
               ))}
-
               {connectors.map((con) => {
-                return <Line points={con} stroke="red" />;
+                return (
+                  <Line points={con} stroke="red" />
+                  // console.log(con)
+                );
               })}
-
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
             </Group>
           ))}
