@@ -694,12 +694,13 @@ function App() {
   return (
     <main>
       <Header />
-      <div>
-        <div className="row">
+      <div className="main-game-components">
+        <div className="game-buttons">
           <p>`${JSON.stringify(STATE.submissions)}`</p>
           <NextMoleculeButton onGetNextMolecule={updateMolecule} />
           <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
         </div>
+        <div className="stage-header">Lewis Structures</div>
         <div className="column stage-container">
           <Stage width={window.innerWidth} height={window.innerHeight}>
             {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
@@ -736,7 +737,7 @@ function App() {
                     opacity={0.3}
                     shadowColor="black"
                     shadowBlur={10}
-                    shadowOpacity={0.6}
+                    shadowOpacity={0.7}
                     shadowOffsetX={atom.isDragging ? 8 : 5}
                     shadowOffsetY={atom.isDragging ? 8 : 5}
                     scaleX={atom.isDragging ? 1.1 : 1}

@@ -37,12 +37,34 @@
   }
 }
 
+
+.main-game-components {
+  width: 100vw;
+  display: flex;
+  margin-top: 5%;
+  flex-direction: row;
+  border: 3px solid purple;
+}
+
+.game-buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border: 5px solid orange;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage-header {
+  border: 5px solid blue;
+}
+
 .stage-container {
-  width: 600px;
-  height: 400px;
-  margin:0 auto;
+  width: 700px;
+  height: 400px; 
+  margin: 0 auto;
   box-shadow: 1px 2px 9px black;
   background: #E6E6E6;
-  border: 1px solid black;
+  border: 5px solid green;
   border-radius: 3px;
 }
