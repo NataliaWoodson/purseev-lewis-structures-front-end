@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
+import { Container } from "konva/lib/Container";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -655,73 +656,131 @@ function App() {
     // console.log({ connectors });
   }
 
+  const handleDragStart = (e) => {
+    let id = e.target.id();
+    id = parseInt(id);
+    setAtoms(
+      atoms.map((atom) => {
+        return {
+          ...atom,
+          isDragging: atom.id === id,
+        };
+      })
+    );
+  };
+  const handleDragEnd = (e) => {
+    setAtoms(
+      atoms.map((atom) => {
+        return {
+          ...atom,
+          isDragging: false,
+        };
+      })
+    );
+  };
+
+  const hoverElectron = (e) => {
+    e.target.fill("yellow");
+  };
+
+  const unhoverElectron = (e) => {
+    e.target.fill("black");
+  };
+
+  const restrictDrag = (e) => {
+    const pos = e.target;
+  };
+
   return (
     <main>
       <Header />
-      <p>`${JSON.stringify(STATE.submissions)}`</p>
-      <NextMoleculeButton onGetNextMolecule={updateMolecule} />
-      <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
-      <Stage width={window.innerWidth} height={window.innerHeight}>
-        {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
-        <Layer>
-          {/* {connectors.map((con) => {
-            console.log("here we are");
-            const from = atoms.find((a) => a.id === con.from);
-            const to = atoms.find((a) => a.id === con.to);
+      <div>
+        <div className="row">
+          <p>`${JSON.stringify(STATE.submissions)}`</p>
+          <NextMoleculeButton onGetNextMolecule={updateMolecule} />
+          <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
+        </div>
+        <div className="column stage-container">
+          <Stage width={500} height={window.innerHeight}>
+            {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
+            <Layer>
+              {/* {connectors.map((con) => {
+              console.log("here we are");
+              const from = atoms.find((a) => a.id === con.from);
+              const to = atoms.find((a) => a.id === con.to);
 
-            return (
-              <Line
-                key={con.id}
-                points={[from.x, from.y, to.x, to.y]}
-                stroke="black"
-              />
-            );
-          })} */}
-          {atoms.map((atom) => (
-            <Group key={atom.id} draggable>
-              <Circle
-                key={atom.id}
-                id={atom.id.toString()}
-                x={atom.x + 10}
-                y={atom.y + 13}
-                fill="red"
-                radius={45}
-                opacity={0.2}
-              ></Circle>
-              {atom.electrons.map((electron) => (
-                <Circle
-                  key={electron.id}
-                  id={electron.id.toString()}
-                  x={atom.x}
-                  y={atom.y}
-                  offsetX={electron.xDisplace - 10}
-                  offsetY={electron.yDisplace - 12}
-                  radius={5}
-                  fill={fromShapeId === electron.id ? "red" : "black"}
-                  onClick={connectLine}
-                  // onClick={() => {
-                  //   if (fromShapeId) {
-                  //     const prevElectron = getElectronById(fromShapeId);
-                  //     bondElectrons([prevElectron, electron]);
-                  //     setFromShapeId(null);
-                  //     // const newConnector = {
-                  //     //   from: fromShapeId,
-                  //     //   to: electron.id
-                  //     // }
-                  //   } else {
-                  //     setFromShapeId(electron.id);
-                  //   }
-                  // }}
+              return (
+                <Line
+                  key={con.id}
+                  points={[from.x, from.y, to.x, to.y]}
+                  stroke="black"
                 />
+              );
+            })} */}
+              {atoms.map((atom) => (
+                <Group
+                  key={atom.id}
+                  id={atom.id.toString()}
+                  draggable
+                  onDragStart={handleDragStart}
+                  onDragEnd={handleDragEnd}
+                  onDragMove={restrictDrag}
+                >
+                  <Circle
+                    key={atom.id}
+                    id={atom.id.toString()}
+                    x={atom.x + 10}
+                    y={atom.y + 13}
+                    fill="red"
+                    radius={45}
+                    opacity={0.3}
+                    shadowColor="black"
+                    shadowBlur={10}
+                    shadowOpacity={0.6}
+                    shadowOffsetX={atom.isDragging ? 8 : 5}
+                    shadowOffsetY={atom.isDragging ? 8 : 5}
+                    scaleX={atom.isDragging ? 1.1 : 1}
+                    scaleY={atom.isDragging ? 1.1 : 1}
+                  ></Circle>
+                  {atom.electrons.map((electron) => (
+                    <Circle
+                      key={electron.id}
+                      id={electron.id.toString()}
+                      x={atom.x}
+                      y={atom.y}
+                      offsetX={electron.xDisplace - 10}
+                      offsetY={electron.yDisplace - 12}
+                      radius={5}
+                      fill={fromShapeId === electron.id ? "red" : "black"}
+                      onClick={connectLine}
+                      onMouseOver={hoverElectron}
+                      onMouseOut={unhoverElectron}
+                      // onClick={() => {
+                      //   if (fromShapeId) {
+                      //     const prevElectron = getElectronById(fromShapeId);
+                      //     bondElectrons([prevElectron, electron]);
+                      //     setFromShapeId(null);
+                      //     // const newConnector = {
+                      //     //   from: fromShapeId,
+                      //     //   to: electron.id
+                      //     // }
+                      //   } else {
+                      //     setFromShapeId(electron.id);
+                      //   }
+                      // }}
+                    />
+                  ))}
+                  {connectors.map((con) => (
+                    <Line points={con[0]} stroke="red" />
+                  ))}
+                  <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+                </Group>
               ))}
-              {connectors.map((con) => (
-                <Line points={con[0]} stroke="red" />
-              ))}
-              <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-            </Group>
-          ))}
-        </Layer>
-      </Stage>
+            </Layer>
+          </Stage>
+        </div>
+      </div>
+
       {/* <button onClick={updateMolecule}> Next Molecule </button> */}
     </main>
   );
