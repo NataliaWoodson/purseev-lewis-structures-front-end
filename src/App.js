@@ -609,7 +609,7 @@ function App() {
     // const clickElectron = electron.id;
   };
 
-  let coordinatesList = [];
+  let cordinatesList = [];
 
   const connectLine = (e) => {
     console.log(e.target);
@@ -630,26 +630,30 @@ function App() {
         offsetX: offsetX,
         offsetY: offsetY,
       };
-      coordinatesList.push(bondedElectronDict);
-      console.log({ coordinatesList });
+      cordinatesList.push(bondedElectronDict);
+      console.log({ cordinatesList });
       // const dictLength = Object.keys(bondedElectronDict).length;
 
-      if (coordinatesList.length === 2) {
-        drawLine(coordinatesList);
-        coordinatesList = [];
+      if (cordinatesList.length === 2) {
+        drawLine(cordinatesList);
+        cordinatesList = [];
       }
     }
   };
 
-  function drawLine(coordinatesList) {
+  function drawLine(cordinatesList) {
+    // console.log({ cordinatesList });
+    // console.log(cordinatesList[0]["x"]);
+
     let newConnector = [];
     newConnector.push([
-      Number(coordinatesList[0]["x"] - coordinatesList[0]["offsetX"]),
-      Number(coordinatesList[0]["y"] - coordinatesList[0]["offsetY"]),
-      Number(coordinatesList[1]["x"] - coordinatesList[1]["offsetX"]),
-      Number(coordinatesList[1]["y"] - coordinatesList[1]["offsetY"]),
+      Number(cordinatesList[0]["x"] - cordinatesList[0]["offsetX"]),
+      Number(cordinatesList[0]["y"] - cordinatesList[0]["offsetY"]),
+      Number(cordinatesList[1]["x"] - cordinatesList[1]["offsetX"]),
+      Number(cordinatesList[1]["y"] - cordinatesList[1]["offsetY"]),
     ]);
     setConnectors((current) => [...current, newConnector]);
+    // console.log({ connectors });
   }
 
   const handleDragStart = (e) => {
