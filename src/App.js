@@ -8,6 +8,7 @@ import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
+import { Link } from "react-router-dom";
 
 const STATE = {
   ids: 0,
@@ -657,6 +658,9 @@ function App() {
 
   return (
     <main>
+      <nav className="nav">
+        <Link to="/aboutus">about us</Link>
+      </nav>
       <Header />
       <p>`${JSON.stringify(STATE.submissions)}`</p>
       <NextMoleculeButton onGetNextMolecule={updateMolecule} />
