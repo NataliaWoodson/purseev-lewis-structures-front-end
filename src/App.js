@@ -8,6 +8,9 @@ import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
 import MolecFormula from "./MolecFormula";
+import DisplayProgress from "./DisplayProgress";
+import StepProgressBar from "react-step-progress";
+import SandBox from "./SandBox";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -334,6 +337,7 @@ function App() {
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
   const [molecFormula, setMolecFormula] = useState("");
+  const [levelInfo, setLevelInfo] = useState([]);
 
   const getMolecules = async () => {
     // e.preventDefault();
@@ -539,6 +543,8 @@ function App() {
       // returnScore();
       console.log("played five rounds");
     }
+    setLevelInfo(STATE.submissions.score);
+    console.log(STATE.submissions.score);
   }, []);
 
   useEffect(() => {
@@ -648,7 +654,8 @@ function App() {
   return (
     <main>
       <Header />
-
+      <SandBox />
+      <DisplayProgress progDisplay={levelInfo} display={molecFormula} />
       <MolecFormula display={molecFormula} />
       <p>{JSON.stringify(STATE.submissions)}</p>
       <NextMoleculeButton onGetNextMolecule={updateMolecule} />
