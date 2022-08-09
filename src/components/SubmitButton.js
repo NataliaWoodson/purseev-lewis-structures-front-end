@@ -1,18 +1,33 @@
 import React, { useState } from "react";
 
-const SubmitButton = (props) => {
+const SubmitButton = ({
+  verifyStructureValidityButtons,
+  submitButtonClassButtons,
+}) => {
   // console.log("props in SubmitButton are", props);
 
-  const verifyStructureValidityApp = props.verifyStructureValidityApp;
+  // const verifyStructureValidityApp = props.verifyStructureValidityApp;
+  // const submissions = props.submissionData;
+
+  // if (submissions.length === 5) {
+  //   const thisButtonDOMObject = document.getElementsByClassName("show")[0];
+  //   thisButtonDOMObject.className = "hide";
+  // }
+  const submitButtonClass = submitButtonClassButtons();
+
   const handleClick = (event) => {
     event.preventDefault();
-    console.log(verifyStructureValidityApp);
+    // console.log(verifyStructureValidityButtons);
     // console.log("registered Submit Button click");
 
-    return verifyStructureValidityApp();
+    return verifyStructureValidityButtons();
   };
 
-  return <button onClick={handleClick}>Submit</button>;
+  return (
+    <button className={submitButtonClass} onClick={handleClick}>
+      Submit
+    </button>
+  );
 };
 
 export default SubmitButton;

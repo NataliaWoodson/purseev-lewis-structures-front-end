@@ -2,17 +2,21 @@ import "./App.css";
 import axios from "axios";
 import { Stage, Layer, Text, Circle, Group, Line } from "react-konva";
 import { createRoot } from "react-dom/client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import ReactDOM from "react-dom";
 import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
+import UserMessages from "./components/UserMessages";
+import Buttons from "./components/Buttons";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
   numRounds: 0,
-  submissions: [],
+  submitClicked: false,
+  message: "Hello this is a test message.",
 };
 
 // const chemicalFormula = "H2O";
@@ -288,7 +292,7 @@ const generateNumAtomsDict = (chemicalFormula) => {
 // console.log("atomObj is", atomObj);
 // const atomObj = generateNumAtomsDict();
 
-const getElectronDataArray = (numElectrons) => {
+const getElectronDataArray = (numElectrons, atomId) => {
   const nums = [...Array(numElectrons + 1).keys()]; // gets array from 1 - numElectrons inclusive
   nums.shift();
   const electronsDataArray = [];
@@ -297,11 +301,13 @@ const getElectronDataArray = (numElectrons) => {
     const xDisplace = electronPositionDisplacements[numElectrons][num].x;
     const yDisplace = electronPositionDisplacements[numElectrons][num].y;
     const isPaired = electronPositionDisplacements[numElectrons][num].isPaired;
+    const atomId = electronPositionDisplacements[numElectrons][num].atomId;
     const entry = {
       id: STATE.ids,
       xDisplace: xDisplace,
       yDisplace: yDisplace,
       isPaired: isPaired,
+      atomId: atomId,
     };
     electronsDataArray.push(entry);
     STATE.ids++;
@@ -328,16 +334,21 @@ const elementSymbolArray = (atomObj) => {
 //   const result = elementSymbolArray().map((element) => ({
 
 const generateAtoms = (atomObj) => {
+  console.log("entered generateAtoms");
+  console.log("atomObj in generateAtoms is", atomObj);
   return elementSymbolArray(atomObj).map((element) => ({
     id: element.id,
     x: (Math.random() * window.innerWidth) / 2,
     y: (Math.random() * window.innerHeight) / 2,
     text: element.elementSymbol,
     isDragging: false,
-    electrons: getElectronDataArray(numElectronsObj[element.elementSymbol]),
+    electrons: getElectronDataArray(
+      numElectronsObj[element.elementSymbol],
+      element.id
+    ),
   }));
-  // console.log(result);
-  // return result;
+  // console.log(elements);
+  // return elements;
 };
 
 function App() {
@@ -345,7 +356,12 @@ function App() {
   const [connectors, setConnectors] = React.useState([]); //whenever create a line,set connect, map connector connect list and
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
-  const [atoms, setAtoms] = useState(generateAtoms());
+  const [atoms, setAtoms] = useState([]);
+  // const [atoms, setAtoms] = useState([]);
+  const [message, setMessage] = useState("Startup message.");
+  const [submissions, setSubmissions] = useState([]);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -405,6 +421,7 @@ function App() {
                 isPaired: updatedElectron.isPaired,
                 xDisplace: updatedElectron.xDisplace,
                 yDisplace: updatedElectron.yDisplace,
+                atomId: electron.atomId,
               });
             }
           }
@@ -421,10 +438,15 @@ function App() {
   );
 
   const bondElectrons = (electronsArray) => {
-    // console.log("electronsArray passed into bondElectrons is", electronsArray);
+    console.log("electronsArray passed into bondElectrons is", electronsArray);
     // check if isPaired status of either electron is already true
+    const atomIds = [];
     for (let checkElectron of electronsArray) {
+      atomIds.push(checkElectron.atomId);
       if (checkElectron.isPaired === true) {
+        setMessage(
+          "Invalid bond. You can only form a bond between two electrons if they are both unpaired."
+        );
         console.log(
           "Invalid bond. Electron with id",
           checkElectron.id,
@@ -434,10 +456,17 @@ function App() {
         return null;
       }
     }
-    // console.log("Got past already-paired check");
-
     // check if electron is being bonded to electron on same atom
+    const atomIdsSet = new Set(atomIds);
+    if (atomIds.length !== atomIdsSet.size) {
+      setMessage("Invalid bond. Cannot bond electrons in the same atom.");
+      console.log("Invalid bond. Cannot bond electrons in the same atom.");
+      setFromShapeId(null);
+      return null;
+    }
 
+    setMessage("That was a valid bond.");
+    console.log("valid bond");
     const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
       // console.log("selectedElectron in second for-loop is", selectedElectron);
@@ -446,6 +475,7 @@ function App() {
         xDisplace: selectedElectron.xDisplace,
         yDisplace: selectedElectron.yDisplace,
         isPaired: true,
+        atomId: selectedElectron.atomId,
       };
       // console.log("bondedElectron on line 387 is", bondedElectron);
       bondedElectronsArray.push(bondedElectron);
@@ -453,29 +483,67 @@ function App() {
     updateElectronsArray(bondedElectronsArray);
   };
 
-  const updateMolecule = useCallback(() => {
-    if (STATE.submissions.length === STATE.numRounds) {
-      // console.log("entered call skip if statement");
-      updateSubmissions("skip");
-      console.log(
-        "round number is",
-        STATE.numRounds,
-        ". Submissions are",
-        STATE.submissions
-      );
+  // To be used as a helper function once we have a record of the connectors and their corresponding electrons.
+  const breakBonds = (electronsArray) => {
+    const unbondedElectronsArray = [];
+    for (let selectedElectron of electronsArray) {
+      // console.log("selectedElectron in second for-loop is", selectedElectron);
+      const unbondedElectron = {
+        id: selectedElectron.id,
+        xDisplace: selectedElectron.xDisplace,
+        yDisplace: selectedElectron.yDisplace,
+        isPaired: false,
+        atomId: selectedElectron.atomId,
+      };
+      // console.log("bondedElectron on line 387 is", bondedElectron);
+      unbondedElectronsArray.push(unbondedElectron);
     }
-    if (STATE.submissions.length > 5) {
+    updateElectronsArray(unbondedElectronsArray);
+  };
+
+  // const getElectronById = (id) => {
+  //   for (let electron of electrons) {
+  //     if (electron.id === id) {
+  //       return electron;
+  //     }
+  //   }
+  // };
+
+  const updateMolecule = useCallback(() => {
+    console.log(
+      "submissions are",
+      submissions,
+      ". numRounds is",
+      STATE.numRounds
+    );
+
+    setGameStarted(true);
+
+    // if (!submitClicked) {
+    //   // console.log("entered call skip if statement");
+    //   setMessage("You have skipped this question.");
+    //   updateSubmissions("skip");
+    // }
+    if (submissions.length > 5) {
       return null;
     }
+    setMessage("");
     STATE.numRounds++;
-    setConnectors([]);
+    // My change, not present in incoming change
+    // setConnectors([]);
+    // ^^
+    setSubmitClicked(false);
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
         const atomObj = generateNumAtomsDict(chemicalFormula);
         console.log(chemicalFormula);
+        console.log(atomObj);
         // const createAtoms = (atomObj) => {
-        setAtoms(generateAtoms(atomObj));
+        setAtoms(generateAtoms(atomObj)).then(
+          console.log("successfully generated atoms")
+        );
+        // console.log("atoms are", atoms);
       });
       // createAtoms();
       STATE.ids = 0;
@@ -483,18 +551,21 @@ function App() {
       // returnScore();
       console.log("played five rounds");
     }
-  }, []);
+  }, [submissions]);
 
   useEffect(() => {
-    getMolecules().then((chemicalFormula) => {
-      const atomObj = generateNumAtomsDict(chemicalFormula);
-      console.log(chemicalFormula);
-      // const createAtoms = (atomObj) => {
-      setAtoms(generateAtoms(atomObj));
-    });
+    setGameStarted(false);
+    // updateMolecule();
+    // getMolecules().then((chemicalFormula) => {
+    //   const atomObj = generateNumAtomsDict(chemicalFormula);
+    //   console.log(chemicalFormula);
+    //   // const createAtoms = (atomObj) => {
+    //   setAtoms(generateAtoms(atomObj));
+    // });
     // createAtoms();
     STATE.ids = 0;
-  }, [updateMolecule]);
+    console.log("initial render succeded, in useEffect ~500");
+  }, []);
 
   // const atomObj = generateNumAtomsDict(chemicalFormula);
   // const createAtoms = (atomObj) => {
@@ -520,49 +591,74 @@ function App() {
   }
 
   const updateSubmissions = (result) => {
-    if (STATE.submissions.length === 5) {
+    if (submissions.length === 5) {
       console.log("Game completed. Start new game.");
+      // setMessage(
+      //   "Thanks for playing! Press the New Game button if you'd like to play again!"
+      // );
       return "Game completed. Start new game.";
     }
-    if (result === true) {
-      if (STATE.submissions.length === 0) {
-        STATE.submissions.push({
-          round: STATE.numRounds,
-          score: true,
-        });
-      } else if (STATE.submissions.length === STATE.numRounds) {
-        STATE.submissions.push({
-          round: STATE.numRounds,
-          score: true,
-        });
+    if (result === true && !submitClicked) {
+      //probably don't need this first if statement and just use what is in else
+      if (submissions.length === 0) {
+        setSubmissions((current) => [
+          ...current,
+          {
+            round: STATE.numRounds,
+            score: true,
+          },
+        ]);
+      } else {
+        setSubmissions((current) => [
+          ...current,
+          {
+            round: STATE.numRounds,
+            score: true,
+          },
+        ]);
       }
-    } else if (result === false) {
-      STATE.submissions.push({
-        round: STATE.numRounds,
-        score: false,
-      });
-    } else if (result === "skip") {
-      STATE.submissions.push({
-        round: STATE.numRounds,
-        score: "skip",
-      });
+    } else if (result === false && !submitClicked) {
+      setSubmissions((current) => [
+        ...current,
+        {
+          round: STATE.numRounds,
+          score: false,
+        },
+      ]);
+    } else {
+      console.log("received a submit response other than true or false");
     }
+
+    // else if (result === "skip") {
+    //   console.log("In skipped submission update");
+    //   setSubmissions((current) => [
+    //     ...current,
+    //     {
+    //       round: STATE.numRounds,
+    //       score: "skip",
+    //     },
+    //   ]);
+    // }
 
     console.log(
       "round number is",
       STATE.numRounds,
       ". Submissions are",
-      STATE.submissions
+      submissions
     );
 
-    return STATE.submissions;
+    return submissions;
   };
 
   const verifyStructureValidity = () => {
     // console.log("Entered verifyStructureValidity function in App");
+    setSubmitClicked(true);
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
+        setMessage(
+          "This structure is invalid. See if you can find a way to bond electrons so that every single one is paired."
+        );
         updateSubmissions(false);
         return false;
       }
@@ -581,6 +677,7 @@ function App() {
     //     score: true,
     //   });
     // }
+    setMessage("Great job! This structure is correct!");
     updateSubmissions(true);
     return true;
   };
@@ -622,12 +719,14 @@ function App() {
       const id = e.target.index;
       const offsetX = e.target.attrs.offsetX;
       const offsetY = e.target.attrs.offsetY;
+      const atomId = e.target.attrs.atomId;
       const bondedElectronDict = {
         id: id,
         x: x,
         y: y,
         offsetX: offsetX,
         offsetY: offsetY,
+        atomId: atomId,
       };
       cordinatesList.push(bondedElectronDict);
       console.log({ cordinatesList });
@@ -655,12 +754,37 @@ function App() {
     // console.log({ connectors });
   }
 
+  // let nextMoleculeRef = useRef(null);
+
+  // const hideComponent = () => {
+
+  // }
+
+  const resetGame = () => {
+    setSubmissions([]);
+    setGameStarted(false);
+    STATE.numRounds = 0;
+    updateMolecule();
+  };
+
   return (
     <main>
       <Header />
-      <p>`${JSON.stringify(STATE.submissions)}`</p>
-      <NextMoleculeButton onGetNextMolecule={updateMolecule} />
-      <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
+      <p>`${JSON.stringify(submissions)}`</p>
+      <UserMessages message={message} />
+      <Buttons
+        updateMoleculeApp={updateMolecule}
+        verifyStructureValidityApp={verifyStructureValidity}
+        submissionsApp={submissions}
+        submitClickedApp={submitClicked}
+        resetGameApp={resetGame}
+        gameStartedApp={gameStarted}
+      />
+      {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
+      <SubmitButton
+        verifyStructureValidityApp={verifyStructureValidity}
+        submissionData={submissions}
+      /> */}
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
@@ -698,7 +822,7 @@ function App() {
                   offsetY={electron.yDisplace - 12}
                   radius={5}
                   fill={fromShapeId === electron.id ? "red" : "black"}
-                  onClick={connectLine}
+                  onClick={(connectLine, setMessage(""))}
                   // onClick={() => {
                   //   if (fromShapeId) {
                   //     const prevElectron = getElectronById(fromShapeId);
@@ -712,6 +836,22 @@ function App() {
                   //     setFromShapeId(electron.id);
                   //   }
                   // }}
+                  // onClick={() => {
+                  //   setMessage("");
+                  //   if (fromShapeId) {
+                  //     const prevElectron = getElectronById(fromShapeId);
+                  //     const thisElectron = getElectronById(electron.id);
+                  //     bondElectrons([prevElectron, thisElectron]);
+                  //     setFromShapeId(null);
+                  //     // const newConnector = {
+                  //     //   from: fromShapeId,
+                  //     //   to: electron.id
+                  //     // }
+                  //   } else {
+                  //     setFromShapeId(electron.id);
+                  //   }
+                  // }}
+                  // onDblClick={() => {}}
                 />
               ))}
               {connectors.map((con) => (

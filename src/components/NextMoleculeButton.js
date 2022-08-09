@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const NextMoleculeButton = ({ onGetNextMolecule }) => {
+const NextMoleculeButton = ({
+  updateMoleculeButtons,
+  nextMoleculeClassButtons,
+}) => {
   // const [chemicalFormula, setChemicalFormula] = useState("");
   // const onUpdateMolecule = async (event) => {
   //   // let chemicalFormula = await props.onGetNextMolecule();
@@ -17,14 +20,18 @@ const NextMoleculeButton = ({ onGetNextMolecule }) => {
   // });
   const onUpdateMolecule = (e) => {
     e.preventDefault();
-    onGetNextMolecule();
+    updateMoleculeButtons();
   };
 
+  const nextMoleculeClass = nextMoleculeClassButtons();
+  console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
 
   return (
     <section>
-      <button onClick={onUpdateMolecule}>Next Molecule</button>
+      <button onClick={onUpdateMolecule} className={nextMoleculeClass}>
+        Next Molecule
+      </button>
     </section>
   );
 };
