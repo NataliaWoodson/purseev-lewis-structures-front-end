@@ -871,7 +871,15 @@ function App() {
                 />
               ))}
               {connectors.map((con) => (
-                <Line points={con[0]} stroke="red" />
+                <Line
+                  onClick={(e) => {
+                    console.log(e);
+                    e.target.attrs.points = [];
+                    // breakBonds(con[0]);
+                  }}
+                  points={con[0]}
+                  stroke="red"
+                />
               ))}
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
             </Group>
