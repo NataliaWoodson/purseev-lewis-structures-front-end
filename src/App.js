@@ -701,7 +701,7 @@ function App() {
           <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
         </div>
         <div className="column stage-container">
-          <Stage width={500} height={window.innerHeight}>
+          <Stage width={window.innerWidth} height={window.innerHeight}>
             {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
             <Layer>
               {/* {connectors.map((con) => {
