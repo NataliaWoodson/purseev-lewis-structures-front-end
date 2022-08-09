@@ -1,9 +1,20 @@
 import React from "react";
 
-const StartGameButton = ({ startGameButtonClassButtons }) => {
+const StartGameButton = ({ startGameButtonClassButtons, resetGameButtons }) => {
   const startGameClass = startGameButtonClassButtons();
+  const resetGame = resetGameButtons;
 
-  return <button className={startGameClass}>Start New Game</button>;
+  const handleClick = (event) => {
+    event.preventDefault();
+
+    return resetGame();
+  };
+
+  return (
+    <button className={startGameClass} onClick={handleClick}>
+      Start New Game
+    </button>
+  );
 };
 
 export default StartGameButton;

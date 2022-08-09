@@ -7,9 +7,11 @@ const Buttons = ({
   verifyStructureValidityApp,
   submissionsApp,
   submitClickedApp,
+  resetGameApp,
 }) => {
   const submissions = submissionsApp;
   const verifyStructureValidity = verifyStructureValidityApp;
+  const resetGame = resetGameApp;
 
   const nextMoleculeClass = () => {
     if (!submitClickedApp) {
@@ -57,7 +59,10 @@ const Buttons = ({
         verifyStructureValidityButtons={verifyStructureValidity}
         submitButtonClassButtons={submitButtonClass}
       />
-      <StartGameButton startGameButtonClassButtons={startGameButtonClass} />
+      <StartGameButton
+        startGameButtonClassButtons={startGameButtonClass}
+        resetGameButtons={resetGame}
+      />
     </div>
   );
 };

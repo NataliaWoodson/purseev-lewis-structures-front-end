@@ -675,6 +675,12 @@ function App() {
 
   // }
 
+  const resetGame = () => {
+    setSubmissions([]);
+    STATE.numRounds = 0;
+    updateMolecule();
+  };
+
   return (
     <main>
       <Header />
@@ -685,6 +691,7 @@ function App() {
         verifyStructureValidityApp={verifyStructureValidity}
         submissionsApp={submissions}
         submitClickedApp={submitClicked}
+        resetGameApp={resetGame}
       />
       {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
       <SubmitButton
