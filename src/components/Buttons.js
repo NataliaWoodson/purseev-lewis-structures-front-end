@@ -8,6 +8,7 @@ const Buttons = ({
   submissionsApp,
   submitClickedApp,
   resetGameApp,
+  gameStartedApp,
 }) => {
   const submissions = submissionsApp;
   const verifyStructureValidity = verifyStructureValidityApp;
@@ -23,18 +24,18 @@ const Buttons = ({
     }
   };
 
-  console.log("submitClicked in Buttons is", submitClickedApp);
-  console.log(
-    "result from nextMoleculeClass in Buttons is",
-    nextMoleculeClass()
-  );
+  console.log("gameStartedApp in Buttons is", gameStartedApp);
 
   const submitButtonClass = () => {
     // if (submissions.length === 0) {
     //   return "hide";
     // } else
 
-    if (submissions.length === 4) {
+    console.log(
+      "in submitButtonClass function. gameStarted is",
+      gameStartedApp
+    );
+    if (!gameStartedApp) {
       return "hide";
     } else {
       return "show";
@@ -42,7 +43,9 @@ const Buttons = ({
   };
 
   const startGameButtonClass = () => {
-    if (submissions.length === 5) {
+    if (!gameStartedApp) {
+      return "show";
+    } else if (submissions.length === 5) {
       return "show";
     } else {
       return "hide";

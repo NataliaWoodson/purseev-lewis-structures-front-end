@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-const SubmitButton = ({ verifyStructureValidityButtons }) => {
+const SubmitButton = ({
+  verifyStructureValidityButtons,
+  submitButtonClassButtons,
+}) => {
   // console.log("props in SubmitButton are", props);
 
   // const verifyStructureValidityApp = props.verifyStructureValidityApp;
@@ -10,6 +13,7 @@ const SubmitButton = ({ verifyStructureValidityButtons }) => {
   //   const thisButtonDOMObject = document.getElementsByClassName("show")[0];
   //   thisButtonDOMObject.className = "hide";
   // }
+  const submitButtonClass = submitButtonClassButtons();
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -19,7 +23,11 @@ const SubmitButton = ({ verifyStructureValidityButtons }) => {
     return verifyStructureValidityButtons();
   };
 
-  return <button onClick={handleClick}>Submit</button>;
+  return (
+    <button className={submitButtonClass} onClick={handleClick}>
+      Submit
+    </button>
+  );
 };
 
 export default SubmitButton;

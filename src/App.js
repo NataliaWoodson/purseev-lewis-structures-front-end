@@ -357,6 +357,7 @@ function App() {
   const [message, setMessage] = useState("Startup message.");
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -512,6 +513,8 @@ function App() {
       STATE.numRounds
     );
 
+    setGameStarted(true);
+
     // if (!submitClicked) {
     //   // console.log("entered call skip if statement");
     //   setMessage("You have skipped this question.");
@@ -540,15 +543,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getMolecules().then((chemicalFormula) => {
-      const atomObj = generateNumAtomsDict(chemicalFormula);
-      console.log(chemicalFormula);
-      // const createAtoms = (atomObj) => {
-      setAtoms(generateAtoms(atomObj));
-    });
+    setGameStarted(false);
+    // updateMolecule();
+    // getMolecules().then((chemicalFormula) => {
+    //   const atomObj = generateNumAtomsDict(chemicalFormula);
+    //   console.log(chemicalFormula);
+    //   // const createAtoms = (atomObj) => {
+    //   setAtoms(generateAtoms(atomObj));
+    // });
     // createAtoms();
     STATE.ids = 0;
-  }, [updateMolecule]);
+  }, []);
 
   // const atomObj = generateNumAtomsDict(chemicalFormula);
   // const createAtoms = (atomObj) => {
@@ -677,6 +682,7 @@ function App() {
 
   const resetGame = () => {
     setSubmissions([]);
+    setGameStarted(false);
     STATE.numRounds = 0;
     updateMolecule();
   };
@@ -692,6 +698,7 @@ function App() {
         submissionsApp={submissions}
         submitClickedApp={submitClicked}
         resetGameApp={resetGame}
+        gameStartedApp={gameStarted}
       />
       {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
       <SubmitButton
