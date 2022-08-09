@@ -881,6 +881,7 @@ function App() {
                   }}
                   points={con}
                   stroke="red"
+                  strokeWidth={4}
                 />
               ))}
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
