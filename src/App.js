@@ -572,6 +572,7 @@ function App() {
     }
     setMessage("");
     STATE.numRounds++;
+    setConnectors([]);
     setSubmitClicked(false);
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
@@ -599,6 +600,7 @@ function App() {
     //   setAtoms(generateAtoms(atomObj));
     // });
     // createAtoms();
+    // setConnectors([]);
     STATE.ids = 0;
   }, []);
 
