@@ -40,3 +40,19 @@
 .hide {
   display: none;
 }
+
+.main-game-components {
+  border: 2px solid purple;
+}
+
+.game-buttons {
+  border: 2px solid orange;
+}
+
+.stage-components {
+  border: 2px solid red;
+}
+
+.stage-container {
+  border: 2ps solid blue;
+}
