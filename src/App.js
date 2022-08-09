@@ -9,6 +9,7 @@ import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
 import UserMessages from "./components/UserMessages";
+import Buttons from "./components/Buttons";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -355,6 +356,7 @@ function App() {
   const [atoms, setAtoms] = useState([]);
   const [message, setMessage] = useState("Startup message.");
   const [submissions, setSubmissions] = useState([]);
+  const [submitClicked, setSubmitClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -510,17 +512,17 @@ function App() {
       STATE.numRounds
     );
 
-    if (!STATE.submitClicked) {
-      // console.log("entered call skip if statement");
-      setMessage("You have skipped this question.");
-      updateSubmissions("skip");
-    }
+    // if (!submitClicked) {
+    //   // console.log("entered call skip if statement");
+    //   setMessage("You have skipped this question.");
+    //   updateSubmissions("skip");
+    // }
     if (submissions.length > 5) {
       return null;
     }
     setMessage("");
     STATE.numRounds++;
-    STATE.submitClicked = false;
+    setSubmitClicked(false);
     // console.log("increased num rounds", STATE.numRounds);
     if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
@@ -574,17 +576,21 @@ function App() {
   const updateSubmissions = (result) => {
     if (submissions.length === 5) {
       console.log("Game completed. Start new game.");
-      setMessage(
-        "Thanks for playing! Press the New Game button if you'd like to play again!"
-      );
+      // setMessage(
+      //   "Thanks for playing! Press the New Game button if you'd like to play again!"
+      // );
       return "Game completed. Start new game.";
     }
-    if (result === true) {
+    if (result === true && !submitClicked) {
+      //probably don't need this first if statement and just use what is in else
       if (submissions.length === 0) {
-        submissions.push({
-          round: STATE.numRounds,
-          score: true,
-        });
+        setSubmissions((current) => [
+          ...current,
+          {
+            round: STATE.numRounds,
+            score: true,
+          },
+        ]);
       } else {
         setSubmissions((current) => [
           ...current,
@@ -594,7 +600,7 @@ function App() {
           },
         ]);
       }
-    } else if (result === false) {
+    } else if (result === false && !submitClicked) {
       setSubmissions((current) => [
         ...current,
         {
@@ -602,16 +608,20 @@ function App() {
           score: false,
         },
       ]);
-    } else if (result === "skip") {
-      console.log("In skipped submission update");
-      setSubmissions((current) => [
-        ...current,
-        {
-          round: STATE.numRounds,
-          score: "skip",
-        },
-      ]);
+    } else {
+      console.log("received a submit response other than true or false");
     }
+
+    // else if (result === "skip") {
+    //   console.log("In skipped submission update");
+    //   setSubmissions((current) => [
+    //     ...current,
+    //     {
+    //       round: STATE.numRounds,
+    //       score: "skip",
+    //     },
+    //   ]);
+    // }
 
     console.log(
       "round number is",
@@ -625,7 +635,7 @@ function App() {
 
   const verifyStructureValidity = () => {
     // console.log("Entered verifyStructureValidity function in App");
-    STATE.submitClicked = true;
+    setSubmitClicked(true);
     for (let electron of electrons) {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
@@ -670,11 +680,17 @@ function App() {
       <Header />
       <p>`${JSON.stringify(submissions)}`</p>
       <UserMessages message={message} />
-      <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
+      <Buttons
+        updateMoleculeApp={updateMolecule}
+        verifyStructureValidityApp={verifyStructureValidity}
+        submissionsApp={submissions}
+        submitClickedApp={submitClicked}
+      />
+      {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
       <SubmitButton
         verifyStructureValidityApp={verifyStructureValidity}
         submissionData={submissions}
-      />
+      /> */}
       <Stage width={window.innerWidth} height={window.innerHeight}>
         {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
         <Layer>
