@@ -700,12 +700,15 @@ function App() {
           <NextMoleculeButton onGetNextMolecule={updateMolecule} />
           <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
         </div>
-        <div className="stage-header">Lewis Structures</div>
-        <div className="column stage-container">
-          <Stage width={window.innerWidth} height={window.innerHeight}>
-            {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
-            <Layer>
-              {/* {connectors.map((con) => {
+        <div className="stage-components">
+          <div className="stage-header">
+            <p>Lewis Structures</p>
+          </div>
+          <div className="column stage-container">
+            <Stage width={window.innerWidth} height={window.innerHeight}>
+              {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
+              <Layer>
+                {/* {connectors.map((con) => {
               console.log("here we are");
               const from = atoms.find((a) => a.id === con.from);
               const to = atoms.find((a) => a.id === con.to);
@@ -718,67 +721,73 @@ function App() {
                 />
               );
             })} */}
-              {atoms.map((atom) => (
-                <Group
-                  key={atom.id}
-                  id={atom.id.toString()}
-                  draggable
-                  onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
-                  onDragMove={restrictDrag}
-                >
-                  <Circle
+                {atoms.map((atom) => (
+                  <Group
                     key={atom.id}
                     id={atom.id.toString()}
-                    x={atom.x + 10}
-                    y={atom.y + 13}
-                    fill="red"
-                    radius={45}
-                    opacity={0.3}
-                    shadowColor="black"
-                    shadowBlur={10}
-                    shadowOpacity={0.7}
-                    shadowOffsetX={atom.isDragging ? 8 : 5}
-                    shadowOffsetY={atom.isDragging ? 8 : 5}
-                    scaleX={atom.isDragging ? 1.1 : 1}
-                    scaleY={atom.isDragging ? 1.1 : 1}
-                  ></Circle>
-                  {atom.electrons.map((electron) => (
+                    draggable
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onDragMove={restrictDrag}
+                  >
                     <Circle
-                      key={electron.id}
-                      id={electron.id.toString()}
+                      key={atom.id}
+                      id={atom.id.toString()}
+                      x={atom.x + 10}
+                      y={atom.y + 13}
+                      fill="red"
+                      radius={45}
+                      opacity={0.3}
+                      shadowColor="black"
+                      shadowBlur={10}
+                      shadowOpacity={0.7}
+                      shadowOffsetX={atom.isDragging ? 8 : 5}
+                      shadowOffsetY={atom.isDragging ? 8 : 5}
+                      scaleX={atom.isDragging ? 1.1 : 1}
+                      scaleY={atom.isDragging ? 1.1 : 1}
+                    ></Circle>
+                    {atom.electrons.map((electron) => (
+                      <Circle
+                        key={electron.id}
+                        id={electron.id.toString()}
+                        x={atom.x}
+                        y={atom.y}
+                        offsetX={electron.xDisplace - 10}
+                        offsetY={electron.yDisplace - 12}
+                        radius={5}
+                        fill={fromShapeId === electron.id ? "red" : "black"}
+                        onClick={connectLine}
+                        onMouseOver={hoverElectron}
+                        onMouseOut={unhoverElectron}
+                        // onClick={() => {
+                        //   if (fromShapeId) {
+                        //     const prevElectron = getElectronById(fromShapeId);
+                        //     bondElectrons([prevElectron, electron]);
+                        //     setFromShapeId(null);
+                        //     // const newConnector = {
+                        //     //   from: fromShapeId,
+                        //     //   to: electron.id
+                        //     // }
+                        //   } else {
+                        //     setFromShapeId(electron.id);
+                        //   }
+                        // }}
+                      />
+                    ))}
+                    {connectors.map((con) => (
+                      <Line points={con[0]} stroke="red" />
+                    ))}
+                    <Text
                       x={atom.x}
                       y={atom.y}
-                      offsetX={electron.xDisplace - 10}
-                      offsetY={electron.yDisplace - 12}
-                      radius={5}
-                      fill={fromShapeId === electron.id ? "red" : "black"}
-                      onClick={connectLine}
-                      onMouseOver={hoverElectron}
-                      onMouseOut={unhoverElectron}
-                      // onClick={() => {
-                      //   if (fromShapeId) {
-                      //     const prevElectron = getElectronById(fromShapeId);
-                      //     bondElectrons([prevElectron, electron]);
-                      //     setFromShapeId(null);
-                      //     // const newConnector = {
-                      //     //   from: fromShapeId,
-                      //     //   to: electron.id
-                      //     // }
-                      //   } else {
-                      //     setFromShapeId(electron.id);
-                      //   }
-                      // }}
+                      text={atom.text}
+                      fontSize={30}
                     />
-                  ))}
-                  {connectors.map((con) => (
-                    <Line points={con[0]} stroke="red" />
-                  ))}
-                  <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-                </Group>
-              ))}
-            </Layer>
-          </Stage>
+                  </Group>
+                ))}
+              </Layer>
+            </Stage>
+          </div>
         </div>
       </div>
 
