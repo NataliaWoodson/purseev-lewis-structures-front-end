@@ -520,9 +520,9 @@ function App() {
 
     drawLine(coordinatesList);
     coordinatesList = [];
-    // if (cordinatesList.length === 2) {
-    //   drawLine(cordinatesList);
-    //   cordinatesList = [];
+    // if (coordinatesList.length === 2) {
+    //   drawLine(coordinatesList);
+    //   coordinatesList = [];
     // }
   };
 
@@ -746,8 +746,6 @@ function App() {
     // const clickElectron = electron.id;
   };
 
-  let cordinatesList = [];
-
   const connectLine = (e) => {
     console.log(e.target);
     const electronId = e.target.attrs.id;
@@ -767,29 +765,32 @@ function App() {
         offsetX: offsetX,
         offsetY: offsetY,
       };
-      cordinatesList.push(bondedElectronDict);
-      console.log({ cordinatesList });
+      coordinatesList.push(bondedElectronDict);
+      console.log({ coordinatesList });
       // const dictLength = Object.keys(bondedElectronDict).length;
 
-      if (cordinatesList.length === 2) {
-        drawLine(cordinatesList);
-        cordinatesList = [];
+      if (coordinatesList.length === 2) {
+        drawLine(coordinatesList);
+        coordinatesList = [];
       }
     }
   };
 
-  function drawLine(cordinatesList) {
-    // console.log({ cordinatesList });
-    // console.log(cordinatesList[0]["x"]);
+  function drawLine(coordinatesList) {
+    // console.log({ coordinatesList });
+    // console.log(coordinatesList[0]["x"]);
 
-    let newConnector = [];
-    newConnector.push([
-      Number(cordinatesList[0]["x"] - cordinatesList[0]["offsetX"]),
-      Number(cordinatesList[0]["y"] - cordinatesList[0]["offsetY"]),
-      Number(cordinatesList[1]["x"] - cordinatesList[1]["offsetX"]),
-      Number(cordinatesList[1]["y"] - cordinatesList[1]["offsetY"]),
-    ]);
-    setConnectors((current) => [...current, newConnector]);
+    console.log("coordinatesList[0]['x'] is", coordinatesList[0]["x"]);
+    const newConnector = [
+      Number(coordinatesList[0]["x"] - coordinatesList[0]["offsetX"]),
+      Number(coordinatesList[0]["y"] - coordinatesList[0]["offsetY"]),
+      Number(coordinatesList[1]["x"] - coordinatesList[1]["offsetX"]),
+      Number(coordinatesList[1]["y"] - coordinatesList[1]["offsetY"]),
+    ];
+    if (!connectors.includes(newConnector)) {
+      setConnectors((current) => [...current, newConnector]);
+    }
+
     // console.log({ connectors });
   }
 
@@ -874,10 +875,11 @@ function App() {
                 <Line
                   onClick={(e) => {
                     console.log(e);
+                    console.log(e.target.attrs.points);
                     e.target.attrs.points = [];
                     // breakBonds(con[0]);
                   }}
-                  points={con[0]}
+                  points={con}
                   stroke="red"
                 />
               ))}
