@@ -22,7 +22,10 @@ const STATE = {
 // const chemicalFormula = "H2O";
 
 const kBaseUrl =
-  "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
+  "https://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
+
+// "https://lewis-structures.purseev-api.com";
+// "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
 
 const getMolecules = async () => {
   // e.preventDefault();
