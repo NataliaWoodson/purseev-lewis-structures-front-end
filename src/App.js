@@ -11,7 +11,7 @@ import {
 import {
   getMolecules,
   generateNumAtomsDict,
-} from "./components/getMolecularFormulaFunctions";
+} from "./components/initializeGame";
 
 const STATE = {
   ids: 0,
