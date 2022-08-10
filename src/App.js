@@ -903,6 +903,8 @@ function App() {
                         offsetY={electron.yDisplace - 12}
                         radius={5}
                         fill={fromShapeId === electron.id ? "red" : "black"}
+                        onMouseOver={hoverElectron}
+                        onMouseOut={unhoverElectron}
                         onClick={(e) => {
                           setMessage("");
                           if (fromShapeId) {
