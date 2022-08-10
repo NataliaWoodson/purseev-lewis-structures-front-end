@@ -10,6 +10,7 @@ import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
 import UserMessages from "./components/UserMessages";
 import Buttons from "./components/Buttons";
+import { createContext } from "react";
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -18,7 +19,7 @@ const STATE = {
   submitClicked: false,
   message: "Hello this is a test message.",
 };
-
+export const ThemeContext = createContext(null);
 // const chemicalFormula = "H2O";
 
 const kBaseUrl =
@@ -361,6 +362,7 @@ function App() {
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [theme, setTheme] = useState("dark");
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -759,6 +761,7 @@ function App() {
       const x = e.target.attrs.x;
       const y = e.target.attrs.y;
       const id = e.target.index;
+      console.log("The id here is", id);
       const offsetX = e.target.attrs.offsetX;
       const offsetY = e.target.attrs.offsetY;
       const bondedElectronDict = {
@@ -797,104 +800,108 @@ function App() {
     // console.log({ connectors });
   }
 
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === "light" ? "dark" : "light"));
+  };
   return (
-    <main>
-      <Header />
-      <p>`${JSON.stringify(submissions)}`</p>
-      <UserMessages message={message} />
-      <Buttons
-        updateMoleculeApp={updateMolecule}
-        verifyStructureValidityApp={verifyStructureValidity}
-        submissionsApp={submissions}
-        submitClickedApp={submitClicked}
-        resetGameApp={resetGame}
-        gameStartedApp={gameStarted}
-      />
-      {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <main className="App" id={theme}>
+        <Header />
+        <p>`${JSON.stringify(submissions)}`</p>
+        <UserMessages message={message} />
+        <Buttons
+          updateMoleculeApp={updateMolecule}
+          verifyStructureValidityApp={verifyStructureValidity}
+          submissionsApp={submissions}
+          submitClickedApp={submitClicked}
+          resetGameApp={resetGame}
+          gameStartedApp={gameStarted}
+        />
+        {/* <NextMoleculeButton className="show" onGetNextMolecule={updateMolecule} />
       <SubmitButton
         verifyStructureValidityApp={verifyStructureValidity}
         submissionData={submissions}
       /> */}
-      <Stage width={window.innerWidth} height={window.innerHeight}>
-        {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
-        <Layer>
-          {/* {connectors.map((con) => {
+        <Stage width={window.innerWidth} height={window.innerHeight}>
+          {/* <button value="nextMolecule" onClick={getMolecules}></button> */}
+          <Layer>
+            {/* {connectors.map((con) => {
             const from = atoms.find((f) => f.id === con.from);
             const to = atoms.find((f) => f.id === con.to); */}
 
-          {/* // return ( */}
+            {/* // return ( */}
 
-          {/* // <Line */}
-          {/* //   key={con.id}
+            {/* // <Line */}
+            {/* //   key={con.id}
             //   points={[from.x, from.y, to.x, to.y]}
             //   stroke="black"
             // />
             // );
           // })} */}
-          {atoms.map((atom) => (
-            <Group key={atom.id} draggable>
-              <Circle
-                key={atom.id}
-                id={atom.id.toString()}
-                x={atom.x + 10}
-                y={atom.y + 13}
-                fill="red"
-                radius={45}
-                opacity={0.2}
-              ></Circle>
-              {atom.electrons.map((electron) => (
+            {atoms.map((atom) => (
+              <Group key={atom.id} draggable>
                 <Circle
-                  key={electron.id}
-                  id={electron.id.toString()}
-                  x={atom.x}
-                  y={atom.y}
-                  offsetX={electron.xDisplace - 10}
-                  offsetY={electron.yDisplace - 12}
-                  radius={5}
-                  fill={fromShapeId === electron.id ? "red" : "black"}
-                  onClick={(e) => {
-                    setMessage("");
-                    if (fromShapeId) {
-                      const prevElectron = getElectronById(fromShapeId[0]);
-                      const thisElectron = getElectronById(electron.id);
-                      bondElectrons(
-                        [prevElectron, thisElectron],
-                        e,
-                        fromShapeId[1]
-                      );
-                      setFromShapeId(null);
-                      // const newConnector = {
-                      //   from: fromShapeId,
-                      //   to: electron.id
-                      // }
-                    } else {
-                      setFromShapeId([electron.id, e]);
-                    }
-                  }}
-                  // onClick={connectLine}
-                />
-              ))}
-
-              <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
-            </Group>
-          ))}
-          {connectors.map((con) => (
-            <Line
-              onClick={(e) => {
-                console.log(e);
-                console.log(e.target.attrs.points);
-                e.target.attrs.points = [];
-                // breakBonds(con[0]);
-              }}
-              points={con}
-              stroke="red"
-              strokeWidth={4}
-            />
-          ))}
-        </Layer>
-      </Stage>
-      {/* <button onClick={updateMolecule}> Next Molecule </button> */}
-    </main>
+                  key={atom.id}
+                  id={atom.id.toString()}
+                  x={atom.x + 10}
+                  y={atom.y + 13}
+                  fill="red"
+                  radius={45}
+                  opacity={0.2}
+                ></Circle>
+                {atom.electrons.map((electron) => (
+                  <Circle
+                    key={electron.id}
+                    id={electron.id.toString()}
+                    x={atom.x}
+                    y={atom.y}
+                    offsetX={electron.xDisplace - 10}
+                    offsetY={electron.yDisplace - 12}
+                    radius={5}
+                    fill={fromShapeId === electron.id ? "red" : "black"}
+                    onClick={(e) => {
+                      setMessage("");
+                      if (fromShapeId) {
+                        const prevElectron = getElectronById(fromShapeId[0]);
+                        const thisElectron = getElectronById(electron.id);
+                        bondElectrons(
+                          [prevElectron, thisElectron],
+                          e,
+                          fromShapeId[1]
+                        );
+                        setFromShapeId(null);
+                        // const newConnector = {
+                        //   from: fromShapeId,
+                        //   to: electron.id
+                        // }
+                      } else {
+                        setFromShapeId([electron.id, e]);
+                      }
+                    }}
+                    // onClick={connectLine}
+                  />
+                ))}
+                <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
+              </Group>
+            ))}
+            {connectors.map((con) => (
+              <Line
+                onClick={(e) => {
+                  console.log(e);
+                  console.log(e.target.attrs.points);
+                  e.target.attrs.points = [];
+                  // breakBonds(con[0]);
+                }}
+                points={con}
+                stroke="red"
+                strokeWidth={4}
+              />
+            ))}
+          </Layer>
+        </Stage>
+        {/* <button onClick={updateMolecule}> Next Molecule </button> */}
+      </main>
+    </ThemeContext.Provider>
   );
 }
 
