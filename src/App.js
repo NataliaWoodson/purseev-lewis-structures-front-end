@@ -7,6 +7,11 @@ import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
+import MolecFormula from "./components/MolecFormula";
+// import DisplayProgress from "./components/DisplayProgress";
+import DisplayProgress2 from "./components/DisplayProgress2";
+// import StepProgressBar from "react-step-progress";
+
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -19,24 +24,6 @@ const STATE = {
 
 const kBaseUrl =
   "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
-
-const getMolecules = async () => {
-  // e.preventDefault();
-  console.log("entered getMolecules");
-  try {
-    return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
-      const formulas = response.data.molecules;
-      // console.log(formulas.length);
-      const rand_formula =
-        formulas[Math.floor(Math.random() * formulas.length)];
-      const chemicalFormula = rand_formula["molecular_formula"];
-      // console.log(chemicalFormula);
-      return chemicalFormula;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const numElectronsObj = {
   H: 1,
@@ -350,6 +337,43 @@ function App() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
+  const [molecFormula, setMolecFormula] = useState("");
+  const [levelInfo, setLevelInfo] = useState([]);
+
+  const getMolecules = async () => {
+    // e.preventDefault();
+    console.log("entered getMolecules");
+    try {
+      return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
+        const formulas = response.data.molecules;
+        // console.log(formulas.length);
+        const rand_formula =
+          formulas[Math.floor(Math.random() * formulas.length)];
+        const chemicalFormula = rand_formula["molecular_formula"];
+
+        console.log(chemicalFormula);
+        setMolecFormula(chemicalFormula);
+        console.log("Molec Formula is ", molecFormula);
+        return chemicalFormula;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // useEffect(() => {
+  //   setMolecFormula(getMolecules);
+  // }, []);
+  // console.log(molecFormula);
+
+  // useEffect(() => {
+  //   getMolecules().then((chemicalFormula) => {
+  //     // molecFormula = chemicalFormula;
+  //     console.log(chemicalFormula);
+  //     // setMolecFormula(getMolecules);
+  //     setMolecFormula(chemicalFormula);
+  //   });
+  // }, [getMolecules]);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -520,6 +544,8 @@ function App() {
       // returnScore();
       console.log("played five rounds");
     }
+    setLevelInfo(STATE.submissions.score);
+    console.log(STATE.submissions.score);
   }, []);
 
   useEffect(() => {
@@ -629,7 +655,9 @@ function App() {
   return (
     <main>
       <Header />
-      <p>`${JSON.stringify(STATE.submissions)}`</p>
+      <DisplayProgress2 />
+      <MolecFormula display={molecFormula} />
+      <p>{JSON.stringify(STATE.submissions)}</p>
       <NextMoleculeButton onGetNextMolecule={updateMolecule} />
       <SubmitButton verifyStructureValidityApp={verifyStructureValidity} />
       <Stage width={window.innerWidth} height={window.innerHeight}>
