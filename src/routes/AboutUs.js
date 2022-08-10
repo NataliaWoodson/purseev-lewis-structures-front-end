@@ -1,6 +1,7 @@
 import React from "react";
 import "./AboutUs.css";
 import { Link } from "react-router-dom";
+import telphoneSource from "../images/telephone.jpg";
 
 const AboutUs = () => {
   return (
@@ -11,7 +12,7 @@ const AboutUs = () => {
       <h1>About the developers</h1>
       <div className="about-us-container">
         {/* <img src={require("../images/transparent-100.jpg")} alt="logo" /> */}
-        <img src={require("../images/telephone.jpg")} alt="logo" />
+        <img src={telphoneSource} alt="logo" />
       </div>
     </main>
   );
