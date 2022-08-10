@@ -24,7 +24,7 @@ const NextMoleculeButton = ({
   };
 
   const nextMoleculeClass = nextMoleculeClassButtons();
-  console.log("nextMoleculeClass is", nextMoleculeClass);
+  // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
 
   return (

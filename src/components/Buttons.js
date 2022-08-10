@@ -24,17 +24,17 @@ const Buttons = ({
     }
   };
 
-  console.log("gameStartedApp in Buttons is", gameStartedApp);
+  // console.log("gameStartedApp in Buttons is", gameStartedApp);
 
   const submitButtonClass = () => {
     // if (submissions.length === 0) {
     //   return "hide";
     // } else
 
-    console.log(
-      "in submitButtonClass function. gameStarted is",
-      gameStartedApp
-    );
+    // console.log(
+    //   "in submitButtonClass function. gameStarted is",
+    //   gameStartedApp
+    // );
     if (!gameStartedApp) {
       return "hide";
     } else {
