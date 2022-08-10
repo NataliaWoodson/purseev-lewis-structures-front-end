@@ -842,7 +842,14 @@ function App() {
                       y={atom.y + 13}
                       fill="red"
                       radius={45}
-                      opacity={0.2}
+                      opacity={0.3}
+                      shadowColor="black"
+                      shadowBlur={10}
+                      shadowOpacity={0.7}
+                      shadowOffsetX={atom.isDragging ? 8 : 5}
+                      shadowOffsetY={atom.isDragging ? 8 : 5}
+                      scaleX={atom.isDragging ? 1.1 : 1}
+                      scaleY={atom.isDragging ? 1.1 : 1}
                     ></Circle>
                     {atom.electrons.map((electron) => (
                       <Circle
