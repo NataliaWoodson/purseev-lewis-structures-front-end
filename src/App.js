@@ -7,10 +7,11 @@ import Header from "./components/Header";
 import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
-import MolecFormula from "./MolecFormula";
-import DisplayProgress from "./DisplayProgress";
-import StepProgressBar from "react-step-progress";
-import SandBox from "./SandBox";
+import MolecFormula from "./components/MolecFormula";
+import DisplayProgress from "./components/DisplayProgress";
+import DisplayProgress2 from "./components/DisplayProgress2";
+// import StepProgressBar from "react-step-progress";
+
 // import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
@@ -654,8 +655,7 @@ function App() {
   return (
     <main>
       <Header />
-      <SandBox />
-      <DisplayProgress progDisplay={levelInfo} display={molecFormula} />
+      <DisplayProgress2 />
       <MolecFormula display={molecFormula} />
       <p>{JSON.stringify(STATE.submissions)}</p>
       <NextMoleculeButton onGetNextMolecule={updateMolecule} />
