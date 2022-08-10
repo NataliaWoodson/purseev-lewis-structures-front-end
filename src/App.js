@@ -22,9 +22,9 @@ const STATE = {
 // const chemicalFormula = "H2O";
 
 const kBaseUrl =
-  "https://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
+  "https://lewis-structures.purseev-api.com/lewis_structures_main";
+// "https://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
 
-// "https://lewis-structures.purseev-api.com";
 // "http://env-lewisstructuresmain.eba-u8ruwggm.us-west-2.elasticbeanstalk.com/lewis_structures_main";
 
 const getMolecules = async () => {
@@ -874,21 +874,22 @@ function App() {
                   // onClick={connectLine}
                 />
               ))}
-              {connectors.map((con) => (
-                <Line
-                  onClick={(e) => {
-                    console.log(e);
-                    console.log(e.target.attrs.points);
-                    e.target.attrs.points = [];
-                    // breakBonds(con[0]);
-                  }}
-                  points={con}
-                  stroke="red"
-                  strokeWidth={4}
-                />
-              ))}
+
               <Text x={atom.x} y={atom.y} text={atom.text} fontSize={30} />
             </Group>
+          ))}
+          {connectors.map((con) => (
+            <Line
+              onClick={(e) => {
+                console.log(e);
+                console.log(e.target.attrs.points);
+                e.target.attrs.points = [];
+                // breakBonds(con[0]);
+              }}
+              points={con}
+              stroke="red"
+              strokeWidth={4}
+            />
           ))}
         </Layer>
       </Stage>
