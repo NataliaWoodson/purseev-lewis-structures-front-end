@@ -834,7 +834,15 @@ function App() {
                   // );
                 // })} */}
                 {atoms.map((atom) => (
-                  <Group key={atom.id} draggable>
+                  <Group
+                    key={atom.id}
+                    id={atom.id.toString()}
+                    draggable
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onDragMove={restrictDrag}
+                    draggable
+                  >
                     <Circle
                       key={atom.id}
                       id={atom.id.toString()}
