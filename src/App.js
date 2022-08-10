@@ -363,10 +363,10 @@ function App() {
     const electron2offsetY = electron2.yDisplace;
 
     const points = [
-      atom1x + electron1offsetX,
-      atom1y + electron1offsetY,
-      atom2x + electron2offsetX,
-      atom2y + electron2offsetY,
+      atom1x - electron1offsetX,
+      atom1y - electron1offsetY,
+      atom2x - electron2offsetX,
+      atom2y - electron2offsetY,
     ];
 
     console.log("points are", points);
