@@ -389,6 +389,8 @@ function App() {
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [bondedElectronIds, setBondedElectronIds] = useState(null);
+  const [lineData, setLineData] = useState([]);
 
   const getElectronsArray = useCallback(() => {
     // console.log("hello");
@@ -490,7 +492,38 @@ function App() {
     [atoms]
   );
 
+  const getUpdatedElectronsDataAfterAtomDrag = (atomId) => {
+    const updatedElectronsArray = [];
+    const associatedAtomCoordinates = getAtomPositionById(atomId);
+    const x = associatedAtomCoordinates[0];
+    const y = associatedAtomCoordinates[1];
+    for (let electron of electrons) {
+      if (electron.atomId === atomId) {
+        updatedElectronsArray.push({
+          id: electron.id,
+          isPaired: electron.isPaired,
+          xDisplace: electron.xDisplace,
+          yDisplace: electron.yDisplace,
+          x: x,
+          y: y,
+          atomId: electron.atomId,
+        });
+      } else {
+        updatedElectronsArray.push(electron);
+      }
+    }
+    return updatedElectronsArray;
+  };
+
   let coordinatesList = [];
+
+  const getAtomPositionById = (atomId) => {
+    for (let atom of atoms) {
+      if (atom.id === atomId) {
+        return [atom.x, atom.y];
+      }
+    }
+  };
 
   const bondElectrons = (
     electronsArray,
@@ -528,20 +561,27 @@ function App() {
 
     setMessage("That was a valid bond.");
     console.log("valid bond");
-    const bondedElectronsArray = [];
+    const newElectronConnecterData = [];
+
+    // const bondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
       // console.log("selectedElectron in second for-loop is", selectedElectron);
       const bondedElectron = {
         id: selectedElectron.id,
         xDisplace: selectedElectron.xDisplace,
         yDisplace: selectedElectron.yDisplace,
+        x: selectedElectron.x,
+        y: selectedElectron.y,
         isPaired: true,
         atomId: selectedElectron.atomId,
       };
       // console.log("bondedElectron on line 387 is", bondedElectron);
-      bondedElectronsArray.push(bondedElectron);
+      // bondedElectronsArray.push(bondedElectron);
+      newElectronConnecterData.push(selectedElectron.id);
     }
-    updateElectronsArray(bondedElectronsArray);
+    // updateElectronsArray(bondedElectronsArray);
+
+    setLineData((current) => [...current, newElectronConnecterData]);
 
     //First electron capture coordinates
     const x1 = firstElectronEvent.target.attrs.x;
@@ -575,7 +615,7 @@ function App() {
     console.log(coordinatesList);
     // Second electron capture coordinates
 
-    drawLine(coordinatesList);
+    // drawLine(coordinatesList);
     coordinatesList = [];
     // if (coordinatesList.length === 2) {
     //   drawLine(coordinatesList);
@@ -851,6 +891,46 @@ function App() {
     // console.log({ connectors });
   }
 
+  const returnPointsUsingElectronIds = (entry) => {
+    console.log("entry in returnPointsUsingElectronIds is", entry);
+    const electronId1 = entry[0];
+    const electronId2 = entry[1];
+    const electron1 = getElectronById(electronId1);
+    const electron2 = getElectronById(electronId2);
+
+    console.log("electron1 is", electron1);
+
+    const atomId1 = electron1.atomId;
+    const atomId2 = electron2.atomId;
+    console.log("electronId1 is", electronId1);
+    console.log("atomId1 is", atomId1);
+
+    const atom1x = getAtomPositionById(atomId1)[0];
+    const atom1y = getAtomPositionById(atomId1)[1];
+
+    const atom2x = getAtomPositionById(atomId2)[0];
+    const atom2y = getAtomPositionById(atomId2)[1];
+    console.log(`atom2 = (${atom2x}, ${atom2y})`);
+
+    const electron1offsetX = electron1.xDisplace;
+    const electron1offsetY = electron1.yDisplace;
+
+    console.log("electron1offsetX is", electron1offsetX);
+
+    const electron2offsetX = electron2.xDisplace;
+    const electron2offsetY = electron2.yDisplace;
+
+    const points = [
+      atom1x + electron1offsetX,
+      atom1y + electron1offsetY,
+      atom2x + electron2offsetX,
+      atom2y + electron2offsetY,
+    ];
+
+    console.log("points are", points);
+    return points;
+  };
+
   const updateAtomPosition = (e) => {
     console.log(e);
     const selectedAtomId = parseInt(e.target.attrs.id);
@@ -929,8 +1009,8 @@ function App() {
                 <Circle
                   key={electron.id}
                   id={electron.id.toString()}
-                  // x={atom.x}
-                  // y={atom.y}
+                  x={0}
+                  y={0}
                   offsetX={electron.xDisplace}
                   offsetY={electron.yDisplace}
                   radius={5}
@@ -961,7 +1041,7 @@ function App() {
               <Text offsetX={10} offsetY={10} text={atom.text} fontSize={30} />
             </Group>
           ))}
-          {connectors.map((con) => (
+          {/* {connectors.map((con) => (
             <Line
               onClick={(e) => {
                 console.log(e);
@@ -973,6 +1053,13 @@ function App() {
               points={con}
               stroke="red"
               strokeWidth={4}
+            />
+          ))} */}
+          {lineData.map((entry) => (
+            <Line
+              points={returnPointsUsingElectronIds(entry)}
+              stroke="red"
+              stroke-weight={3}
             />
           ))}
         </Layer>
