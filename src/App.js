@@ -791,6 +791,41 @@ function App() {
     // console.log({ connectors });
   }
 
+  const handleDragStart = (e) => {
+    let id = e.target.id();
+    id = parseInt(id);
+    setAtoms(
+      atoms.map((atom) => {
+        return {
+          ...atom,
+          isDragging: atom.id === id,
+        };
+      })
+    );
+  };
+  const handleDragEnd = (e) => {
+    setAtoms(
+      atoms.map((atom) => {
+        return {
+          ...atom,
+          isDragging: false,
+        };
+      })
+    );
+  };
+
+  const hoverElectron = (e) => {
+    e.target.fill("yellow");
+  };
+
+  const unhoverElectron = (e) => {
+    e.target.fill("black");
+  };
+
+  const restrictDrag = (e) => {
+    const pos = e.target;
+  };
+
   return (
     <main>
       <Header />
@@ -841,7 +876,6 @@ function App() {
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                     onDragMove={restrictDrag}
-                    draggable
                   >
                     <Circle
                       key={atom.id}
