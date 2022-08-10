@@ -8,7 +8,7 @@ import { shapes } from "konva/lib/Shape";
 import NextMoleculeButton from "./components/NextMoleculeButton";
 import SubmitButton from "./components/SubmitButton";
 import MolecFormula from "./components/MolecFormula";
-import DisplayProgress from "./components/DisplayProgress";
+// import DisplayProgress from "./components/DisplayProgress";
 import DisplayProgress2 from "./components/DisplayProgress2";
 // import StepProgressBar from "react-step-progress";
 
