@@ -12,12 +12,12 @@ code {
     monospace;
 }
 
-.stage-container {
+/* .stage-container {
   
-  height: calc(100vh - 50px);
-  width: calc(100vh - 100px);
+  height: calc(100vh - 300px);
+  width: calc(100vw - 400px);
   padding: 20px;
-}
+} */
 
 nav ul {
   margin-top: 0;

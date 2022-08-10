@@ -40,3 +40,95 @@
 .hide {
   display: none;
 }
+
+main-game-components {
+  width: 100vw;
+  display: flex;
+  margin-top: 5%;
+  flex-direction: row;
+  border: 3px solid purple;
+}
+.game-buttons {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border: 5px solid orange;
+  align-items: center;
+  justify-content: center;
+}
+.stage-components {
+  border: 3px solid yellowgreen;
+  margin-right: 5%;
+}
+/* .stage-header {
+  border: 1px solid blue;
+}
+.stage-header p {
+  text-align: center;
+  font-size: 40px;
+} */
+.window-comp{
+  height: calc(100vh - 300px);
+  width: calc(100vw - 400px);
+}
+.Main-container{
+  font-family: 'Lucida Sans';
+  display: grid;
+  grid-template-columns: .5fr 1fr;
+  /* height: calc(100vh - 300px);
+  width: calc(100vw - 400px); */
+  
+}
+
+.Left-comp{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid green;
+  justify-content: center;
+  align-items: center;
+  /* background-color: yellow; */
+  
+}
+
+.Right-comp{
+  border: 2px solid orange;
+  
+}
+
+.stage-header{
+  border-top: 2px;
+  text-align: center;
+  
+}
+
+.stage-msg{
+  border-top: 2px solid purple;
+  text-align: center;
+  /* align-self: center;
+  align-items: center; */
+}
+
+.stage-container {
+  /* width: 100vw; */
+  /* height: 400px; */
+  margin: 0 auto;
+  box-shadow: 1px 2px 9px black;
+  background: #E6E6E6;
+  border: 2px solid green;
+  border-radius: 3px;
+  height: calc(100vh - 300px);
+  width: calc(100vw - 400px);
+}
+/* .stage-container {
+  
+  height: calc(100vh - 300px);
+  width: calc(100vw - 400px);
+  padding: 20px;
+} */
+
+.header{
+  border: 2px solid black;
+  display: flex;
+}
+
+

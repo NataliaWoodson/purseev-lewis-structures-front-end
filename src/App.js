@@ -386,81 +386,102 @@ function App() {
   };
 
   return (
-    <main>
-      <Header />
-      <DisplayProgress2 />
-      <MolecFormula display={molecFormula} />
-      <UserMessages message={message} />
-      <Buttons
-        updateMoleculeApp={updateMolecule}
-        verifyStructureValidityApp={verifyStructureValidity}
-        submissionsApp={submissions}
-        submitClickedApp={submitClicked}
-        resetGameApp={resetGame}
-        gameStartedApp={gameStarted}
-      />
-      <Stage id={"stage"} width={window.innerWidth} height={window.innerHeight}>
-        <Layer>
-          {atoms.map((atom) => (
-            <Group
-              id={atom.id.toString()}
-              draggable
-              x={atom.x}
-              y={atom.y}
-              onDragMove={(e) => {
-                updateAtomPosition(e);
-              }}
-            >
-              <Circle
-                key={atom.id}
-                x={0}
-                y={0}
-                fill="red"
-                radius={45}
-                opacity={0.2}
-                onClick={(e) => {
-                  console.log(e);
-                }}
-              ></Circle>
-              {atom.electrons.map((electron) => (
-                <Circle
-                  key={electron.id}
-                  id={electron.id.toString()}
-                  x={0}
-                  y={0}
-                  offsetX={electron.xDisplace}
-                  offsetY={electron.yDisplace}
-                  radius={5}
-                  fill={fromShapeId === electron.id ? "red" : "black"}
-                  onClick={(e) => {
-                    setMessage("");
-                    if (fromShapeId) {
-                      const prevElectron = getElectronById(fromShapeId[0]);
-                      const thisElectron = getElectronById(electron.id);
-                      bondElectrons(
-                        [prevElectron, thisElectron],
-                        e,
-                        fromShapeId[1]
-                      );
-                      setFromShapeId(null);
-                    } else {
-                      setFromShapeId([electron.id, e]);
-                    }
+    <main className="window-comp">
+      <Header className="header"/>
+      <section className="Main-container">
+        <div className="Left-comp">
+          <MolecFormula display={molecFormula} />
+          <UserMessages message={message} />
+          <Buttons
+            updateMoleculeApp={updateMolecule}
+            verifyStructureValidityApp={verifyStructureValidity}
+            submissionsApp={submissions}
+            submitClickedApp={submitClicked}
+            resetGameApp={resetGame}
+            gameStartedApp={gameStarted}
+          />
+          <DisplayProgress2 />
+        </div>
+        <div className="Right-comp">
+        <div>
+          <h1 className="stage-header">Lewis Structures</h1>
+          <h2 className="stage-msg">
+            Draw bonds between unpaired electrons until all electrons are paired
+          </h2>
+          <Stage className="stage-container"
+            id={"stage"}
+            width={window.innerWidth}
+            height={window.innerHeight}
+          >
+            <Layer>
+              {atoms.map((atom) => (
+                <Group
+                  id={atom.id.toString()}
+                  draggable
+                  x={atom.x}
+                  y={atom.y}
+                  onDragMove={(e) => {
+                    updateAtomPosition(e);
                   }}
+                >
+                  <Circle
+                    key={atom.id}
+                    x={0}
+                    y={0}
+                    fill="red"
+                    radius={45}
+                    opacity={0.2}
+                    onClick={(e) => {
+                      console.log(e);
+                    }}
+                  ></Circle>
+                  {atom.electrons.map((electron) => (
+                    <Circle
+                      key={electron.id}
+                      id={electron.id.toString()}
+                      x={0}
+                      y={0}
+                      offsetX={electron.xDisplace}
+                      offsetY={electron.yDisplace}
+                      radius={5}
+                      fill={fromShapeId === electron.id ? "red" : "black"}
+                      onClick={(e) => {
+                        setMessage("");
+                        if (fromShapeId) {
+                          const prevElectron = getElectronById(fromShapeId[0]);
+                          const thisElectron = getElectronById(electron.id);
+                          bondElectrons(
+                            [prevElectron, thisElectron],
+                            e,
+                            fromShapeId[1]
+                          );
+                          setFromShapeId(null);
+                        } else {
+                          setFromShapeId([electron.id, e]);
+                        }
+                      }}
+                    />
+                  ))}
+                  <Text
+                    offsetX={10}
+                    offsetY={10}
+                    text={atom.text}
+                    fontSize={30}
+                  />
+                </Group>
+              ))}
+              {lineData.map((entry) => (
+                <Line
+                  points={returnPointsUsingElectronIds(entry)}
+                  stroke="red"
+                  stroke-weight={3}
                 />
               ))}
-              <Text offsetX={10} offsetY={10} text={atom.text} fontSize={30} />
-            </Group>
-          ))}
-          {lineData.map((entry) => (
-            <Line
-              points={returnPointsUsingElectronIds(entry)}
-              stroke="red"
-              stroke-weight={3}
-            />
-          ))}
-        </Layer>
-      </Stage>
+            </Layer>
+          </Stage>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
