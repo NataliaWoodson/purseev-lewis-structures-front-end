@@ -113,6 +113,10 @@ function App() {
         for (let passedElectron of updatedElectronsArray) {
           updatedIds.push(passedElectron.id);
         }
+        console.log(
+          "extracted electron ids in updateElectronsArray are",
+          updatedIds
+        );
         return updatedIds;
       };
 
@@ -144,6 +148,8 @@ function App() {
 
   const updateOneAtomPositionState = useCallback(
     (selectedAtomId, updatedAtomX, updatedAtomY) => {
+      const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      console.log("newElectronData are", newElectronData);
       const updatedAtomData = [];
       for (let atom of atoms) {
         if (atom.id === selectedAtomId) {
@@ -172,6 +178,29 @@ function App() {
     }
   };
 
+  const getUpdatedElectronsInOneAtomState = (atomId) => {
+    // let updatedElectronAtomIds = [];
+    // for (let newElectron of electronsArray) {
+    //   updatedElectronAtomIds.push(newElectron.atomId)
+    // }
+
+    let updatedElectronsArray = [];
+
+    for (let electron of electrons) {
+      if (electron.atomId === atomId) {
+        updatedElectronsArray.push(electron);
+      }
+    }
+
+    return updatedElectronsArray;
+
+    // for (let atom of atoms) {
+    //   if (atom.id === atomId) {
+
+    //   }
+    // }
+  };
+
   const bondElectrons = (
     electronsArray,
     firstElectronEvent,
@@ -198,12 +227,26 @@ function App() {
 
     setMessage("That was a valid bond.");
     console.log("valid bond");
+
+    const updatedElectronData = [];
     const newElectronConnecterData = [];
 
     for (let selectedElectron of electronsArray) {
-      newElectronConnecterData.push(selectedElectron.id);
+      updatedElectronData.push({
+        id: selectedElectron.id,
+        isPaired: true,
+        xDisplace: selectedElectron.displace,
+        yDisplace: selectedElectron.yDisplace,
+        x: selectedElectron.x,
+        y: selectedElectron.y,
+        atomId: selectedElectron.atomId,
+      });
     }
+    updateElectronsArray(updatedElectronData);
 
+    for (let chosenElectron of electronsArray) {
+      newElectronConnecterData.push(chosenElectron.id);
+    }
     setLineData((current) => [...current, newElectronConnecterData]);
   };
 
