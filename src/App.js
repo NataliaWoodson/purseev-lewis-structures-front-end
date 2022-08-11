@@ -82,7 +82,7 @@ const generateAtoms = (atomObj) => {
       ),
     });
   }
-  console.log("atomData in generateAtoms is", atomData);
+  // console.log("atomData in generateAtoms is", atomData);
   return atomData;
 };
 
@@ -98,9 +98,17 @@ function App() {
   const [molecFormula, setMolecFormula] = useState("");
 
   const getElectronsArray = useCallback(() => {
+    if (electrons && electrons.length) {
+      return;
+    }
+
     let electronList = [];
     for (let atom of atoms) {
-      electronList.push(...atom.electrons);
+      electronList.push(
+        ...atom.electrons.map((electron) => {
+          return { ...electron };
+        })
+      );
     }
 
     setElectrons(electronList);
@@ -108,6 +116,8 @@ function App() {
 
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
+      console.log("updatingElectronsArray.");
+      console.log("updateDelectronsArray is", updatedElectronsArray);
       const getUpdatedElectronIds = () => {
         let updatedIds = [];
         for (let passedElectron of updatedElectronsArray) {
@@ -142,14 +152,17 @@ function App() {
         }
       }
       setElectrons(electronList);
+
+      for (const updatedElectron of electronList) {
+      }
     },
     [electrons]
   );
 
   const updateOneAtomPositionState = useCallback(
     (selectedAtomId, updatedAtomX, updatedAtomY) => {
-      const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
-      console.log("newElectronData are", newElectronData);
+      // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      // console.log("newElectronData are", newElectronData);
       const updatedAtomData = [];
       for (let atom of atoms) {
         if (atom.id === selectedAtomId) {
@@ -235,19 +248,19 @@ function App() {
       updatedElectronData.push({
         id: selectedElectron.id,
         isPaired: true,
-        xDisplace: selectedElectron.displace,
+        xDisplace: selectedElectron.xDisplace,
         yDisplace: selectedElectron.yDisplace,
         x: selectedElectron.x,
         y: selectedElectron.y,
         atomId: selectedElectron.atomId,
       });
     }
-    updateElectronsArray(updatedElectronData);
 
     for (let chosenElectron of electronsArray) {
       newElectronConnecterData.push(chosenElectron.id);
     }
     setLineData((current) => [...current, newElectronConnecterData]);
+    updateElectronsArray(updatedElectronData);
   };
 
   // To be used as a helper function once we have a record of the connectors and their corresponding electrons.
@@ -279,6 +292,7 @@ function App() {
   const updateMolecule = useCallback(() => {
     setLineData([]);
     setGameStarted(true);
+    setElectrons(null);
 
     if (submissions.length > 5) {
       return null;
@@ -383,24 +397,28 @@ function App() {
     const electron1 = getElectronById(electronId1);
     const electron2 = getElectronById(electronId2);
 
-    console.log("electron1 is", electron1);
+    // console.log("electron1 is", electron1);
 
     const atomId1 = electron1.atomId;
     const atomId2 = electron2.atomId;
-    console.log("electronId1 is", electronId1);
-    console.log("atomId1 is", atomId1);
+    // console.log("electronId1 is", electronId1);
+    // console.log("atomId1 is", atomId1);
+    const atom1Coordinates = getAtomPositionById(atomId1);
+    console.log(atom1Coordinates);
 
     const atom1x = getAtomPositionById(atomId1)[0];
+    console.log("found atom1x :", atom1x);
     const atom1y = getAtomPositionById(atomId1)[1];
 
     const atom2x = getAtomPositionById(atomId2)[0];
     const atom2y = getAtomPositionById(atomId2)[1];
-    console.log(`atom2 = (${atom2x}, ${atom2y})`);
+    // console.log(`atom2 = (${atom2x}, ${atom2y})`);
 
     const electron1offsetX = electron1.xDisplace;
+    console.log("found electron1offsetX: ", electron1offsetX);
     const electron1offsetY = electron1.yDisplace;
 
-    console.log("electron1offsetX is", electron1offsetX);
+    // console.log("electron1offsetX is", electron1offsetX);
 
     const electron2offsetX = electron2.xDisplace;
     const electron2offsetY = electron2.yDisplace;
@@ -423,6 +441,7 @@ function App() {
 
     for (let atom of atoms) {
       if (atom.id === selectedAtomId) {
+        // console.log("updating electrons for atom with id", selectedAtomId);
         updateOneAtomPositionState(selectedAtomId, deltaX, deltaY);
       }
     }
@@ -495,13 +514,16 @@ function App() {
               <Text offsetX={10} offsetY={10} text={atom.text} fontSize={30} />
             </Group>
           ))}
-          {lineData.map((entry) => (
-            <Line
-              points={returnPointsUsingElectronIds(entry)}
-              stroke="red"
-              stroke-weight={3}
-            />
-          ))}
+          {lineData.map((entry) => {
+            console.log("rendering entry", entry);
+            return (
+              <Line
+                points={returnPointsUsingElectronIds(entry)}
+                stroke="red"
+                strokeWidth={3}
+              />
+            );
+          })}
         </Layer>
       </Stage>
     </main>
