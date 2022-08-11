@@ -279,7 +279,19 @@ function App() {
   };
 
   // To be used as a helper function once we have a record of the connectors and their corresponding electrons.
-  const breakBonds = (electronsArray) => {
+  const breakBonds = (electronIdArray) => {
+    const updatedLineData = [];
+    for (const entry of lineData) {
+      if (entry !== electronIdArray) {
+        updatedLineData.push(entry);
+      }
+    }
+    setLineData(updatedLineData);
+
+    const electronsArray = [];
+    for (const electronId of electronIdArray) {
+      electronsArray.push(getElectronById(electronId));
+    }
     const unbondedElectronsArray = [];
     for (let selectedElectron of electronsArray) {
       // console.log("selectedElectron in second for-loop is", selectedElectron);
@@ -406,7 +418,7 @@ function App() {
   };
 
   const returnPointsUsingElectronIds = (entry) => {
-    console.log("entry in returnPointsUsingElectronIds is", entry);
+    // console.log("entry in returnPointsUsingElectronIds is", entry);
     const electronId1 = entry[0];
     const electronId2 = entry[1];
     const electron1 = getElectronById(electronId1);
@@ -418,11 +430,11 @@ function App() {
     const atomId2 = electron2.atomId;
     // console.log("electronId1 is", electronId1);
     // console.log("atomId1 is", atomId1);
-    const atom1Coordinates = getAtomPositionById(atomId1);
-    console.log(atom1Coordinates);
+    // const atom1Coordinates = getAtomPositionById(atomId1);
+    // console.log(atom1Coordinates);
 
     const atom1x = getAtomPositionById(atomId1)[0];
-    console.log("found atom1x :", atom1x);
+    // console.log("found atom1x :", atom1x);
     const atom1y = getAtomPositionById(atomId1)[1];
 
     const atom2x = getAtomPositionById(atomId2)[0];
@@ -430,7 +442,7 @@ function App() {
     // console.log(`atom2 = (${atom2x}, ${atom2y})`);
 
     const electron1offsetX = electron1.xDisplace;
-    console.log("found electron1offsetX: ", electron1offsetX);
+    // console.log("found electron1offsetX: ", electron1offsetX);
     const electron1offsetY = electron1.yDisplace;
 
     // console.log("electron1offsetX is", electron1offsetX);
@@ -445,7 +457,7 @@ function App() {
       atom2y - electron2offsetY,
     ];
 
-    console.log("points are", points);
+    // console.log("points are", points);
     return points;
   };
 
@@ -537,12 +549,17 @@ function App() {
             </Group>
           ))}
           {lineData.map((entry) => {
-            console.log("rendering entry", entry);
+            // console.log("rendering entry", entry);
             return (
               <Line
+                id={entry}
                 points={returnPointsUsingElectronIds(entry)}
                 stroke="red"
-                strokeWidth={3}
+                strokeWidth={5}
+                onClick={(e) => {
+                  breakBonds(e.target.attrs.id);
+                  console.log(e);
+                }}
               />
             );
           })}
