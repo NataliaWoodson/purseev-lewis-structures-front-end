@@ -22,9 +22,9 @@ const DisplayProgress2 = ({
 
   const verifyStructureValidity = verifyStructureValidityApp;
   const resetGame = resetGameApp;
-
+  console.log("gameStartedApp is", gameStartedApp);
   const nextMoleculeClass = () => {
-    if (!submitClickedApp) {
+    if (!gameStartedApp) {
       return "hide";
     } else if (submissions.length === 5) {
       return "hide";
@@ -36,7 +36,11 @@ const DisplayProgress2 = ({
     if (!gameStartedApp) {
       return "hide";
     } else {
-      return "show";
+      if (submissions.length === 5) {
+        return "hide";
+      } else {
+        return "show";
+      }
     }
   };
 
@@ -119,7 +123,7 @@ const DisplayProgress2 = ({
             setActiveDisp={setActive}
             circleDisp={circle}
             // className="next btn"
-            nextMoleculeClassButtons={nextMoleculeClass}
+            nextMoleculeClassDisp={nextMoleculeClass}
             submitClickedDisp={submitClickedApp}
             // disabled={active >= circle - 1 ? true : false}
             // onClick={() => {
@@ -131,6 +135,7 @@ const DisplayProgress2 = ({
           <SubmitButton
             verifyStructureValidityButtons={verifyStructureValidity}
             submitButtonClassButtons={submitButtonClass}
+            submissionsDisp={submissions}
           />
           <StartGameButton
             startGameButtonClassButtons={startGameButtonClass}

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
-  nextMoleculeClassButtons,
+  nextMoleculeClassDisp,
   // advanceProgressBarDisp,
   activeDisp,
   circleDisp,
@@ -39,11 +39,13 @@ const NextMoleculeButton = ({
   // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
 
+  const nextMoleculeClass = nextMoleculeClassDisp();
+
   return (
     <section>
       <button
         onClick={onHandleClick}
-        className={nextMoleculeClassButtons}
+        className={nextMoleculeClass}
         // disabled={activeDisp >= circleDisp - 1 ? true : false}
         disabled={submitClickedDisp ? false : true}
       >
