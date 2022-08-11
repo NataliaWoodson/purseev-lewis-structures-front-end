@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
   nextMoleculeClassButtons,
+  // advanceProgressBarDisp,
+  activeDisp,
+  circleDisp,
+  setActiveDisp,
 }) => {
   // const [chemicalFormula, setChemicalFormula] = useState("");
   // const onUpdateMolecule = async (event) => {
@@ -18,18 +22,28 @@ const NextMoleculeButton = ({
   //     // const createAtoms = (atomObj) => {
   //     setAtoms(generateAtoms(atomObj));
   // });
-  const onUpdateMolecule = (e) => {
-    e.preventDefault();
-    updateMoleculeButtons();
+  const advanceProgressBar = () => {
+    activeDisp > circleDisp ? setActiveDisp(circleDisp) : setActiveDisp(activeDisp + 1);
   };
 
-  const nextMoleculeClass = nextMoleculeClassButtons();
+  const onHandleClick = (e) => {
+    e.preventDefault();
+    updateMoleculeButtons();
+    advanceProgressBar();
+  };
+  
+
+  // const nextMoleculeClass = nextMoleculeClassButtons();
   // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
 
   return (
     <section>
-      <button onClick={onUpdateMolecule} className={nextMoleculeClass}>
+      <button
+        onClick={onHandleClick}
+        className={nextMoleculeClassButtons}
+        disabled={activeDisp >= circleDisp - 1 ? true : false}
+      >
         Next Molecule
       </button>
     </section>
