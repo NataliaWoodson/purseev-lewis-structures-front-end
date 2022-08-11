@@ -501,23 +501,23 @@ function App() {
   };
 
   const chooseElectronFill = (electron) => {
-    console.log("object passed into chooseElectronFill is", electron);
-    console.log("electron passed in is", electron.id);
-    console.log("Deciding fill");
-    console.log("fromShapeId is", fromShapeId);
-    console.log("electron.id is", electron.id);
+    // console.log("object passed into chooseElectronFill is", electron);
+    // console.log("electron passed in is", electron.id);
+    // console.log("Deciding fill");
+    // console.log("fromShapeId is", fromShapeId);
+    // console.log("electron.id is", electron.id);
     if (fromShapeId) {
-      console.log("entered if (fromShapeId)");
-      console.log("fromShapeId[0] is", fromShapeId[0]);
+      // console.log("entered if (fromShapeId)");
+      // console.log("fromShapeId[0] is", fromShapeId[0]);
       if (fromShapeId[0] === electron.id) {
-        console.log("chose red");
+        // console.log("chose red");
         return "red";
       } else {
-        console.log("chose black");
+        // console.log("chose black");
         return "black";
       }
     } else {
-      console.log("chose black");
+      // console.log("chose black");
       return "black";
     }
   };
@@ -589,7 +589,7 @@ function App() {
                         scaleX={atom.isDragging ? 1.1 : 1}
                         scaleY={atom.isDragging ? 1.1 : 1}
                         onClick={(e) => {
-                          console.log(e);
+                          // console.log(e);
                         }}
                       ></Circle>
                       {atom.electrons.map((electron) => (
@@ -620,7 +620,7 @@ function App() {
                           }}
                           // onMouseOver={hoverElectron}
                           onMouseOut={() => {
-                            console.log("entered onMouseOut");
+                            // console.log("entered onMouseOut");
                             chooseElectronFill(electron);
                           }}
                           fill={chooseElectronFill(electron)}
@@ -642,7 +642,7 @@ function App() {
                       strokeWidth={5}
                       onClick={(e) => {
                         breakBonds(e.target.attrs.id);
-                        console.log(e);
+                        // console.log(e);
                       }}
                     />
                   ))}

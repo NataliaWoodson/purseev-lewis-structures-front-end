@@ -55,6 +55,22 @@ const DisplayProgress2 = ({
   //   updateMoleculeButtons();
   // };
 
+  const chooseCircleFill = (round) => {
+    if (round > submissions.length) {
+      return "gray";
+    } else {
+      for (const submission of submissions) {
+        if (submission.round === round) {
+          if (submission.score === true) {
+            return "green";
+          } else {
+            return "red";
+          }
+        }
+      }
+    }
+  };
+
   const Circle = ({ classname, children }) => {
     return <div className={classname}>{children}</div>;
     // return <div className="circle">{1}</div>;
@@ -66,7 +82,12 @@ const DisplayProgress2 = ({
   const arr = [];
   for (let i = 1; i < circle; i++) {
     arr.push(
-      <Circle classname={i <= active ? "circle active" : "circle"} key={i}>
+      <Circle
+        classname={`${
+          i <= active ? "circle active" : "circle"
+        } ${chooseCircleFill(i)}`}
+        key={i}
+      >
         {i}
       </Circle>
     );
@@ -99,6 +120,7 @@ const DisplayProgress2 = ({
             circleDisp={circle}
             // className="next btn"
             nextMoleculeClassButtons={nextMoleculeClass}
+            submitClickedDisp={submitClickedApp}
             // disabled={active >= circle - 1 ? true : false}
             // onClick={() => {
             //   active > circle ? setActive(circle) : setActive(active + 1);

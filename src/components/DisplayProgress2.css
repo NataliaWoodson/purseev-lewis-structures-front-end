@@ -58,6 +58,16 @@
   .circle.active {
     border-color: blue;
   }
+
+  .circle.green {
+    background-color: green;
+    color: white;
+  }
+
+  .circle.red {
+    background-color: red;
+    color: white;
+  }
   
   .button {
     display: flex;

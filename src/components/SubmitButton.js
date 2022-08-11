@@ -24,7 +24,14 @@ const SubmitButton = ({
   };
 
   return (
-    <button className={submitButtonClass} onClick={handleClick}>
+    <button
+      className={submitButtonClass}
+      onClick={handleClick}
+
+      // onClick={() => {
+      //   console.log(submitClickedApp);
+      // }}
+    >
       Submit
     </button>
   );
