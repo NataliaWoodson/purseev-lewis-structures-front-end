@@ -96,12 +96,27 @@ function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [lineData, setLineData] = useState([]);
   const [molecFormula, setMolecFormula] = useState("");
+  const [resetClicked, setResetClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
+    // Only continues to next part if there aren't already electrons in the electron state.
     if (electrons && electrons.length) {
-      return;
+      if (!resetClicked) {
+        return;
+      } else {
+        let electronList = [];
+        for (let atom of atoms) {
+          electronList.push(
+            ...atom.electrons.map((electron) => {
+              return { ...electron };
+            })
+          );
+        }
+        setResetClicked(false);
+      }
     }
 
+    // Generates electrons in electron state from electron arrays in atoms.
     let electronList = [];
     for (let atom of atoms) {
       electronList.push(
@@ -112,7 +127,7 @@ function App() {
     }
 
     setElectrons(electronList);
-  }, [atoms]);
+  }, [atoms, resetClicked]);
 
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
@@ -447,6 +462,12 @@ function App() {
     }
   };
 
+  const resetBonds = () => {
+    setResetClicked(true);
+    setLineData([]);
+    getElectronsArray();
+  };
+
   return (
     <main>
       <Header />
@@ -461,6 +482,7 @@ function App() {
         resetGameApp={resetGame}
         gameStartedApp={gameStarted}
       />
+      <button onClick={resetBonds}>Reset</button>
       <Stage id={"stage"} width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {atoms.map((atom) => (
