@@ -186,7 +186,7 @@ function App() {
             x: updatedAtomX,
             y: updatedAtomY,
             text: atom.text,
-            isDragging: false,
+            isDragging: true,
             electrons: atom.electrons,
           });
         } else {
@@ -320,7 +320,7 @@ function App() {
     setLineData([]);
     setGameStarted(true);
     setElectrons(null);
-
+    setFromShapeId(null);
     if (submissions.length > 5) {
       return null;
     }
@@ -481,6 +481,47 @@ function App() {
     getElectronsArray();
   };
 
+  const handleDragEnd = (e) => {
+    setAtoms(
+      atoms.map((atom) => {
+        return {
+          ...atom,
+          isDragging: false,
+        };
+      })
+    );
+  };
+
+  const hoverElectron = (e) => {
+    e.target.fill("yellow");
+  };
+
+  const unhoverElectron = (e) => {
+    e.target.fill(chooseElectronFill(e.target.attrs.id));
+  };
+
+  const chooseElectronFill = (electron) => {
+    console.log("object passed into chooseElectronFill is", electron);
+    console.log("electron passed in is", electron.id);
+    console.log("Deciding fill");
+    console.log("fromShapeId is", fromShapeId);
+    console.log("electron.id is", electron.id);
+    if (fromShapeId) {
+      console.log("entered if (fromShapeId)");
+      console.log("fromShapeId[0] is", fromShapeId[0]);
+      if (fromShapeId[0] === electron.id) {
+        console.log("chose red");
+        return "red";
+      } else {
+        console.log("chose black");
+        return "black";
+      }
+    } else {
+      console.log("chose black");
+      return "black";
+    }
+  };
+
   return (
     <main className="window-comp">
       {/* <Header /> */}
@@ -531,6 +572,7 @@ function App() {
                       onDragMove={(e) => {
                         updateAtomPosition(e);
                       }}
+                      onDragEnd={handleDragEnd}
                     >
                       <Circle
                         key={atom.id}
@@ -559,7 +601,6 @@ function App() {
                           offsetX={electron.xDisplace}
                           offsetY={electron.yDisplace}
                           radius={5}
-                          fill={fromShapeId === electron.id ? "red" : "black"}
                           onClick={(e) => {
                             setMessage("");
                             if (fromShapeId) {
@@ -577,6 +618,12 @@ function App() {
                               setFromShapeId([electron.id, e]);
                             }
                           }}
+                          // onMouseOver={hoverElectron}
+                          onMouseOut={() => {
+                            console.log("entered onMouseOut");
+                            chooseElectronFill(electron);
+                          }}
+                          fill={chooseElectronFill(electron)}
                         />
                       ))}
                       <Text
