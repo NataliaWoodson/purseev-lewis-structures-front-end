@@ -10,6 +10,7 @@ const getMolecules = async () => {
       const rand_formula =
         formulas[Math.floor(Math.random() * formulas.length)];
       const chemicalFormula = rand_formula["molecular_formula"];
+      // setMolecularFormula = chemicalFormula
       return chemicalFormula;
     });
   } catch (err) {
