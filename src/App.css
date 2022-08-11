@@ -43,6 +43,10 @@
   display: none;
 }
 
+.main-stage-container {
+  padding-left: 0;
+}
+
 .Main-container{
   font-family: 'Lucida Sans';
   width: 100%;
@@ -80,7 +84,6 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;  
 }
 
 .Right-comp{
@@ -111,6 +114,7 @@ header {
 .stage-container {
   max-width: 80%;
   margin: 0 auto;
+  /* margin-left: 50px; */
   box-shadow: 1px 2px 9px black;
   background: #E6E6E6;
   border-top: none;
