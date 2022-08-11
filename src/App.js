@@ -247,6 +247,7 @@ function App() {
 
     if (STATE.numRounds <= 5) {
       getMolecules().then((chemicalFormula) => {
+        setMolecFormula(chemicalFormula);
         const atomObj = generateNumAtomsDict(chemicalFormula);
         setAtoms(generateAtoms(atomObj));
       });
@@ -255,7 +256,7 @@ function App() {
       console.log("played five rounds");
     }
     // setLevelInfo(STATE.submissions.score);
-    console.log(STATE.submissions.score);
+    // console.log(STATE.submissions.score);
   }, []);
 
   useEffect(() => {
@@ -392,7 +393,15 @@ function App() {
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
           <UserMessages message={message} />
-          <Buttons
+          {/* <Buttons
+            // updateMoleculeApp={updateMolecule}
+            verifyStructureValidityApp={verifyStructureValidity}
+            submissionsApp={submissions}
+            submitClickedApp={submitClicked}
+            resetGameApp={resetGame}
+            gameStartedApp={gameStarted}
+          /> */}
+          <DisplayProgress2
             updateMoleculeApp={updateMolecule}
             verifyStructureValidityApp={verifyStructureValidity}
             submissionsApp={submissions}
@@ -400,7 +409,6 @@ function App() {
             resetGameApp={resetGame}
             gameStartedApp={gameStarted}
           />
-          <DisplayProgress2 />
         </div>
         <div className="Right-comp">
           <div>
