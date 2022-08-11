@@ -410,35 +410,35 @@ function App() {
     return true;
   };
 
-  const handleDragStart = (e) => {
-    let id = e.target.id();
-    id = parseInt(id);
-    setAtoms(
-      atoms.map((atom) => {
-        return {
-          ...atom,
-          isDragging: atom.id === id,
-        };
-      })
-    );
-  };
-  const handleDragEnd = (e) => {
-    setAtoms(
-      atoms.map((atom) => {
-        return {
-          ...atom,
-          isDragging: false,
-        };
-      })
-    );
+  // const handleDragStart = (e) => {
+  //   let id = e.target.id();
+  //   id = parseInt(id);
+  //   setAtoms(
+  //     atoms.map((atom) => {
+  //       return {
+  //         ...atom,
+  //         isDragging: atom.id === id,
+  //       };
+  //     })
+  //   );
+  // };
+  // const handleDragEnd = (e) => {
+  //   setAtoms(
+  //     atoms.map((atom) => {
+  //       return {
+  //         ...atom,
+  //         isDragging: false,
+  //       };
+  //     })
+  //   );
 
-    const resetGame = () => {
-      setSubmissions([]);
-      setLineData([]);
-      setGameStarted(false);
-      STATE.numRounds = 0;
-      updateMolecule();
-    };
+  const resetGame = () => {
+    setSubmissions([]);
+    setLineData([]);
+    setGameStarted(false);
+    STATE.numRounds = 0;
+    updateMolecule();
+  };
 
   const returnPointsUsingElectronIds = (entry) => {
     // console.log("entry in returnPointsUsingElectronIds is", entry);
