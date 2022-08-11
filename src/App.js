@@ -440,9 +440,16 @@ function App() {
                         key={atom.id}
                         x={0}
                         y={0}
-                        fill="red"
+                        fill="#72D6C9"
                         radius={45}
-                        opacity={0.2}
+                        opacity={0.7}
+                        // shadowColor="black"
+                        shadowBlur={10}
+                        shadowOpacity={0.7}
+                        shadowOffsetX={atom.isDragging ? 8 : 5}
+                        shadowOffsetY={atom.isDragging ? 8 : 5}
+                        scaleX={atom.isDragging ? 1.1 : 1}
+                        scaleY={atom.isDragging ? 1.1 : 1}
                         onClick={(e) => {
                           console.log(e);
                         }}
@@ -487,7 +494,7 @@ function App() {
                   {lineData.map((entry) => (
                     <Line
                       points={returnPointsUsingElectronIds(entry)}
-                      stroke="red"
+                      stroke="A66CFF"
                       stroke-weight={3}
                     />
                   ))}
