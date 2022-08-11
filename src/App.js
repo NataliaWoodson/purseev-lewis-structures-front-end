@@ -388,8 +388,9 @@ function App() {
 
   return (
     <main className="window-comp">
-      <Header />
+      {/* <Header /> */}
       <section className="Main-container">
+        <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
           <UserMessages message={message} />
@@ -411,7 +412,7 @@ function App() {
           />
         </div>
         <div className="Right-comp">
-          <div>
+          <div className="main-stage-container">
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
               <p className="stage-msg">

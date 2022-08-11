@@ -1,3 +1,5 @@
+*{box-sizing: border-box;}
+
 /* .App {
   text-align: center;
 }
@@ -41,67 +43,56 @@
   display: none;
 }
 
-main-game-components {
-  /* width: 100vw; */
-  display: flex;
-  margin-top: 5%;
-  flex-direction: row;
-  /* border: 3px solid purple; */
+.Main-container{
+  font-family: 'Lucida Sans';
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 10px;
+  /* grid-template-columns: repeat(3, 1fr); */
+  /* grid-template-rows: 150px 1fr 50px; */
 }
+
+header {
+  grid-column: span 3;
+  max-width: 100vw;
+}
+  
 .game-buttons {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  /* border: 5px solid orange; */
   align-items: center;
   justify-content: center;
 } 
 .stage-components {
-  /* border: 3px solid yellowgreen; */
   margin-right: 5%;
 } 
-/* .stage-header {
-  border: 1px solid blue;
-} */
+
 .stage-header p {
   text-align: center;
   font-size: 40px;
 } 
-/* .window-comp{
-  height: calc(100vh - 300px);
-  width: calc(100vw - 400px);
-}  */
-.Main-container{
-  font-family: 'Lucida Sans';
-  display: grid;
-  grid-template-columns: .5fr 1fr;
-  /* height: calc(100vh - 300px);
-  width: calc(100vw - 400px);  */
-  
-}
 
 .Left-comp{
   display: flex;
   height: 100%;
   flex-direction: column;
-  /* border: 2px solid green; */
   justify-content: center;
   align-items: center;
-  /* background-color: yellow;  */
-  
+  border: 1px solid red;  
 }
 
 .Right-comp{
-  /* border: 2px solid orange; */
   width: 100%;
-  
+  margin: 0 auto;
 }
 
 .stage-header{
   border-top: 2px;
   text-align: center;
   padding: 20px 0 0 0;
-  margin-bottom: 0;
+  margin-bottom: 20px;
   
 }
 
@@ -112,24 +103,18 @@ main-game-components {
   margin: 0;
   font-size: 20px;
   border-top-left-radius: 3px;
-  /* border-top: 2px solid purple;  */
   text-align: center;
   align-self: center;
   align-items: center; 
 }
 
 .stage-container {
-  margin: 30px 20px 20px 20px;
-  width: 100vw;
-  height: 400px; 
-  margin: 10% 10% 10% 10% auto; 
+  max-width: 80%;
+  margin: 0 auto;
   box-shadow: 1px 2px 9px black;
   background: #E6E6E6;
-  /* border: 2px solid green; */
   border-top: none;
   border-radius: 3px;
-  /* height: calc(100vh - 300px);
-  width: calc(100vw - 400px);  */
 }
 .stage-container {
   
@@ -141,5 +126,6 @@ main-game-components {
   border: 2px solid black;
   display: flex;
 }
+
 
 
