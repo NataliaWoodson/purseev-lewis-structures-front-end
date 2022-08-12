@@ -24,19 +24,11 @@ const NextMoleculeButton = ({
   //     // const createAtoms = (atomObj) => {
   //     setAtoms(generateAtoms(atomObj));
   // });
-  const advanceProgressBar = () => {
-    activeDisp > circleDisp
-      ? setActiveDisp(circleDisp)
-      : setActiveDisp(activeDisp + 1);
-    // activeDisp > circleDisp
-    //   ? setActiveDisp(circleDisp)
-    //   : setActiveDisp(activeDisp + 1);
-  };
 
   const onHandleClick = (e) => {
     e.preventDefault();
     updateMoleculeButtons();
-    advanceProgressBar();
+    // advanceProgressBar();
   };
 
   const nextMoleculeClass = nextMoleculeClassDisp();
