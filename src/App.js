@@ -232,13 +232,22 @@ function App() {
     // }
   };
 
+  const getAtomById = (atomId) => {
+    for (const atom of atoms) {
+      if (atom.id === atomId) {
+        return atom;
+      }
+    }
+  };
+
   const bondElectrons = (
     electronsArray,
     firstElectronEvent,
     secondElectronEvent
   ) => {
     const atomIds = [];
-    for (let checkElectron of electronsArray) {
+    // check if electron is already paired
+    for (const checkElectron of electronsArray) {
       atomIds.push(checkElectron.atomId);
       if (checkElectron.isPaired === true) {
         setMessage(
@@ -254,6 +263,23 @@ function App() {
       setMessage("Invalid bond. Cannot bond electrons in the same atom.");
       setFromShapeId(null);
       return null;
+    }
+    // check for bonds between invalid atoms if more than two atoms in molecule
+    const invalidBonds = ["H", "F", "Cl"];
+    const atom1Id = atomIds[0];
+    const atom2Id = atomIds[1];
+    const atom1 = getAtomById(atom1Id);
+    const atom2 = getAtomById(atom2Id);
+    if (atoms.length > 2) {
+      if (
+        invalidBonds.includes(atom1.text) &&
+        invalidBonds.includes(atom2.text)
+      ) {
+        setMessage(
+          "Invalid bond. If you bond these atoms together you will not be able to bond all atoms into one molecule."
+        );
+        return;
+      }
     }
 
     setMessage("That was a valid bond.");
@@ -494,7 +520,6 @@ function App() {
 
     for (let atom of atoms) {
       if (atom.id === selectedAtomId) {
-        // console.log("updating electrons for atom with id", selectedAtomId);
         updateOneAtomPositionState(selectedAtomId, deltaX, deltaY);
       }
     }
@@ -526,23 +551,13 @@ function App() {
   };
 
   const chooseElectronFill = (electron) => {
-    console.log("object passed into chooseElectronFill is", electron);
-    console.log("electron passed in is", electron.id);
-    console.log("Deciding fill");
-    console.log("fromShapeId is", fromShapeId);
-    console.log("electron.id is", electron.id);
     if (fromShapeId) {
-      console.log("entered if (fromShapeId)");
-      console.log("fromShapeId[0] is", fromShapeId[0]);
       if (fromShapeId[0] === electron.id) {
-        console.log("chose red");
         return "red";
       } else {
-        console.log("chose black");
         return "black";
       }
     } else {
-      console.log("chose black");
       return "black";
     }
   };
@@ -676,7 +691,6 @@ function App() {
                           }}
                           // onMouseOver={hoverElectron}
                           onMouseOut={() => {
-                            console.log("entered onMouseOut");
                             chooseElectronFill(electron);
                           }}
                           fill={chooseElectronFill(electron)}
