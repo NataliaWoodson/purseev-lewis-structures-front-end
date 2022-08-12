@@ -18,6 +18,8 @@ const DisplayProgress2 = ({
   const [circle] = useState(6);
   const [active, setActive] = useState(0);
   const [width, setWidth] = useState(0);
+  const [resetClicked, setResetClicked] = useState(false);
+
   const submissions = submissionsApp;
 
   const verifyStructureValidity = verifyStructureValidityApp;
@@ -141,6 +143,7 @@ const DisplayProgress2 = ({
             // }}
             updateMoleculeButtons={updateMoleculeApp}
             // advanceProgressBarDisp={advanceProgressBar}
+            resetClickedDisp={resetClicked}
           ></NextMoleculeButton>
         </div>
       </div>
