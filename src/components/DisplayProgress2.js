@@ -126,6 +126,10 @@ const DisplayProgress2 = ({
             verifyStructureValidityButtons={verifyStructureValidity}
             submitButtonClassButtons={submitButtonClass}
             submissionsDisp={submissions}
+            circleDisp={circle}
+            activeDisp={active}
+            setActiveDisp={setActive}
+            // advanceProgressBarDisp={advanceProgressBar}
           />
           <NextMoleculeButton
             activeDisp={active}

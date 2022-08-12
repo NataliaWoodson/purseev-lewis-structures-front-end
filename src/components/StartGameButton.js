@@ -1,12 +1,16 @@
 import React from "react";
 
-const StartGameButton = ({ startGameButtonClassButtons, resetGameButtons }) => {
+const StartGameButton = ({
+  startGameButtonClassButtons,
+  setActiveDisp,
+  resetGameButtons,
+}) => {
   const startGameClass = startGameButtonClassButtons();
   const resetGame = resetGameButtons;
 
   const handleClick = (event) => {
     event.preventDefault();
-
+    setActiveDisp(0);
     return resetGame();
   };
 
