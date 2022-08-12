@@ -131,6 +131,7 @@ const DisplayProgress2 = ({
             circleDisp={circle}
             activeDisp={active}
             setActiveDisp={setActive}
+            submitClickedDisp={submitClickedApp}
             // advanceProgressBarDisp={advanceProgressBar}
           />
           <NextMoleculeButton

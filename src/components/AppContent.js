@@ -620,6 +620,7 @@ function AppContent() {
             verifyStructureValidityApp={verifyStructureValidity}
             submissionsApp={submissions}
             submitClickedApp={submitClicked}
+            setSubmitClickedApp={setSubmitClicked}
             resetGameApp={resetGame}
             gameStartedApp={gameStarted}
           />
