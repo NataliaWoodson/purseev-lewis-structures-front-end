@@ -91,9 +91,7 @@ function AppContent() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
-  const [message, setMessage] = useState(
-    "Draw bonds between unpaired electrons until all electrons are paired"
-  );
+  const [message, setMessage] = useState("Click Start Game button to begin!");
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
@@ -354,7 +352,9 @@ function AppContent() {
     if (submissions.length > 5) {
       return null;
     }
-    setMessage("");
+    setMessage(
+      "Draw bonds between unpaired electrons until all electrons are paired. Click a bond to delete it."
+    );
     STATE.numRounds++;
 
     setSubmitClicked(false);
@@ -693,7 +693,9 @@ function AppContent() {
                           offsetY={electron.yDisplace}
                           radius={5}
                           onClick={(e) => {
-                            setMessage("");
+                            setMessage(
+                              "Draw bonds between unpaired electrons until all electrons are paired. Click a bond to delete it."
+                            );
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
                                 fromShapeId[0]
