@@ -575,12 +575,12 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
-          <div>
-            <div className="btn" onClick={togglePop}>
-              <button>Instructions</button>
+          {/* <div>
+            <div onClick={togglePop}>
+              <button className="instructions">i</button>
             </div>
             {seen ? <PopUp toggle={togglePop} /> : null}
-          </div>
+          </div> */}
           {/* <ul>
             Instructions:
             <li>To begin please press "Start New Game" button.</li>
@@ -633,6 +633,12 @@ function AppContent() {
                 {/* Draw bonds between unpaired electrons until all electrons are
                 paired */}
               </p>
+              <div className="instruction-container">
+                <div onClick={togglePop}>
+                  <button className="instructions">i</button>
+                </div>
+                {seen ? <PopUp toggle={togglePop} /> : null}
+              </div>
               <div classname="restart">
                 <button className="reset-button" onClick={resetBonds}>
                   Reset
