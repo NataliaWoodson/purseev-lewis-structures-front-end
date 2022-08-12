@@ -4,6 +4,7 @@ import "./Buttons.css";
 const SubmitButton = ({
   verifyStructureValidityButtons,
   submitButtonClassButtons,
+  submissionsDisp,
 }) => {
   // console.log("props in SubmitButton are", props);
 
