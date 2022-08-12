@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
-  nextMoleculeClassButtons,
+  nextMoleculeClassDisp,
   // advanceProgressBarDisp,
   activeDisp,
   circleDisp,
   setActiveDisp,
+  submitClickedDisp,
 }) => {
   // const [chemicalFormula, setChemicalFormula] = useState("");
   // const onUpdateMolecule = async (event) => {
@@ -23,7 +24,9 @@ const NextMoleculeButton = ({
   //     setAtoms(generateAtoms(atomObj));
   // });
   const advanceProgressBar = () => {
-    activeDisp > circleDisp ? setActiveDisp(circleDisp) : setActiveDisp(activeDisp + 1);
+    activeDisp > circleDisp
+      ? setActiveDisp(circleDisp)
+      : setActiveDisp(activeDisp + 1);
   };
 
   const onHandleClick = (e) => {
@@ -31,18 +34,20 @@ const NextMoleculeButton = ({
     updateMoleculeButtons();
     advanceProgressBar();
   };
-  
 
   // const nextMoleculeClass = nextMoleculeClassButtons();
   // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
 
+  const nextMoleculeClass = nextMoleculeClassDisp();
+
   return (
     <section>
       <button
         onClick={onHandleClick}
-        className={nextMoleculeClassButtons}
-        disabled={activeDisp >= circleDisp - 1 ? true : false}
+        className={nextMoleculeClass}
+        // disabled={activeDisp >= circleDisp - 1 ? true : false}
+        disabled={submitClickedDisp ? false : true}
       >
         Next Molecule
       </button>

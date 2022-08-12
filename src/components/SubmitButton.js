@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const SubmitButton = ({
   verifyStructureValidityButtons,
   submitButtonClassButtons,
+  submissionsDisp,
 }) => {
   // console.log("props in SubmitButton are", props);
 
@@ -24,7 +25,14 @@ const SubmitButton = ({
   };
 
   return (
-    <button className={submitButtonClass} onClick={handleClick}>
+    <button
+      className={submitButtonClass}
+      onClick={handleClick}
+      // className={submissionsDisp.length === 5 ? "hide" : "show"}
+      // onClick={() => {
+      //   console.log(submitClickedApp);
+      // }}
+    >
       Submit
     </button>
   );
