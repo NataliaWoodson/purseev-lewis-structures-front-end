@@ -14,6 +14,9 @@ const Header = () => {
             <img src="noun-menu.png" alt="" width={50} />
           </li>
           <li>
+            <Link to="/">game page </Link>
+          </li>
+          <li>
             <Link to="/aboutus">about us</Link>
           </li>
           <li className="hamburger-menu">

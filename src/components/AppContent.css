@@ -50,18 +50,18 @@ header {
   font-size: 40px;
 } 
 
-/* .Left-comp{
+.Left-comp{
   display: flex;
   margin-top: 50px;
   height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-} */
+} 
 
-/* .Left-comp ul {
+.Left-comp ul {
   margin-top: 50px;
-} */
+} 
 
 .Right-comp{
   width: 100%;
@@ -98,15 +98,16 @@ header {
   border-radius: 3px; 
   position: relative;
 }
-/* .stage-container {
+
+.stage-container {
   
   height: calc(100vh - 300px);
   width: calc(100vw - 400px);
-}  */
+}  
 
-/* .header{
+.header{
   display: flex;
-} */
+} 
 
 .restart {
   position: absolute;

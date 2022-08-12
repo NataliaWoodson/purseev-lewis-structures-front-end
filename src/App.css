@@ -60,8 +60,7 @@
   grid-gap: 10px;
   background: url("./pawel-czerwinski-NJdfP9AlPjc-unsplash.jpg") no-repeat center center fixed; */
   /* grid-template-columns: repeat(3, 1fr); */
-  /* grid-template-rows: 150px 1fr 50px; */
-/* } */
+  /* grid-template-rows: 150px 1fr 50px; 
 
 /* header {
   grid-column: span 3;
@@ -94,7 +93,7 @@
   align-items: center;
 } */
 
-.Right-comp{
+/* .Right-comp{
   width: 100%;
   margin: 0 auto;
 }
@@ -138,6 +137,6 @@
   border: 2px solid black;
   display: flex;
 }
-
+ */
 
 

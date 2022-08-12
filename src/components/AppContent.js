@@ -1,12 +1,12 @@
 import "./AppContent.css";
-import "../App.css";
+// import "../App.css";
 import { Stage, Layer, Text, Circle, Group, Line } from "react-konva";
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "./Header";
 import MolecFormula from "./MolecFormula";
 import DisplayProgress2 from "./DisplayProgress2";
 import UserMessages from "./UserMessages";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
 
@@ -566,10 +566,10 @@ function AppContent() {
     <main className="window-comp">
       {/* <Header /> */}
       <section className="Main-container">
-        {/* <Header /> */}
+        <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
-          <ul>
+          {/* <ul>
             Instructions:
             <li>To begin please press "Start New Game" button.</li>
             <li>There are a total of 5 question.</li>
@@ -593,7 +593,7 @@ function AppContent() {
             </li>
             <li>The completed question number will be outlined in blue.</li>
             <li>You may restart the game to your heart's desire.</li>
-          </ul>
+          </ul> */}
           {/* <UserMessages message={message} /> */}
           {/* <Buttons
             // updateMoleculeApp={updateMolecule}
