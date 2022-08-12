@@ -639,10 +639,12 @@ function AppContent() {
                 </div>
                 {seen ? <PopUp toggle={togglePop} /> : null}
               </div>
-              <div classname="restart">
-                <button className="reset-button" onClick={resetBonds}>
-                  Reset
-                </button>
+              <div className="restart-container">
+                <div classname="restart">
+                  <button className="reset-button" onClick={resetBonds}>
+                    Reset
+                  </button>
+                </div>
               </div>
 
               <Stage

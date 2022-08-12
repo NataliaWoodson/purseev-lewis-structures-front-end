@@ -110,8 +110,11 @@ header {
 } 
 
 .restart {
-  position: absolute;
-  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  /* position: absolute;
+  bottom: 0;  */
   border: none;
   background: transparent;
   right: 0;
@@ -122,4 +125,10 @@ header {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+}
+
+.restart-container {
+  position: absolute;
+  bottom: 0; 
+  right: 0; 
 }
