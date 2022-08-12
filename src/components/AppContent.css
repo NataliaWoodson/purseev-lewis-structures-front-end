@@ -118,4 +118,8 @@ header {
   border: 2px solid purple;
 }
 
-
+.instruction-container {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
