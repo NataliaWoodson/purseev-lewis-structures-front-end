@@ -555,7 +555,7 @@ function AppContent() {
   const chooseElectronFill = (electron) => {
     if (fromShapeId) {
       if (fromShapeId[0] === electron.id) {
-        return "red";
+        return "yellow";
       } else {
         return "black";
       }
