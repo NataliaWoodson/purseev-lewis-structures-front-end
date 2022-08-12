@@ -1,11 +1,15 @@
 import "./AppContent.css";
+import "../App.css";
 import { Stage, Layer, Text, Circle, Group, Line } from "react-konva";
 import React, { useState, useEffect, useCallback } from "react";
 import Header from "./Header";
 import MolecFormula from "./MolecFormula";
 import DisplayProgress2 from "./DisplayProgress2";
 import UserMessages from "./UserMessages";
+import { Link } from "react-router-dom";
+import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
+
 import {
   getMolecules,
   generateNumAtomsDict,
@@ -515,6 +519,7 @@ function AppContent() {
 
     for (let atom of atoms) {
       if (atom.id === selectedAtomId) {
+        // console.log("updating electrons for atom with id", selectedAtomId);
         updateOneAtomPositionState(selectedAtomId, deltaX, deltaY);
       }
     }
@@ -561,7 +566,7 @@ function AppContent() {
     <main className="window-comp">
       {/* <Header /> */}
       <section className="Main-container">
-        <Header />
+        {/* <Header /> */}
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
           <ul>
@@ -655,7 +660,7 @@ function AppContent() {
                         scaleX={atom.isDragging ? 1.1 : 1}
                         scaleY={atom.isDragging ? 1.1 : 1}
                         onClick={(e) => {
-                          console.log(e);
+                          // console.log(e);
                         }}
                       ></Circle>
                       {atom.electrons.map((electron) => (
@@ -686,6 +691,7 @@ function AppContent() {
                           }}
                           // onMouseOver={hoverElectron}
                           onMouseOut={() => {
+                            // console.log("entered onMouseOut");
                             chooseElectronFill(electron);
                           }}
                           fill={chooseElectronFill(electron)}
@@ -707,7 +713,7 @@ function AppContent() {
                       strokeWidth={5}
                       onClick={(e) => {
                         breakBonds(e.target.attrs.id);
-                        console.log(e);
+                        // console.log(e);
                       }}
                     />
                   ))}
