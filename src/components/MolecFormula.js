@@ -2,10 +2,37 @@
 // import PropTypes from "prop-types";
 
 const MolecFormula = ({ display }) => {
+  const numToSubObj = {
+    0: "₀",
+    1: "₁",
+    2: "₂",
+    3: "₃",
+    4: "₄",
+    5: "₅",
+    6: "₆",
+    7: "₇",
+    8: "₈",
+    9: "₉",
+  };
+
+  // const formula = display;
+  // const result = formula.replace(/\d+/g, "<sub>$&</sub>");
+
+  let correctFormula = "";
+
+  for (const char of display) {
+    if (char in numToSubObj) {
+      correctFormula += numToSubObj[char];
+    } else {
+      correctFormula += char;
+    }
+  }
+
   return (
     <div>
       <h1>Molecular Formula</h1>
-      <h2 className="">{display}</h2>
+      {/* <h2 className="">{display}</h2> */}
+      <h2>{correctFormula}</h2>
     </div>
   );
 };
