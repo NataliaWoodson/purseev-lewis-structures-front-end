@@ -22,9 +22,9 @@ const DisplayProgress2 = ({
 
   const verifyStructureValidity = verifyStructureValidityApp;
   const resetGame = resetGameApp;
-  console.log("gameStartedApp is", gameStartedApp);
+
   const nextMoleculeClass = () => {
-    if (!gameStartedApp) {
+    if (!submitClickedApp) {
       return "hide";
     } else if (submissions.length === 5) {
       return "hide";
@@ -36,11 +36,7 @@ const DisplayProgress2 = ({
     if (!gameStartedApp) {
       return "hide";
     } else {
-      if (submissions.length === 5) {
-        return "hide";
-      } else {
-        return "show";
-      }
+      return "show";
     }
   };
 
@@ -59,22 +55,6 @@ const DisplayProgress2 = ({
   //   updateMoleculeButtons();
   // };
 
-  const chooseCircleFill = (round) => {
-    if (round > submissions.length) {
-      return "gray";
-    } else {
-      for (const submission of submissions) {
-        if (submission.round === round) {
-          if (submission.score === true) {
-            return "green";
-          } else {
-            return "red";
-          }
-        }
-      }
-    }
-  };
-
   const Circle = ({ classname, children }) => {
     return <div className={classname}>{children}</div>;
     // return <div className="circle">{1}</div>;
@@ -86,12 +66,7 @@ const DisplayProgress2 = ({
   const arr = [];
   for (let i = 1; i < circle; i++) {
     arr.push(
-      <Circle
-        classname={`${
-          i <= active ? "circle active" : "circle"
-        } ${chooseCircleFill(i)}`}
-        key={i}
-      >
+      <Circle classname={i <= active ? "circle active" : "circle"} key={i}>
         {i}
       </Circle>
     );
@@ -132,8 +107,7 @@ const DisplayProgress2 = ({
             setActiveDisp={setActive}
             circleDisp={circle}
             // className="next btn"
-            nextMoleculeClassDisp={nextMoleculeClass}
-            submitClickedDisp={submitClickedApp}
+            nextMoleculeClassButtons={nextMoleculeClass}
             // disabled={active >= circle - 1 ? true : false}
             // onClick={() => {
             //   active > circle ? setActive(circle) : setActive(active + 1);
@@ -141,15 +115,6 @@ const DisplayProgress2 = ({
             updateMoleculeButtons={updateMoleculeApp}
             // advanceProgressBarDisp={advanceProgressBar}
           ></NextMoleculeButton>
-          <SubmitButton
-            verifyStructureValidityButtons={verifyStructureValidity}
-            submitButtonClassButtons={submitButtonClass}
-            submissionsDisp={submissions}
-          />
-          <StartGameButton
-            startGameButtonClassButtons={startGameButtonClass}
-            resetGameButtons={resetGame}
-          />
         </div>
       </div>
     </div>

@@ -4,12 +4,11 @@ import "./Buttons.css";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
-  nextMoleculeClassDisp,
+  nextMoleculeClassButtons,
   // advanceProgressBarDisp,
   activeDisp,
   circleDisp,
   setActiveDisp,
-  submitClickedDisp,
 }) => {
   // const [chemicalFormula, setChemicalFormula] = useState("");
   // const onUpdateMolecule = async (event) => {
@@ -39,8 +38,6 @@ const NextMoleculeButton = ({
   // const nextMoleculeClass = nextMoleculeClassButtons();
   // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
-
-  const nextMoleculeClass = nextMoleculeClassDisp();
 
   return (
     <section>

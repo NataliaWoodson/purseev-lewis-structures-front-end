@@ -1,12 +1,6 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'Figtree', sans-serif;
-}
-
-
-/* .App {
-  text-align: center;
 }
 
 body {
@@ -32,7 +26,7 @@ body {
   /* background: url("./background.jpg") no-repeat center center fixed; */
   /* grid-template-columns: repeat(3, 1fr); */
   /* grid-template-rows: 150px 1fr 50px; */
-
+}
 
 header {
   grid-column: span 3;
