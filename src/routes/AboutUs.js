@@ -1,7 +1,7 @@
 import React from "react";
 import "./AboutUs.css";
 import { Link } from "react-router-dom";
-import catSource from "../images/cat.jpg";
+import catSource from "../assets/cat.jpg";
 
 const AboutUs = () => {
   return (
