@@ -587,9 +587,12 @@ function App() {
                 {/* Draw bonds between unpaired electrons until all electrons are
                 paired */}
               </p>
-              <button name="reset-button" onClick={resetBonds}>
-                Reset
-              </button>
+              <div classname="restart">
+                <button className="reset-button" onClick={resetBonds}>
+                  Reset
+                </button>
+              </div>
+
               <Stage
                 // className="stage-container"
                 id={"stage"}

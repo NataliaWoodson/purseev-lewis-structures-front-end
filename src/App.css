@@ -52,15 +52,16 @@ header {
 
 .Left-comp{
   display: flex;
+  margin-top: 50px;
   height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.Left-comp ul {
+/* .Left-comp ul {
   margin-top: 50px;
-}
+} */
 
 .Right-comp{
   width: 100%;
@@ -105,11 +106,11 @@ header {
 } 
 
 .header{
-  border: 2px solid black;
+  /* border: 2px solid black; */
   display: flex;
 }
 
-reset-button {
+.restart {
   position: absolute;
   bottom: 0;
   border: none;
