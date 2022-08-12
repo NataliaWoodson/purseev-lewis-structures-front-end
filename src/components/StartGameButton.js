@@ -11,7 +11,10 @@ const StartGameButton = ({ startGameButtonClassButtons, resetGameButtons }) => {
   };
 
   return (
-    <button className={startGameClass} onClick={handleClick}>
+    <button
+      className={`${"start-button"} ${startGameClass}`}
+      onClick={handleClick}
+    >
       Start New Game
     </button>
   );

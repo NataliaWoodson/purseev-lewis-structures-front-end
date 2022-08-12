@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import "./MolecFormula.css";
 // import PropTypes from "prop-types";
 
 const MolecFormula = ({ display }) => {
   return (
-    <div>
-      <h1>Molecular Formula</h1>
+    <div className="formula-header">
+      <div className="header-container">
+        <h1>Molecular Formula</h1>
+      </div>
       <h2>{display}</h2>
     </div>
   );

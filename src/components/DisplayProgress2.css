@@ -17,6 +17,10 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-top: 60px;
   }
   .progressbar::before {
     content: "";
@@ -61,9 +65,11 @@
   
   .button {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px;
+    padding-top: 20px; */
   }
   .btn {
     padding: 5px 20px;

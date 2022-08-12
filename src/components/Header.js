@@ -4,11 +4,10 @@ const Header = () => {
       <nav className="navbar">
         <ul>
           <li>
-            <img src="transparent-100.jpg" alt="" width={100} />
+            {/* <img src="transparent-100.jpg" alt="" width={100} /> */}
+            <img src="" alt="" height={300} />
           </li>
-          <li>
-            <h1 id="logo-name">Purseev</h1>
-          </li>
+          <li>{/* <h1 id="logo-name">Purseev</h1> */}</li>
           <li className="hamburger-menu">
             <img src="noun-menu.png" alt="" width={50} />
           </li>

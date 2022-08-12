@@ -1,0 +1,13 @@
+.next-mol-button, .submit-button, .start-button {
+    padding: 8px;
+    border-radius: 30px;
+    margin: 10px;
+    width: 200px;
+    font-size: 18px;
+    background-color: #22577A;
+    color: white;
+}
+
+.next-mol-button:hover, .submit-button:hover, .start-button:hover {
+    opacity: 0.8;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./Buttons.css";
 
 const SubmitButton = ({
   verifyStructureValidityButtons,
@@ -24,7 +25,10 @@ const SubmitButton = ({
   };
 
   return (
-    <button className={submitButtonClass} onClick={handleClick}>
+    <button
+      className={`${"submit-button"} ${submitButtonClass}`}
+      onClick={handleClick}
+    >
       Submit
     </button>
   );

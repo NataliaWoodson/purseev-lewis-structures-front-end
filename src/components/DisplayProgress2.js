@@ -93,6 +93,15 @@ const DisplayProgress2 = ({
           >
             Prev
           </button> */}
+          {/* <div className="button-container"></div> */}
+          <StartGameButton
+            startGameButtonClassButtons={startGameButtonClass}
+            resetGameButtons={resetGame}
+          />
+          <SubmitButton
+            verifyStructureValidityButtons={verifyStructureValidity}
+            submitButtonClassButtons={submitButtonClass}
+          />
           <NextMoleculeButton
             activeDisp={active}
             setActiveDisp={setActive}
@@ -106,14 +115,6 @@ const DisplayProgress2 = ({
             updateMoleculeButtons={updateMoleculeApp}
             // advanceProgressBarDisp={advanceProgressBar}
           ></NextMoleculeButton>
-          <SubmitButton
-            verifyStructureValidityButtons={verifyStructureValidity}
-            submitButtonClassButtons={submitButtonClass}
-          />
-          <StartGameButton
-            startGameButtonClassButtons={startGameButtonClass}
-            resetGameButtons={resetGame}
-          />
         </div>
       </div>
     </div>

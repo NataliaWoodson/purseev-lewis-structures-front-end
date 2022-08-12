@@ -15,6 +15,7 @@ import {
   generateNumAtomsDict,
   molecFormulaInit,
 } from "./components/initializeGame";
+import NextMoleculeButton from "./components/NextMoleculeButton";
 
 const STATE = {
   ids: 0,
@@ -90,7 +91,9 @@ function App() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
-  const [message, setMessage] = useState("Startup message.");
+  const [message, setMessage] = useState(
+    "Draw bonds between unpaired electrons until all electrons are paired"
+  );
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
@@ -551,7 +554,7 @@ function App() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
-          <UserMessages message={message} />
+          {/* <UserMessages message={message} /> */}
           {/* <Buttons
             // updateMoleculeApp={updateMolecule}
             verifyStructureValidityApp={verifyStructureValidity}
@@ -574,10 +577,13 @@ function App() {
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
               <p className="stage-msg">
-                Draw bonds between unpaired electrons until all electrons are
-                paired
+                <UserMessages message={message} />
+                {/* Draw bonds between unpaired electrons until all electrons are
+                paired */}
               </p>
-              <button onClick={resetBonds}>Reset</button>
+              <button name="reset-button" onClick={resetBonds}>
+                Reset
+              </button>
               <Stage
                 // className="stage-container"
                 id={"stage"}

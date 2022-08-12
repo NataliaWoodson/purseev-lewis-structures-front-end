@@ -1,5 +1,6 @@
 // import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "./Buttons.css";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
@@ -23,7 +24,9 @@ const NextMoleculeButton = ({
   //     setAtoms(generateAtoms(atomObj));
   // });
   const advanceProgressBar = () => {
-    activeDisp > circleDisp ? setActiveDisp(circleDisp) : setActiveDisp(activeDisp + 1);
+    activeDisp > circleDisp
+      ? setActiveDisp(circleDisp)
+      : setActiveDisp(activeDisp + 1);
   };
 
   const onHandleClick = (e) => {
@@ -31,7 +34,6 @@ const NextMoleculeButton = ({
     updateMoleculeButtons();
     advanceProgressBar();
   };
-  
 
   // const nextMoleculeClass = nextMoleculeClassButtons();
   // console.log("nextMoleculeClass is", nextMoleculeClass);
@@ -41,7 +43,7 @@ const NextMoleculeButton = ({
     <section>
       <button
         onClick={onHandleClick}
-        className={nextMoleculeClassButtons}
+        className={`${"next-mol-button"} ${nextMoleculeClassButtons}`}
         disabled={activeDisp >= circleDisp - 1 ? true : false}
       >
         Next Molecule
