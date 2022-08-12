@@ -121,6 +121,8 @@ const DisplayProgress2 = ({
           <StartGameButton
             startGameButtonClassButtons={startGameButtonClass}
             resetGameButtons={resetGame}
+            setActiveDisp={setActive}
+            setWidthDisp={setWidth}
           />
           <SubmitButton
             verifyStructureValidityButtons={verifyStructureValidity}

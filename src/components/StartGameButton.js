@@ -3,6 +3,7 @@ import React from "react";
 const StartGameButton = ({
   startGameButtonClassButtons,
   setActiveDisp,
+  setWidthDisp,
   resetGameButtons,
 }) => {
   const startGameClass = startGameButtonClassButtons();
@@ -11,7 +12,8 @@ const StartGameButton = ({
   const handleClick = (event) => {
     event.preventDefault();
     setActiveDisp(0);
-    return resetGame();
+    setWidthDisp(0);
+    resetGame();
   };
 
   return (
