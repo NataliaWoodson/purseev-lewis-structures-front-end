@@ -5,6 +5,9 @@ const SubmitButton = ({
   verifyStructureValidityButtons,
   submitButtonClassButtons,
   submissionsDisp,
+  activeDisp,
+  setActiveDisp,
+  circleDisp,
 }) => {
   // console.log("props in SubmitButton are", props);
 
@@ -17,12 +20,22 @@ const SubmitButton = ({
   // }
   const submitButtonClass = submitButtonClassButtons();
 
+  const advanceProgressBar = () => {
+    activeDisp > circleDisp
+      ? setActiveDisp(circleDisp)
+      : setActiveDisp(activeDisp + 1);
+    // activeDisp > circleDisp
+    //   ? setActiveDisp(circleDisp)
+    //   : setActiveDisp(activeDisp + 1);
+  };
+
   const handleClick = (event) => {
     event.preventDefault();
+    advanceProgressBar();
     // console.log(verifyStructureValidityButtons);
     // console.log("registered Submit Button click");
 
-    return verifyStructureValidityButtons();
+    verifyStructureValidityButtons();
   };
 
   return (

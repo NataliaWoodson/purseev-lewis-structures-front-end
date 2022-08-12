@@ -36,7 +36,7 @@ const NextMoleculeButton = ({
   const onHandleClick = (e) => {
     e.preventDefault();
     updateMoleculeButtons();
-    advanceProgressBar();
+    // advanceProgressBar();
   };
 
   const nextMoleculeClass = nextMoleculeClassDisp();
