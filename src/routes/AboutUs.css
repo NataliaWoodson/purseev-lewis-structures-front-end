@@ -16,7 +16,9 @@
     /* grid-template-rows: .20fr 1fr .15fr; */
     background-color: peachpuff;
     color: #3e3e3e;
-    font-weight: 300;    
+    font-weight: 300; 
+    justify-items: center;
+    align-items: center;   
 }  
 
 .main-heading {
