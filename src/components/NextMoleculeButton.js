@@ -4,11 +4,12 @@ import "./Buttons.css";
 
 const NextMoleculeButton = ({
   updateMoleculeButtons,
-  nextMoleculeClassButtons,
+  nextMoleculeClassDisp,
   // advanceProgressBarDisp,
   activeDisp,
   circleDisp,
   setActiveDisp,
+  submitClickedDisp,
 }) => {
   // const [chemicalFormula, setChemicalFormula] = useState("");
   // const onUpdateMolecule = async (event) => {
@@ -27,6 +28,9 @@ const NextMoleculeButton = ({
     activeDisp > circleDisp
       ? setActiveDisp(circleDisp)
       : setActiveDisp(activeDisp + 1);
+    // activeDisp > circleDisp
+    //   ? setActiveDisp(circleDisp)
+    //   : setActiveDisp(activeDisp + 1);
   };
 
   const onHandleClick = (e) => {
@@ -35,6 +39,7 @@ const NextMoleculeButton = ({
     advanceProgressBar();
   };
 
+  const nextMoleculeClass = nextMoleculeClassDisp();
   // const nextMoleculeClass = nextMoleculeClassButtons();
   // console.log("nextMoleculeClass is", nextMoleculeClass);
   // };
@@ -43,8 +48,9 @@ const NextMoleculeButton = ({
     <section>
       <button
         onClick={onHandleClick}
-        className={`${"next-mol-button"} ${nextMoleculeClassButtons}`}
-        disabled={activeDisp >= circleDisp - 1 ? true : false}
+        className={`${"next-mol-button"} ${nextMoleculeClass}`}
+        // disabled={activeDisp >= circleDisp - 1 ? true : false}
+        disabled={submitClickedDisp ? false : true}
       >
         Next Molecule
       </button>

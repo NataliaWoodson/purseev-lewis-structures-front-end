@@ -54,10 +54,10 @@ const Buttons = ({
 
   return (
     <div>
-      {/* <NextMoleculeButton
+      <NextMoleculeButton
         updateMoleculeButtons={updateMoleculeApp}
         nextMoleculeClassButtons={nextMoleculeClass}
-      /> */}
+      />
       <SubmitButton
         verifyStructureValidityButtons={verifyStructureValidity}
         submitButtonClassButtons={submitButtonClass}

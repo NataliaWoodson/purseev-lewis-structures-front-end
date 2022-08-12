@@ -1,5 +1,5 @@
 .container {
-    margin: 0;
+    margin: 40px;
     padding: 0;
     box-sizing: border-box;
     display: flex;
@@ -63,7 +63,16 @@
   .circle.active {
     /* border-color: blue; */
     border-color: #FFCC00;
+  }
 
+  .circle.green {
+    background-color: green;
+    color: white;
+  }
+
+  .circle.red {
+    background-color: red;
+    color: white;
   }
   
   .button {

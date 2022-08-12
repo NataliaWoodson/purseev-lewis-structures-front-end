@@ -554,6 +554,12 @@ function App() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
+          <ul>
+            <li>Drag the atoms wherever you like within the stage.</li>
+            <li>Click two electrons to bond them.</li>
+            <li>Click a bond to delete it.</li>
+            <li>You can reset all bonds with the reset arrow on the stage.</li>
+          </ul>
           {/* <UserMessages message={message} /> */}
           {/* <Buttons
             // updateMoleculeApp={updateMolecule}

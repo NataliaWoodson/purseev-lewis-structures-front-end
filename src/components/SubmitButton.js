@@ -4,6 +4,7 @@ import "./Buttons.css";
 const SubmitButton = ({
   verifyStructureValidityButtons,
   submitButtonClassButtons,
+  submissionsDisp,
 }) => {
   // console.log("props in SubmitButton are", props);
 
@@ -28,6 +29,7 @@ const SubmitButton = ({
     <button
       className={`${"submit-button"} ${submitButtonClass}`}
       onClick={handleClick}
+      // className={submissionsDisp.length === 5 ? "hide" : "show"}
     >
       Submit
     </button>

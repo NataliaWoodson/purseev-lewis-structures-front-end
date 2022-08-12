@@ -1,6 +1,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: 'Figtree', sans-serif;
 }
 
 body {
@@ -55,6 +56,10 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.Left-comp ul {
+  margin-top: 50px;
 }
 
 .Right-comp{
