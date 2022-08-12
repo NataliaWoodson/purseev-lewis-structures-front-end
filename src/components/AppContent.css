@@ -123,8 +123,8 @@ header {
 
 .instruction-container {
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
+  justify-content: space-between;  /* align-items: flex-end; */
+  flex-direction: row;
 }
 
 /* .restart-container {

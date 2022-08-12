@@ -635,18 +635,21 @@ function AppContent() {
                 paired */}
               </p>
               <div className="instruction-container">
+                <button className="reset-button" onClick={resetBonds}>
+                  Reset
+                </button>
                 <div onClick={togglePop}>
                   <button className="instructions">i</button>
                 </div>
                 {seen ? <PopUp toggle={togglePop} /> : null}
               </div>
-              <div className="restart-container">
-                <div classname="restart">
-                  <button className="reset-button" onClick={resetBonds}>
+              {/* <div className="restart-container"> */}
+              {/* <div classname="restart"> */}
+              {/* <button className="reset-button" onClick={resetBonds}>
                     Reset
-                  </button>
-                </div>
-              </div>
+                  </button> */}
+              {/* </div> */}
+              {/* </div> */}
 
               <Stage
                 // className="stage-container"
