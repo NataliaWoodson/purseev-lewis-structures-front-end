@@ -537,7 +537,9 @@ function App() {
             <li>You are able to drag atoms to better visualize the bonds.</li>
             <li>You can click two electrons to bond them.</li>
             <li>You can also click a bond to delete it.</li>
-            <li>You can reset all bonds with the reset arrow on the stage.</li>
+            <li>
+              You can reset all bonds with the "Reset" button on the stage.
+            </li>
             <li>
               Click the "Submit" button to check if you made a valid structure.
             </li>
