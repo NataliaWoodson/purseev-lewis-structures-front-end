@@ -55,7 +55,7 @@ width: 100%;
 margin: 0 auto;
 display: grid;
 grid-gap: 10px;
-background: url("./pawel-czerwinski-NJdfP9AlPjc-unsplash.jpg") no-repeat center center fixed;
+/* background: url("./pawel-czerwinski-NJdfP9AlPjc-unsplash.jpg") no-repeat center center fixed; */
 /* grid-template-columns: repeat(3, 1fr); */
 /* grid-template-rows: 150px 1fr 50px; */
 }

@@ -4,9 +4,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import Header from "./Header";
 import MolecFormula from "./MolecFormula";
 import DisplayProgress2 from "./DisplayProgress2";
+import { Link } from "react-router-dom";
 import UserMessages from "./UserMessages";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
+
 import {
   getMolecules,
   generateNumAtomsDict,
@@ -83,7 +85,7 @@ const generateAtoms = (atomObj) => {
   return atomData;
 };
 
-function App() {
+function AppContent() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
