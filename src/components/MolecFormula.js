@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 
 const MolecFormula = ({ display }) => {
@@ -31,6 +31,7 @@ const MolecFormula = ({ display }) => {
   return (
     <div>
       <h1>Molecular Formula</h1>
+      {/* <h2 className="">{display}</h2> */}
       <h2>{correctFormula}</h2>
     </div>
   );
