@@ -9,6 +9,7 @@ import UserMessages from "./UserMessages";
 // import { Link } from "react-router-dom";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
+import PopUp from "./PopUp";
 
 import {
   getMolecules,
@@ -99,6 +100,7 @@ function AppContent() {
   const [lineData, setLineData] = useState([]);
   const [molecFormula, setMolecFormula] = useState("");
   const [resetClicked, setResetClicked] = useState(false);
+  const [seen, setSeen] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -562,6 +564,10 @@ function AppContent() {
     }
   };
 
+  const togglePop = () => {
+    setSeen((seen) => !seen);
+  };
+
   return (
     <main className="window-comp">
       {/* <Header /> */}
@@ -569,6 +575,12 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
+          <div>
+            <div className="btn" onClick={togglePop}>
+              <button>Instructions</button>
+            </div>
+            {seen ? <PopUp toggle={togglePop} /> : null}
+          </div>
           {/* <ul>
             Instructions:
             <li>To begin please press "Start New Game" button.</li>

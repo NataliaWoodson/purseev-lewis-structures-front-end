@@ -9,5 +9,8 @@
 }
 
 .next-mol-button:hover, .submit-button:hover, .start-button:hover {
-    opacity: 0.8 1s ease-in-out;
+    opacity: 0.8 2s ease-in-out;
+    background-color: white;
+    color: black;
+
 }
