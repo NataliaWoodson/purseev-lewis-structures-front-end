@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import catSource from "../assets/cat.jpg";
 import Header from "../components/Header";
 import adrianaSource from "../assets/adriana.png";
+import humaSource from "../assets/huma.jpg";
 
 const AboutUs = () => {
   return (
@@ -40,32 +41,31 @@ const AboutUs = () => {
         </section>
         <section className="bios">
           <div className="bio-container">
-            <img className="developer-pics" src={catSource} alt="logo" />
+            <img className="developer-pics" src={humaSource} alt="logo" />
             <h1 className="names">Huma</h1>
             <p className="description">
               Huma stumbled upon programming completely by happenstance. Being
               told that all kids would need to know programming in the future
               and wanting to make sure her kids would not be at a loss, she went
               on a mission to learn what programming was. Never having been
-              exposed to computer science before, she taught herself in order to
-              teach her three kids and, in the process, found a new passion.
-              Being a stay at home mom for a few years, she originally did not
-              consider coding as a career option. She overheard a conversation
-              between her kids about how boys are good at math and therefore a
-              girl could not be a programmer. Not knowing any programmers
-              herself, let alone a female programmer, she embarked on a journey
-              to become for her kids the role model she wished she'd had for
-              herself.
+              exposed to computer science, she taught herself in order to teach
+              her three kids, and in the process, found a new passion. Being a
+              stay at home mom, she originally did not consider coding as a
+              career option until she overheard a conversation between her kids
+              about how boys are good at math and therefore a girl could not be
+              a programmer. Not knowing any programmers herself, let alone a
+              female programmer, she embarked on a journey to become for her
+              kids the role model she wished she'd had for herself.
             </p>
             <p className="description">
               Her journey took her to Ada Developers Academy where she not only
-              met her first female developers but developers from a variety of
-              backgrounds and identities. At Ada, Huma honed her skills as a
-              developer and expanded her understanding of equity, privilege and
-              self-advocacy. With the support of her family and the knowledge
-              she gained through the rigorous program at Ada and its amazing
-              instructors, Huma will be taking the next step on her journey as
-              an intern at Salesforce.
+              met the first of many female developers but developers from a
+              variety of backgrounds and identities. At Ada, Huma honed her
+              skills as a developer and expanded her understanding of equity,
+              privilege and self-advocacy. With the support of her family and
+              the knowledge she gained through the rigorous program at Ada and
+              its amazing instructors, Huma will be taking the next step in her
+              journey as an intern at Salesforce.
             </p>
           </div>
         </section>
