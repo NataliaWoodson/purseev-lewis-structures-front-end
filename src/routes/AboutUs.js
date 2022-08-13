@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import adrianaSource from "../assets/adriana.png";
 import humaSource from "../assets/huma.jpg";
 import nataliaSource from "../assets/natalia.jpg";
-import jennySource from "../assets/jenny2.jpeg";
+import jennySource from "../assets/jenny.jpeg";
 
 const AboutUs = () => {
   return (
