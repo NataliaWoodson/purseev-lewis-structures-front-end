@@ -12,11 +12,11 @@
     font-family: helvetica; 
     display: grid;
     grid-template-columns: 1fr;
-    color: #3e3e3e;
+    color: gray;
     font-weight: 300;   
     align-items: center; 
     justify-items: center;
-    background-color: peachpuff;
+    background-color: #121212;
     font-size: calc(12px + .5vw);
     
 
@@ -50,7 +50,7 @@
     opacity: 90%;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+    border-radius: 25px;
 } 
 
 
