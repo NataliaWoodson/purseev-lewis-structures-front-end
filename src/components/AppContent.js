@@ -575,6 +575,12 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
+          <ul>
+            <h3>How to Play</h3>
+            <li>Click two unpaired electrons to draw a bond.</li>
+            <li>Click a bond to delete it.</li>
+            <li>Keep going until all unpaired electrons are bonded!</li>
+          </ul>
           {/* <div>
             <div onClick={togglePop}>
               <button className="instructions">i</button>
