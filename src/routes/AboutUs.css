@@ -4,7 +4,7 @@
     display: inline-block;
     line-height: 1.5em;
     vertical-align: middle;
-    /* text-align: center; */
+
 }   
 
 .about-us-container  {
@@ -12,13 +12,12 @@
     font-family: helvetica; 
     display: grid;
     grid-template-columns: 1fr;
-    /* grid-gap: 5px; */
-    /* grid-template-rows: .20fr 1fr .15fr; */
-    /* background-color: peachpuff; */
     color: #3e3e3e;
     font-weight: 300;   
     align-items: center; 
     justify-items: center;
+    background-color: peachpuff;
+    font-size: calc(12px + .5vw);
     
 
 }  
@@ -32,7 +31,7 @@
 }
 
 .bios {
-    width: 35%;
+    width: 33%;
 } 
 
 .names {
@@ -42,28 +41,19 @@
 .bio-container {
     display: flex;
     flex-direction: column;
-    /* max-width: 80%; */
     padding: 20px;
     margin: 20px;
 }
 
 .developer-pics{
     width: auto;
-    /* padding-bottom: 10px; */
     opacity: 90%;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-}
+} 
 
 
-/* .tags li {
-    color: #3e3e3e;
-    list-style: none;
-    border-radius: 10px;
-    padding: .5em;
-    font-size: .7em;
-    font-weight: bold;
-    background-color: lightgray;
-} */
-
+ /* grid-gap: 5px; */
+    /* grid-template-rows: .20fr 1fr .15fr; */
+    /* background-color: peachpuff; */

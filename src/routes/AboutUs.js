@@ -5,6 +5,8 @@ import catSource from "../assets/cat.jpg";
 import Header from "../components/Header";
 import adrianaSource from "../assets/adriana.png";
 import humaSource from "../assets/huma.jpg";
+import nataliaSource from "../assets/natalia.jpg";
+import jennySource from "../assets/jenny2.jpeg";
 
 const AboutUs = () => {
   return (
@@ -71,25 +73,43 @@ const AboutUs = () => {
         </section>
         <section className="bios">
           <div className="bio-container">
-            <img className="developer-pics" src={catSource} alt="logo" />
+            <img className="developer-pics" src={nataliaSource} alt="logo" />
             <h1 className="names">Natalia</h1>
             <p className="description">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque
-              exercitationem officia quam molestiae ullam adipisci nisi optio,
-              unde iure explicabo cupiditate voluptates veniam, rem distinctio
-              quisquam maxime architecto. Quos, saepe
+              While working as a speech language pathologist, Natalia became
+              passionate about the power of assistive technology to change lives
+              and enable those with disabilities to communicate. Eager to learn
+              more about the inner workings of the tools she worked with, she
+              began using online resources to learn how to code and began her
+              journey to break into tech. She was accepted into Ada Developers
+              Academy, where she furthered her skills as a developer and found a
+              community dedicated to increasing diversity and equity in tech. As
+              a developer, Natalia is on a mission to harness technology for
+              social good. Equipped with the skills and confidence gained from
+              her time at Ada, she will continue her journey as an intern at
+              Salesforce.
             </p>
           </div>
         </section>
         <section className="bios">
           <div className="bio-container">
-            <img className="developer-pics" src={catSource} alt="logo" />
+            <img className="developer-pics" src={jennySource} alt="logo" />
             <h1 className="names">Jenny</h1>
             <p className="description">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque
-              exercitationem officia quam molestiae ullam adipisci nisi optio,
-              unde iure explicabo cupiditate voluptates veniam, rem distinctio
-              quisquam maxime architecto. Quos, saepe
+              Jenny's interest in programming was sparked when she was working
+              as an accounting specialist. She had to download a lot files
+              manually so her coworker helped her create a script to automate
+              downloading files from online. She was amazed how a little script
+              could make work more efficient and save people so much time. She
+              started learning online while balancing working full time. She was
+              introduced to programming bootcamps by a colleague who was
+              attending one. This grew her curiosity. She researched bootcamps,
+              attended information sessions but was turned off by the lack of
+              inclusivity (majority of attendees were males and few women of
+              color). This led her to apply and was accepted into Ada Developers
+              Academy where she would studied programming in a safe and
+              inclusive learning environment. Jenny will continue to hone her
+              skills as an intern at Indeed.
             </p>
           </div>
         </section>
