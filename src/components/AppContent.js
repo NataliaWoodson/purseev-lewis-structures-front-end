@@ -353,7 +353,7 @@ function AppContent() {
       return null;
     }
     setMessage(
-      "Draw bonds between unpaired electrons until all electrons are paired. Click a bond to delete it."
+      "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
     );
     STATE.numRounds++;
 
@@ -427,7 +427,7 @@ function AppContent() {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
         setMessage(
-          "This structure is invalid. See if you can find a way to bond electrons so that every single one is paired."
+          "This structure is invalid. Try to find a way to bond electrons so that every single one is paired."
         );
         updateSubmissions(false);
         return false;
@@ -698,7 +698,7 @@ function AppContent() {
                           radius={5}
                           onClick={(e) => {
                             setMessage(
-                              "Draw bonds between unpaired electrons until all electrons are paired. Click a bond to delete it."
+                              "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
                             );
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
