@@ -7,9 +7,9 @@
 
 }    */
 
-.background {
+/* .background {
     background-color: #F6F6F6;
-}
+} */
 
 figure {
     font-size: calc(12px + .5vw);
@@ -21,6 +21,7 @@ figure {
     flex-direction:column;
     margin-left:15vw;
     margin-right:15vw;
+    margin-top: 20px;
 }
 
 .bio-container {
@@ -29,6 +30,7 @@ figure {
     align-items: center;
     /* padding: calc(20px + 2vw); */
     margin-top: 10px;
+    
 }
 
 .bio-container:nth-child(2n-1) {
@@ -51,6 +53,8 @@ figure {
     min-width: 200px;
     max-width: 15vw;
     border-radius: 50px;
+    margin-right: 15px;
+    margin-top: 10px;
 
 }
 

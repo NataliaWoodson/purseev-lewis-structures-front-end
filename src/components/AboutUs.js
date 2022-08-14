@@ -2,7 +2,7 @@ import React from "react";
 import "./AboutUs.css";
 import { Link } from "react-router-dom";
 // import catSource from "../assets/cat.jpg";
-import Header from "../components/Header";
+import Header from "./Header";
 import adrianaSource from "../assets/adriana.png";
 import humaSource from "../assets/huma.jpg";
 import nataliaSource from "../assets/natalia.jpg";
