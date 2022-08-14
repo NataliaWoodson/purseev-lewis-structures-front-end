@@ -7,7 +7,7 @@ const Header = () => {
         <ul>
           <li>
             {/* <img src="transparent-100.jpg" alt="" width={100} /> */}
-            <img src="purseev-logo.png" alt="" height={100} />
+            <img src="purseev-logo2.png" alt="" height={100} />
           </li>
           <li>{/* <h1 id="logo-name">Purseev</h1> */}</li>
           <li className="hamburger-menu">
