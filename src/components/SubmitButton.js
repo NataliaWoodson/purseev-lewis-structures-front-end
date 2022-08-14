@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Buttons.css";
 
+
 const SubmitButton = ({
   verifyStructureValidityButtons,
   submitButtonClassButtons,
