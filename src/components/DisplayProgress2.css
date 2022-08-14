@@ -51,7 +51,7 @@
   .circle {
     background-color: #fff;
     /* color: #999; */
-    color: #36454F;
+    color: gray;
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -64,17 +64,20 @@
   .circle.active {
     /* border-color: blue; */
     /* border-color: #FFCC00; */
-    border-color: #72D6C9;
+    /* border-color: #72D6C9; */
+    background-color: white;
   }
 
   .circle.green {
-    background-color: green;
-    color: white;
+    /* background-color: green; */
+    border-color: rgb(8, 201, 8);
+    color: black;
   }
 
   .circle.red {
-    background-color: red;
-    color: white;
+    /* background-color: red; */
+    border-color: red;
+    color: black;
   }
   
   .button {
