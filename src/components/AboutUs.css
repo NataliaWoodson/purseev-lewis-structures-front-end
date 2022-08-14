@@ -35,14 +35,14 @@ figure {
 
 .bio-container:nth-child(2n-1) {
     background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-                linear-gradient(to right top, #FF8E6E, #FFBB91, #515070 35%, rgba(255, 255, 255, 0) 40%) border-box;
+                linear-gradient(to right top, rgb(182, 244, 146), rgb(51, 139, 147) 35%, rgba(255, 255, 255, 0) 40%) border-box;
     border: 0.5vw solid transparent;
     border-radius: 50px;
 }
 
 .bio-container:nth-child(2n) {
     background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-                linear-gradient(to left top, #FF8E6E, #FFBB91, #515070 35%, rgba(255, 255, 255, 0) 40%) border-box;
+                linear-gradient(to left top, rgb(182, 244, 146), rgb(51, 139, 147) 35%, rgba(255, 255, 255, 0) 40%) border-box;
     border: 0.5vw solid transparent;
     border-radius: 50px;
 }
