@@ -110,8 +110,11 @@ header {
 } 
 
 .restart {
-  position: absolute;
-  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  /* position: absolute;
+  bottom: 0;  */
   border: none;
   background: transparent;
   right: 0;
@@ -120,6 +123,16 @@ header {
 
 .instruction-container {
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
+  justify-content: space-between;  /* align-items: flex-end; */
+  flex-direction: row;
+}
+
+/* .restart-container {
+  position: absolute;
+  bottom: 0; 
+  right: 0; 
+} */
+
+.reset-button:hover {
+  cursor: pointer;
 }

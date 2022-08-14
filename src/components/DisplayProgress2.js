@@ -121,11 +121,18 @@ const DisplayProgress2 = ({
           <StartGameButton
             startGameButtonClassButtons={startGameButtonClass}
             resetGameButtons={resetGame}
+            setActiveDisp={setActive}
+            setWidthDisp={setWidth}
           />
           <SubmitButton
             verifyStructureValidityButtons={verifyStructureValidity}
             submitButtonClassButtons={submitButtonClass}
             submissionsDisp={submissions}
+            circleDisp={circle}
+            activeDisp={active}
+            setActiveDisp={setActive}
+            submitClickedDisp={submitClickedApp}
+            // advanceProgressBarDisp={advanceProgressBar}
           />
           <NextMoleculeButton
             activeDisp={active}

@@ -91,9 +91,7 @@ function AppContent() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
   const [atoms, setAtoms] = useState([]);
-  const [message, setMessage] = useState(
-    "Draw bonds between unpaired electrons until all electrons are paired"
-  );
+  const [message, setMessage] = useState("Click Start Game button to begin!");
   const [submissions, setSubmissions] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
@@ -354,7 +352,9 @@ function AppContent() {
     if (submissions.length > 5) {
       return null;
     }
-    setMessage("");
+    setMessage(
+      "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
+    );
     STATE.numRounds++;
 
     setSubmitClicked(false);
@@ -427,7 +427,7 @@ function AppContent() {
       if (electron.isPaired === false) {
         console.log("structure is invalid");
         setMessage(
-          "This structure is invalid. See if you can find a way to bond electrons so that every single one is paired."
+          "This structure is invalid. Try to find a way to bond electrons so that every single one is paired."
         );
         updateSubmissions(false);
         return false;
@@ -555,7 +555,7 @@ function AppContent() {
   const chooseElectronFill = (electron) => {
     if (fromShapeId) {
       if (fromShapeId[0] === electron.id) {
-        return "red";
+        return "yellow";
       } else {
         return "black";
       }
@@ -575,6 +575,12 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
+          <ul>
+            <h3>How to Play</h3>
+            <li>Click two unpaired electrons to draw a bond.</li>
+            <li>Click a bond to delete it.</li>
+            <li>Keep going until all unpaired electrons are bonded!</li>
+          </ul>
           {/* <div>
             <div onClick={togglePop}>
               <button className="instructions">i</button>
@@ -620,6 +626,7 @@ function AppContent() {
             verifyStructureValidityApp={verifyStructureValidity}
             submissionsApp={submissions}
             submitClickedApp={submitClicked}
+            setSubmitClickedApp={setSubmitClicked}
             resetGameApp={resetGame}
             gameStartedApp={gameStarted}
           />
@@ -634,16 +641,21 @@ function AppContent() {
                 paired */}
               </p>
               <div className="instruction-container">
+                <button className="reset-button" onClick={resetBonds}>
+                  Reset
+                </button>
                 <div onClick={togglePop}>
                   <button className="instructions">i</button>
                 </div>
                 {seen ? <PopUp toggle={togglePop} /> : null}
               </div>
-              <div classname="restart">
-                <button className="reset-button" onClick={resetBonds}>
-                  Reset
-                </button>
-              </div>
+              {/* <div className="restart-container"> */}
+              {/* <div classname="restart"> */}
+              {/* <button className="reset-button" onClick={resetBonds}>
+                    Reset
+                  </button> */}
+              {/* </div> */}
+              {/* </div> */}
 
               <Stage
                 // className="stage-container"
@@ -691,7 +703,9 @@ function AppContent() {
                           offsetY={electron.yDisplace}
                           radius={5}
                           onClick={(e) => {
-                            setMessage("");
+                            setMessage(
+                              "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
+                            );
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
                                 fromShapeId[0]
