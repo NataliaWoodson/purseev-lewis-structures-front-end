@@ -1,7 +1,7 @@
 import React from "react";
 import "./AboutUs.css";
 import { Link } from "react-router-dom";
-import catSource from "../assets/cat.jpg";
+// import catSource from "../assets/cat.jpg";
 import Header from "../components/Header";
 import adrianaSource from "../assets/adriana.png";
 import humaSource from "../assets/huma.jpg";
@@ -20,7 +20,7 @@ const AboutUs = () => {
         <div className="about-us-container">
           <div className="bio-container">
             <figure className="image">
-              <img src={adrianaSource} alt="logo" />
+              <img className="developer-pics" src={adrianaSource} alt="logo" />
             </figure>
 
             <figure className="description">
@@ -44,7 +44,7 @@ const AboutUs = () => {
           </div>
           <div className="bio-container">
             <figure className="image">
-              <img src={humaSource} alt="logo" />
+              <img className="developer-pics" src={humaSource} alt="logo" />
             </figure>
 
             <figure className="description">
@@ -115,8 +115,14 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+    </main>
+  );
+};
 
-      {/* <section className="bios">
+export default AboutUs;
+
+{
+  /* <section className="bios">
           <div className="bio-container">
             <img className="developer-pics" src={nataliaSource} alt="logo" />
             <h1 className="names">Natalia</h1>
@@ -158,9 +164,5 @@ const AboutUs = () => {
             </p>
           </div>
         </section>
-      </div> */}
-    </main>
-  );
-};
-
-export default AboutUs;
+      </div> */
+}

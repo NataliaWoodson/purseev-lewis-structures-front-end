@@ -45,9 +45,9 @@ figure {
     border-radius: 50px;
 }
 
-img {
+.developer-pics {
     object-fit:cover;
-    width: 100%;
+    width: 70%;
     min-width: 200px;
     max-width: 15vw;
     border-radius: 50px;
