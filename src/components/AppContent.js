@@ -568,6 +568,25 @@ function AppContent() {
     setSeen((seen) => !seen);
   };
 
+  // set atom colors
+  const setAtomColor = (atomSymbol) => {
+    if (atomSymbol === "H") {
+      return "white";
+    } else if (atomSymbol === "O") {
+      return "#ff3333";
+    } else if (atomSymbol === "Cl" || atomSymbol === "F") {
+      return "#50C878";
+    } else if (atomSymbol === "N") {
+      return "#3385ff";
+    } else if (atomSymbol === "C" || atomSymbol === "Si") {
+      return "#808080";
+    } else if (atomSymbol === "S") {
+      return "yellow";
+    } else if (atomSymbol === "P") {
+      return "orange";
+    }
+  };
+
   return (
     <main className="window-comp">
       {/* <Header /> */}
@@ -679,7 +698,8 @@ function AppContent() {
                         key={atom.id}
                         x={0}
                         y={0}
-                        fill="#72D6C9"
+                        // fill="#72D6C9"
+                        fill={setAtomColor(atom.text)}
                         radius={45}
                         opacity={0.7}
                         // shadowColor="black"
