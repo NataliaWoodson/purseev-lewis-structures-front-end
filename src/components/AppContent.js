@@ -584,6 +584,10 @@ function AppContent() {
       return "yellow";
     } else if (atomSymbol === "P") {
       return "orange";
+    } else if (atomSymbol === "Be") {
+      return "#C2FF00";
+    } else if (atomSymbol === "Br") {
+      return "#A62929";
     }
   };
 
