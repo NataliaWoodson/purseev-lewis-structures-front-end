@@ -76,6 +76,14 @@ header {
   
 }
 
+.short-directions {
+  list-style-type: none;
+}
+
+.short-directions li {
+  line-height: 1.5em;
+}
+
 .stage-msg{
   background-color: #22577A;
   color: white;

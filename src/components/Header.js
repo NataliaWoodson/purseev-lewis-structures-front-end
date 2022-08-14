@@ -9,7 +9,7 @@ const Header = () => {
     <header>
       <nav className="navbar">
         {/* <img src="transparent-100.jpg" alt="" width={100} /> */}
-        <img src="purseev-logo.png" className="logo" alt="" height={100} />
+        <img src="purseev-white.png" className="logo" alt="" height={100} />
         <ul
           className={isMobile ? "nav-links-mobile" : "nav-links"}
           onClick={() => setIsMobile(false)}
