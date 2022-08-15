@@ -10,6 +10,8 @@ import UserMessages from "./UserMessages";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
 import PopUp from "./PopUp";
+import { FaUndo } from "react-icons/fa";
+import { BsInfoSquare } from "react-icons/bs";
 
 import {
   getMolecules,
@@ -635,18 +637,24 @@ function AppContent() {
           <div className="main-stage-container">
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
-              <p className="stage-msg">
+              <div className="stage-msg">
+                <button onClick={togglePop} className="instructions">
+                  <BsInfoSquare />
+                </button>
                 <UserMessages message={message} />
                 {/* Draw bonds between unpaired electrons until all electrons are
                 paired */}
-              </p>
+              </div>
+
               <div className="instruction-container">
                 <button className="reset-button" onClick={resetBonds}>
-                  Reset
+                  <FaUndo />
                 </button>
-                <div onClick={togglePop}>
-                  <button className="instructions">i</button>
-                </div>
+                {/* <div onClick={togglePop}>
+                  <button className="instructions">
+                    <BsInfoCircle />
+                  </button>
+                </div> */}
                 {seen ? <PopUp toggle={togglePop} /> : null}
               </div>
               {/* <div className="restart-container"> */}

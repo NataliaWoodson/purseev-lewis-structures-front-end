@@ -85,6 +85,8 @@ header {
 }
 
 .stage-msg{
+  display: flex;
+  flex-direction: column;
   background-color: #22577A;
   color: white;
   padding: 20px;
@@ -109,7 +111,7 @@ header {
 
 .stage-container {
   
-  height: calc(100vh - 300px);
+  height: calc(100vh - 100px);
   width: calc(100vw - 400px);
 }  
 
@@ -131,7 +133,7 @@ header {
 
 .instruction-container {
   display: flex;
-  justify-content: space-between;  /* align-items: flex-end; */
+  justify-content: flex-end;  /* align-items: flex-end; */
   flex-direction: row;
 }
 
@@ -141,6 +143,23 @@ header {
   right: 0; 
 } */
 
+.reset-button {
+  background:none;
+  border:none;
+  opacity: .5;
+  font-size: 1.25em;
+}
+
 .reset-button:hover {
   cursor: pointer;
+  color: #22577A;
+  background: none;
+  /* background-color: #22577A; */
+  opacity: .9;
 }
+
+/* .instruction-container {
+  position: fixed;
+  bottom: 0;
+  right: 0
+} */
