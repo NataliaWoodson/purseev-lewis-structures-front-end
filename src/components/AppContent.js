@@ -101,6 +101,8 @@ function AppContent() {
   const [seen, setSeen] = useState(false);
   const [drawing, setDrawing] = useState(false);
   const [touchingTarget, setTouchingTarget] = useState(false);
+  const [points, setPoints] = useState(null);
+  const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -573,6 +575,28 @@ function AppContent() {
   const handleMoveMouse = (e) => {
     const cursor = e.currentTarget.getPointerPosition();
     setPoints((current) => [current[0], current[1], cursor.x, cursor.y]);
+    console.log("points in handle move mouse are", points);
+  };
+
+  const removeLastPoint = () => {
+    setPoints(null);
+    console.log("points in remove last point are:", points);
+  };
+
+  const handleSetPoints = (x, y) => {
+    setPoints((current) => [current[0], current[1], x, y]);
+    console.log("points in handle set points are:", points);
+  };
+
+  const handleClickFirstTarget = (e) => {
+    const pos = e.currentTarget.getPointerPosition();
+    setPoints([
+      e.target.attrs.x,
+      e.target.attrs.y,
+      e.target.attrs.x,
+      e.target.attrs.y,
+    ]);
+    console.log(points);
   };
 
   return (
@@ -649,7 +673,7 @@ function AppContent() {
                   {atoms.map((atom) => (
                     <Group
                       id={atom.id.toString()}
-                      draggable
+                      draggable={!touchingTarget}
                       x={atom.x}
                       y={atom.y}
                       onDragMove={(e) => {
@@ -659,8 +683,8 @@ function AppContent() {
                     >
                       <Circle
                         key={atom.id}
-                        x={0}
-                        y={0}
+                        // x={atom.x}
+                        // y={atom.y}
                         fill="#72D6C9"
                         radius={45}
                         opacity={0.7}
@@ -671,44 +695,65 @@ function AppContent() {
                         shadowOffsetY={atom.isDragging ? 8 : 5}
                         scaleX={atom.isDragging ? 1.1 : 1}
                         scaleY={atom.isDragging ? 1.1 : 1}
-                        onClick={(e) => {
-                          // console.log(e);
-                        }}
+                        // onClick={(e) => {
+                        //   // console.log(e);
+                        // }}
                       ></Circle>
                       {atom.electrons.map((electron) => (
                         <Circle
                           key={electron.id}
                           id={electron.id.toString()}
-                          x={0}
-                          y={0}
+                          // x={electron.x}
+                          // y={electron.y}
                           offsetX={electron.xDisplace}
                           offsetY={electron.yDisplace}
                           radius={5}
-                          onClick={(e) => {
-                            setMessage(
-                              "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
-                            );
-                            if (fromShapeId) {
-                              const prevElectron = getElectronById(
-                                fromShapeId[0]
-                              );
-                              const thisElectron = getElectronById(electron.id);
-                              bondElectrons(
-                                [prevElectron, thisElectron],
-                                e,
-                                fromShapeId[1]
-                              );
-                              setFromShapeId(null);
-                            } else {
-                              setFromShapeId([electron.id, e]);
-                            }
-                          }}
+                          // onClick={(e) => {
+                          //   setMessage(
+                          //     "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
+                          //   );
+                          //   if (fromShapeId) {
+                          //     const prevElectron = getElectronById(
+                          //       fromShapeId[0]
+                          //     );
+                          //     const thisElectron = getElectronById(electron.id);
+                          //     bondElectrons(
+                          //       [prevElectron, thisElectron],
+                          //       e,
+                          //       fromShapeId[1]
+                          //     );
+                          //     setFromShapeId(null);
+                          //   } else {
+                          //     setFromShapeId([electron.id, e]);
+                          //   }
+                          // }}
                           // onMouseOver={hoverElectron}
-                          onMouseOut={() => {
-                            // console.log("entered onMouseOut");
-                            chooseElectronFill(electron);
+                          // onMouseOut={() => {
+                          //   // console.log("entered onMouseOut");
+                          //   chooseElectronFill(electron);
+                          // }}
+                          // fill={chooseElectronFill(electron)}
+                          fill={"black"}
+                          // mouse over for line drag
+                          onMouseOver={(e) => {
+                            e.target.fill("yellow");
+                            setTouchingTarget(true);
+                            console.log(touchingTarget);
                           }}
-                          fill={chooseElectronFill(electron)}
+                          onMouseOut={(e) => {
+                            e.target.fill("black");
+                            setTouchingTarget(false);
+                            console.log(touchingTarget);
+                          }}
+                          onMouseDown={(e) => {
+                            handleClickFirstTarget(e);
+                            setDrawing(true);
+                          }}
+                          onMouseUp={(e) => {
+                            console.log("in onMouseUp electron circle");
+                            handleSetPoints(e.target.attrs.x, e.target.attrs.y);
+                            setDrawing(false);
+                          }}
                         />
                       ))}
                       <Text
@@ -720,16 +765,25 @@ function AppContent() {
                     </Group>
                   ))}
                   {lineData.map((entry) => (
+                    // Dragged Line
                     <Line
-                      id={entry}
-                      points={returnPointsUsingElectronIds(entry)}
-                      stroke="A66CFF"
-                      strokeWidth={5}
-                      onClick={(e) => {
-                        breakBonds(e.target.attrs.id);
-                        // console.log(e);
-                      }}
+                      id={"line"}
+                      listening={false}
+                      strokeWidth={7}
+                      stroke="white"
+                      points={points}
                     />
+
+                    // <Line
+                    //   id={entry}
+                    //   points={returnPointsUsingElectronIds(entry)}
+                    //   stroke="A66CFF"
+                    //   strokeWidth={5}
+                    //   onClick={(e) => {
+                    //     breakBonds(e.target.attrs.id);
+                    //     // console.log(e);
+                    //   }}
+                    // />
                   ))}
                 </Layer>
               </Stage>
