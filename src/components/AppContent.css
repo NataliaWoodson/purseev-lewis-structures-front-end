@@ -131,10 +131,11 @@ header {
   border: 2px solid purple;
 }
 
-.instruction-container {
+.reset-container {
   display: flex;
   justify-content: flex-end;  /* align-items: flex-end; */
   flex-direction: row;
+  padding-top: 5px;
 }
 
 /* .restart-container {

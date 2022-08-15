@@ -10,6 +10,7 @@ import UserMessages from "./UserMessages";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
 import PopUp from "./PopUp";
+import PeriodicPopup from "./PeriodicPopup";
 import { FaUndo } from "react-icons/fa";
 import { BsInfoSquare } from "react-icons/bs";
 
@@ -101,6 +102,7 @@ function AppContent() {
   const [molecFormula, setMolecFormula] = useState("");
   const [resetClicked, setResetClicked] = useState(false);
   const [seen, setSeen] = useState(false);
+  const [tablePopup, settablePopup] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -570,6 +572,10 @@ function AppContent() {
     setSeen((seen) => !seen);
   };
 
+  const togglePeriodicPopup = () => {
+    settablePopup((tablePopup) => !tablePopup);
+  };
+
   return (
     <main className="window-comp">
       {/* <Header /> */}
@@ -638,15 +644,23 @@ function AppContent() {
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
               <div className="stage-msg">
-                <button onClick={togglePop} className="instructions">
-                  <BsInfoSquare />
-                </button>
+                <div className="popUpContainer">
+                  <button
+                    onClick={togglePeriodicPopup}
+                    className="periodic-button"
+                  >
+                    Periodic Table
+                  </button>
+                  <button onClick={togglePop} className="instructions">
+                    <BsInfoSquare />
+                  </button>
+                </div>
                 <UserMessages message={message} />
                 {/* Draw bonds between unpaired electrons until all electrons are
                 paired */}
               </div>
 
-              <div className="instruction-container">
+              <div className="reset-container">
                 <button className="reset-button" onClick={resetBonds}>
                   <FaUndo />
                 </button>
@@ -656,6 +670,9 @@ function AppContent() {
                   </button>
                 </div> */}
                 {seen ? <PopUp toggle={togglePop} /> : null}
+                {tablePopup ? (
+                  <PeriodicPopup toggle={togglePeriodicPopup} />
+                ) : null}
               </div>
               {/* <div className="restart-container"> */}
               {/* <div classname="restart"> */}
