@@ -10,6 +10,7 @@ const numElectronsObj = {
   P: 5,
   S: 6,
   Cl: 7,
+  Br: 7,
 };
 
 const pixelsDisplacement = 30;

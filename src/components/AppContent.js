@@ -10,6 +10,9 @@ import UserMessages from "./UserMessages";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
 import PopUp from "./PopUp";
+import PeriodicPopup from "./PeriodicPopup";
+import { FaUndo } from "react-icons/fa";
+import { BsInfoSquare } from "react-icons/bs";
 
 import {
   getMolecules,
@@ -99,6 +102,11 @@ function AppContent() {
   const [molecFormula, setMolecFormula] = useState("");
   const [resetClicked, setResetClicked] = useState(false);
   const [seen, setSeen] = useState(false);
+  const [tablePopup, settablePopup] = useState(false);
+  const [drawing, setDrawing] = useState(false);
+  const [touchingTarget, setTouchingTarget] = useState(false);
+  const [points, setPoints] = useState(null);
+  // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -471,34 +479,22 @@ function AppContent() {
   };
 
   const returnPointsUsingElectronIds = (entry) => {
-    // console.log("entry in returnPointsUsingElectronIds is", entry);
     const electronId1 = entry[0];
     const electronId2 = entry[1];
     const electron1 = getElectronById(electronId1);
     const electron2 = getElectronById(electronId2);
 
-    // console.log("electron1 is", electron1);
-
     const atomId1 = electron1.atomId;
     const atomId2 = electron2.atomId;
-    // console.log("electronId1 is", electronId1);
-    // console.log("atomId1 is", atomId1);
-    // const atom1Coordinates = getAtomPositionById(atomId1);
-    // console.log(atom1Coordinates);
 
     const atom1x = getAtomPositionById(atomId1)[0];
-    // console.log("found atom1x :", atom1x);
     const atom1y = getAtomPositionById(atomId1)[1];
 
     const atom2x = getAtomPositionById(atomId2)[0];
     const atom2y = getAtomPositionById(atomId2)[1];
-    // console.log(`atom2 = (${atom2x}, ${atom2y})`);
 
     const electron1offsetX = electron1.xDisplace;
-    // console.log("found electron1offsetX: ", electron1offsetX);
     const electron1offsetY = electron1.yDisplace;
-
-    // console.log("electron1offsetX is", electron1offsetX);
 
     const electron2offsetX = electron2.xDisplace;
     const electron2offsetY = electron2.yDisplace;
@@ -510,7 +506,6 @@ function AppContent() {
       atom2y - electron2offsetY,
     ];
 
-    // console.log("points are", points);
     return points;
   };
 
@@ -521,7 +516,6 @@ function AppContent() {
 
     for (let atom of atoms) {
       if (atom.id === selectedAtomId) {
-        // console.log("updating electrons for atom with id", selectedAtomId);
         updateOneAtomPositionState(selectedAtomId, deltaX, deltaY);
       }
     }
@@ -568,6 +562,65 @@ function AppContent() {
     setSeen((seen) => !seen);
   };
 
+  const togglePeriodicPopup = () => {
+    settablePopup((tablePopup) => !tablePopup);
+  };
+
+  const handleMoveMouse = (e) => {
+    const cursor = e.currentTarget.getPointerPosition();
+    const currentPoint = points;
+    const updatedPoint = [currentPoint[0], currentPoint[1], cursor.x, cursor.y];
+    setPoints(updatedPoint);
+  };
+
+  const removeLastPoint = () => {
+    setPoints(null);
+    const updatedLineData = lineData.slice(0, -1);
+    setLineData(updatedLineData);
+  };
+
+  const handleSetLineData = (electronId) => {
+    const finalElectronIdPair = lineData.pop();
+    finalElectronIdPair.push(electronId);
+    const updatedLineData = [];
+    if (lineData.length === 0) {
+      setLineData(updatedLineData);
+      return;
+    }
+    for (let i = 0; i < lineData.length; i++) {
+      updatedLineData.push(lineData[i]);
+      console.log("i is", i, ". updatedLineData is", updatedLineData);
+    }
+    setLineData(updatedLineData);
+    setPoints(null);
+  };
+
+  const handleClickFirstTarget = (e) => {
+    console.log("in handleClickFirst, drawing is", drawing);
+    const electron = getElectronById(parseInt(e.target.attrs.id));
+    const atomId = electron.atomId;
+    const position = getAtomPositionById(atomId);
+    const xPos = position[0] - electron.xDisplace;
+    const yPos = position[1] - electron.yDisplace;
+    setPoints([xPos, yPos, xPos, yPos]);
+    setLineData((current) => [...current, [electron.id]]);
+  };
+
+  const choosePointsSource = (entry) => {
+    if (entry.length === 1) {
+      return points;
+    } else {
+      return returnPointsUsingElectronIds(entry);
+    }
+  };
+
+  const selectListening = () => {
+    if (drawing) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   // set atom colors
   const setAtomColor = (atomSymbol) => {
     if (atomSymbol === "H") {
@@ -593,7 +646,6 @@ function AppContent() {
 
   return (
     <main className="window-comp">
-      {/* <Header /> */}
       <section className="Main-container">
         <Header />
         <div className="Left-comp">
@@ -604,46 +656,6 @@ function AppContent() {
             <li>- Click a bond to delete it.</li>
             <li>- Keep going until all unpaired electrons are bonded!</li>
           </ul>
-          {/* <div>
-            <div onClick={togglePop}>
-              <button className="instructions">i</button>
-            </div>
-            {seen ? <PopUp toggle={togglePop} /> : null}
-          </div> */}
-          {/* <ul>
-            Instructions:
-            <li>To begin please press "Start New Game" button.</li>
-            <li>There are a total of 5 question.</li>
-            <li>The purpose of the game is to make correct molecular bonds.</li>
-            <li>You are able to drag atoms to better visualize the bonds.</li>
-            <li>You can click two electrons to bond them.</li>
-            <li>You can also click a bond to delete it.</li>
-            <li>
-              You can reset all bonds with the "Reset" button on the stage.
-            </li>
-            <li>
-              Click the "Submit" button to check if you made a valid structure.
-            </li>
-            <li>
-              The question number on the progress bar will fill green with a
-              correct answer and red for an incorrect answer.
-            </li>
-            <li>You may only move to the next question after submitting.</li>
-            <li>
-              Click the "Next Molecule button" to move to the next molecule.
-            </li>
-            <li>The completed question number will be outlined in blue.</li>
-            <li>You may restart the game to your heart's desire.</li>
-          </ul> */}
-          {/* <UserMessages message={message} /> */}
-          {/* <Buttons
-            // updateMoleculeApp={updateMolecule}
-            verifyStructureValidityApp={verifyStructureValidity}
-            submissionsApp={submissions}
-            submitClickedApp={submitClicked}
-            resetGameApp={resetGame}
-            gameStartedApp={gameStarted}
-          /> */}
           <DisplayProgress2
             updateMoleculeApp={updateMolecule}
             verifyStructureValidityApp={verifyStructureValidity}
@@ -658,39 +670,56 @@ function AppContent() {
           <div className="main-stage-container">
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
-              <p className="stage-msg">
-                <UserMessages message={message} />
-                {/* Draw bonds between unpaired electrons until all electrons are
-                paired */}
-              </p>
-              <div className="instruction-container">
-                <button className="reset-button" onClick={resetBonds}>
-                  Reset
+              <div className="popUpContainer">
+                <button
+                  onClick={togglePeriodicPopup}
+                  className="periodic-button"
+                >
+                  Periodic Table
                 </button>
-                <div onClick={togglePop}>
-                  <button className="instructions">i</button>
-                </div>
-                {seen ? <PopUp toggle={togglePop} /> : null}
+                <button onClick={togglePop} className="instructions">
+                  <BsInfoSquare />
+                </button>
               </div>
-              {/* <div className="restart-container"> */}
-              {/* <div classname="restart"> */}
-              {/* <button className="reset-button" onClick={resetBonds}>
-                    Reset
-                  </button> */}
-              {/* </div> */}
-              {/* </div> */}
+              <div className="stage-msg">
+                <UserMessages message={message} />
+              </div>
+
+              <div className="reset-container">
+                <button className="reset-button" onClick={resetBonds}>
+                  <FaUndo />
+                </button>
+                {seen ? <PopUp toggle={togglePop} /> : null}
+                {tablePopup ? (
+                  <PeriodicPopup toggle={togglePeriodicPopup} />
+                ) : null}
+              </div>
 
               <Stage
-                // className="stage-container"
                 id={"stage"}
                 width={window.innerWidth}
                 height={window.innerHeight}
+                onMouseMove={(e) => {
+                  if (drawing) {
+                    handleMoveMouse(e);
+                  }
+                }}
+                onMouseUp={() => {
+                  if (!drawing) {
+                    return;
+                  }
+                  if (!touchingTarget) {
+                    setDrawing(false);
+                    removeLastPoint();
+                    setFromShapeId(null);
+                  }
+                }}
               >
                 <Layer>
                   {atoms.map((atom) => (
                     <Group
                       id={atom.id.toString()}
-                      draggable
+                      draggable={!touchingTarget}
                       x={atom.x}
                       y={atom.y}
                       onDragMove={(e) => {
@@ -713,16 +742,11 @@ function AppContent() {
                         shadowOffsetY={atom.isDragging ? 8 : 5}
                         scaleX={atom.isDragging ? 1.1 : 1}
                         scaleY={atom.isDragging ? 1.1 : 1}
-                        onClick={(e) => {
-                          // console.log(e);
-                        }}
                       ></Circle>
                       {atom.electrons.map((electron) => (
                         <Circle
                           key={electron.id}
                           id={electron.id.toString()}
-                          x={0}
-                          y={0}
                           offsetX={electron.xDisplace}
                           offsetY={electron.yDisplace}
                           radius={5}
@@ -730,27 +754,37 @@ function AppContent() {
                             setMessage(
                               "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
                             );
+                          }}
+                          fill={"black"}
+                          onMouseOver={(e) => {
+                            e.target.fill("yellow");
+                            setTouchingTarget(true);
+                          }}
+                          onMouseOut={(e) => {
+                            e.target.fill("black");
+                            setTouchingTarget(false);
+                          }}
+                          onMouseDown={(e) => {
+                            setFromShapeId([electron.id, e]);
+                            setDrawing(true);
+                            handleClickFirstTarget(e);
+                          }}
+                          onMouseUp={(e) => {
+                            setDrawing(false);
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
                                 fromShapeId[0]
                               );
                               const thisElectron = getElectronById(electron.id);
+                              handleSetLineData(electron.id);
                               bondElectrons(
                                 [prevElectron, thisElectron],
                                 e,
                                 fromShapeId[1]
                               );
                               setFromShapeId(null);
-                            } else {
-                              setFromShapeId([electron.id, e]);
                             }
                           }}
-                          // onMouseOver={hoverElectron}
-                          onMouseOut={() => {
-                            // console.log("entered onMouseOut");
-                            chooseElectronFill(electron);
-                          }}
-                          fill={chooseElectronFill(electron)}
                         />
                       ))}
                       <Text
@@ -762,14 +796,17 @@ function AppContent() {
                     </Group>
                   ))}
                   {lineData.map((entry) => (
+                    // Dragged Line
                     <Line
                       id={entry}
-                      points={returnPointsUsingElectronIds(entry)}
-                      stroke="A66CFF"
-                      strokeWidth={5}
+                      listening={selectListening()}
+                      strokeWidth={7}
+                      stroke="black"
+                      points={choosePointsSource(entry)}
                       onClick={(e) => {
+                        console.log("line clicked");
+                        console.log(e.target.attrs.id);
                         breakBonds(e.target.attrs.id);
-                        // console.log(e);
                       }}
                     />
                   ))}
