@@ -361,7 +361,7 @@ function AppContent() {
       return null;
     }
     setMessage(
-      "Draw lines between unpaired electrons until they're all bonded. Click a bond to delete it."
+      "Draw lines between unpaired electrons to bond. Click a bond to delete it."
     );
     STATE.numRounds++;
 
@@ -627,7 +627,11 @@ function AppContent() {
       return "white";
     } else if (atomSymbol === "O") {
       return "#ff3333";
-    } else if (atomSymbol === "Cl" || atomSymbol === "F") {
+    } else if (
+      atomSymbol === "Cl" ||
+      atomSymbol === "F" ||
+      atomSymbol === "Br"
+    ) {
       return "#50C878";
     } else if (atomSymbol === "N") {
       return "#3385ff";
@@ -639,8 +643,6 @@ function AppContent() {
       return "orange";
     } else if (atomSymbol === "B") {
       return "#800080";
-    } else if (atomSymbol === "Br") {
-      return "#A62929";
     }
   };
 
