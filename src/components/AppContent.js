@@ -475,35 +475,22 @@ function AppContent() {
   };
 
   const returnPointsUsingElectronIds = (entry) => {
-    // console.log("entry in returnPointsUsingElectronIds is", entry);
-    console.log("electronIds passed into returnPoints are", entry);
     const electronId1 = entry[0];
     const electronId2 = entry[1];
     const electron1 = getElectronById(electronId1);
     const electron2 = getElectronById(electronId2);
 
-    // console.log("electron1 is", electron1);
-
     const atomId1 = electron1.atomId;
     const atomId2 = electron2.atomId;
-    // console.log("electronId1 is", electronId1);
-    // console.log("atomId1 is", atomId1);
-    // const atom1Coordinates = getAtomPositionById(atomId1);
-    // console.log(atom1Coordinates);
 
     const atom1x = getAtomPositionById(atomId1)[0];
-    // console.log("found atom1x :", atom1x);
     const atom1y = getAtomPositionById(atomId1)[1];
 
     const atom2x = getAtomPositionById(atomId2)[0];
     const atom2y = getAtomPositionById(atomId2)[1];
-    // console.log(`atom2 = (${atom2x}, ${atom2y})`);
 
     const electron1offsetX = electron1.xDisplace;
-    // console.log("found electron1offsetX: ", electron1offsetX);
     const electron1offsetY = electron1.yDisplace;
-
-    // console.log("electron1offsetX is", electron1offsetX);
 
     const electron2offsetX = electron2.xDisplace;
     const electron2offsetY = electron2.yDisplace;
@@ -515,7 +502,6 @@ function AppContent() {
       atom2y - electron2offsetY,
     ];
 
-    // console.log("points are", points);
     return points;
   };
 
@@ -526,7 +512,6 @@ function AppContent() {
 
     for (let atom of atoms) {
       if (atom.id === selectedAtomId) {
-        // console.log("updating electrons for atom with id", selectedAtomId);
         updateOneAtomPositionState(selectedAtomId, deltaX, deltaY);
       }
     }
@@ -574,32 +559,21 @@ function AppContent() {
   };
 
   const handleMoveMouse = (e) => {
-    // console.log("in handleMoveMouse");
-    // console.log("drawing is", drawing);
     const cursor = e.currentTarget.getPointerPosition();
     const currentPoint = points;
-    // console.log("current point is", currentPoint);
     const updatedPoint = [currentPoint[0], currentPoint[1], cursor.x, cursor.y];
     setPoints(updatedPoint);
-    // setPoints((current) => [current[0], current[1], cursor.x, cursor.y]);
-    // console.log("points in handle move mouse are", points);
   };
 
   const removeLastPoint = () => {
     setPoints(null);
     const updatedLineData = lineData.slice(0, -1);
-    // console.log("updatedLineData in removeLastPoint is", updatedLineData);
     setLineData(updatedLineData);
-    // console.log("points in remove last point are:", points);
   };
 
   const handleSetLineData = (electronId) => {
-    // console.log("electronId passed into handleSetLineData is", electronId);
-    // console.log("lineData is", lineData);
     const finalElectronIdPair = lineData.pop();
-    // console.log("finalElectronIdPair is", finalElectronIdPair);
     finalElectronIdPair.push(electronId);
-    // console.log("finalElectronIdPair is", finalElectronIdPair);
     const updatedLineData = [];
     if (lineData.length === 0) {
       setLineData(updatedLineData);
@@ -609,10 +583,8 @@ function AppContent() {
       updatedLineData.push(lineData[i]);
       console.log("i is", i, ". updatedLineData is", updatedLineData);
     }
-    // updatedLineData.push(finalElectronIdPair);
     setLineData(updatedLineData);
     setPoints(null);
-    // console.log("points in handle set points are:", points);
   };
 
   const handleClickFirstTarget = (e) => {
@@ -624,25 +596,21 @@ function AppContent() {
     const yPos = position[1] - electron.yDisplace;
     setPoints([xPos, yPos, xPos, yPos]);
     setLineData((current) => [...current, [electron.id]]);
-    // return;
-    // if (points.length === 0) {
-    //   setPoints([[xPos, yPos, xPos, yPos]]);
-    //   return;
-    // }
-    // setLineData((current) => [...current, [xPos, yPos, xPos, yPos]]);
   };
 
   const choosePointsSource = (entry) => {
     if (entry.length === 1) {
-      // console.log("in Line, drawing found to be true");
       return points;
     } else {
-      console.log("in Line, drawing found to be false");
-      console.log("in choosePointsSource, entry is", entry);
-      // if (entry.length === 1) {
-      //   return;
-      // }
       return returnPointsUsingElectronIds(entry);
+    }
+  };
+
+  const selectListening = () => {
+    if (drawing) {
+      return false;
+    } else {
+      return true;
     }
   };
 
@@ -675,8 +643,6 @@ function AppContent() {
             <div className="stage-container">
               <p className="stage-msg">
                 <UserMessages message={message} />
-                {/* Draw bonds between unpaired electrons until all electrons are
-                paired */}
               </p>
               <div className="instruction-container">
                 <button className="reset-button" onClick={resetBonds}>
@@ -687,13 +653,6 @@ function AppContent() {
                 </div>
                 {seen ? <PopUp toggle={togglePop} /> : null}
               </div>
-              {/* <div className="restart-container"> */}
-              {/* <div classname="restart"> */}
-              {/* <button className="reset-button" onClick={resetBonds}>
-                    Reset
-                  </button> */}
-              {/* </div> */}
-              {/* </div> */}
 
               <Stage
                 // className="stage-container"
@@ -702,7 +661,6 @@ function AppContent() {
                 height={window.innerHeight}
                 onMouseMove={(e) => {
                   if (drawing) {
-                    // console.log(e);
                     handleMoveMouse(e);
                   }
                 }}
@@ -731,8 +689,6 @@ function AppContent() {
                     >
                       <Circle
                         key={atom.id}
-                        // x={atom.x}
-                        // y={atom.y}
                         fill="#72D6C9"
                         radius={45}
                         opacity={0.7}
@@ -743,16 +699,11 @@ function AppContent() {
                         shadowOffsetY={atom.isDragging ? 8 : 5}
                         scaleX={atom.isDragging ? 1.1 : 1}
                         scaleY={atom.isDragging ? 1.1 : 1}
-                        // onClick={(e) => {
-                        //   // console.log(e);
-                        // }}
                       ></Circle>
                       {atom.electrons.map((electron) => (
                         <Circle
                           key={electron.id}
                           id={electron.id.toString()}
-                          // x={electron.x}
-                          // y={electron.y}
                           offsetX={electron.xDisplace}
                           offsetY={electron.yDisplace}
                           radius={5}
@@ -760,47 +711,22 @@ function AppContent() {
                             setMessage(
                               "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
                             );
-                            // if (fromShapeId) {
-                            //   const prevElectron = getElectronById(
-                            //     fromShapeId[0]
-                            //   );
-                            //   const thisElectron = getElectronById(electron.id);
-                            //   bondElectrons(
-                            //     [prevElectron, thisElectron],
-                            //     e,
-                            //     fromShapeId[1]
-                            //   );
-                            //   setFromShapeId(null);
-                            // } else {
-                            //   setFromShapeId([electron.id, e]);
-                            // }
                           }}
-                          // onMouseOver={hoverElectron}
-                          // onMouseOut={() => {
-                          //   // console.log("entered onMouseOut");
-                          //   chooseElectronFill(electron);
-                          // }}
-                          // fill={chooseElectronFill(electron)}
                           fill={"black"}
-                          // mouse over for line drag
                           onMouseOver={(e) => {
                             e.target.fill("yellow");
                             setTouchingTarget(true);
-                            console.log(touchingTarget);
                           }}
                           onMouseOut={(e) => {
                             e.target.fill("black");
                             setTouchingTarget(false);
-                            console.log(touchingTarget);
                           }}
                           onMouseDown={(e) => {
                             setFromShapeId([electron.id, e]);
                             setDrawing(true);
                             handleClickFirstTarget(e);
-                            console.log("drawing is", drawing);
                           }}
                           onMouseUp={(e) => {
-                            console.log("in onMouseUp electron circle");
                             setDrawing(false);
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
@@ -829,12 +755,17 @@ function AppContent() {
                   {lineData.map((entry) => (
                     // Dragged Line
                     <Line
-                      // id={entry}
-                      listening={false}
+                      id={entry}
+                      listening={selectListening()}
                       strokeWidth={7}
                       stroke="red"
                       points={choosePointsSource(entry)}
                       // points={returnPointsUsingElectronIds}
+                      onClick={(e) => {
+                        console.log("line clicked");
+                        console.log(e.target.attrs.id);
+                        breakBonds(e.target.attrs.id);
+                      }}
                     />
 
                     // <Line
