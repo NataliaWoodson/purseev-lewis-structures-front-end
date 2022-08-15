@@ -45,5 +45,7 @@ cursor: pointer;
 }
 
 .popUpContainer{
-    align-items: space-between;
+    display: flex;
+    justify-content: space-between;
+    background-color: #22577A
 }

@@ -643,18 +643,18 @@ function AppContent() {
           <div className="main-stage-container">
             <h1 className="stage-header">Lewis Structures</h1>
             <div className="stage-container">
+              <div className="popUpContainer">
+                <button
+                  onClick={togglePeriodicPopup}
+                  className="periodic-button"
+                >
+                  Periodic Table
+                </button>
+                <button onClick={togglePop} className="instructions">
+                  <BsInfoSquare />
+                </button>
+              </div>
               <div className="stage-msg">
-                <div className="popUpContainer">
-                  <button
-                    onClick={togglePeriodicPopup}
-                    className="periodic-button"
-                  >
-                    Periodic Table
-                  </button>
-                  <button onClick={togglePop} className="instructions">
-                    <BsInfoSquare />
-                  </button>
-                </div>
                 <UserMessages message={message} />
                 {/* Draw bonds between unpaired electrons until all electrons are
                 paired */}
