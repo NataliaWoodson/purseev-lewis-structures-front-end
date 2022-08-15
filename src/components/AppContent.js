@@ -99,6 +99,8 @@ function AppContent() {
   const [molecFormula, setMolecFormula] = useState("");
   const [resetClicked, setResetClicked] = useState(false);
   const [seen, setSeen] = useState(false);
+  const [drawing, setDrawing] = useState(false);
+  const [touchingTarget, setTouchingTarget] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -568,6 +570,11 @@ function AppContent() {
     setSeen((seen) => !seen);
   };
 
+  const handleMoveMouse = (e) => {
+    const cursor = e.currentTarget.getPointerPosition();
+    setPoints((current) => [current[0], current[1], cursor.x, cursor.y]);
+  };
+
   return (
     <main className="window-comp">
       {/* <Header /> */}
@@ -581,46 +588,6 @@ function AppContent() {
             <li>- Click a bond to delete it.</li>
             <li>- Keep going until all unpaired electrons are bonded!</li>
           </ul>
-          {/* <div>
-            <div onClick={togglePop}>
-              <button className="instructions">i</button>
-            </div>
-            {seen ? <PopUp toggle={togglePop} /> : null}
-          </div> */}
-          {/* <ul>
-            Instructions:
-            <li>To begin please press "Start New Game" button.</li>
-            <li>There are a total of 5 question.</li>
-            <li>The purpose of the game is to make correct molecular bonds.</li>
-            <li>You are able to drag atoms to better visualize the bonds.</li>
-            <li>You can click two electrons to bond them.</li>
-            <li>You can also click a bond to delete it.</li>
-            <li>
-              You can reset all bonds with the "Reset" button on the stage.
-            </li>
-            <li>
-              Click the "Submit" button to check if you made a valid structure.
-            </li>
-            <li>
-              The question number on the progress bar will fill green with a
-              correct answer and red for an incorrect answer.
-            </li>
-            <li>You may only move to the next question after submitting.</li>
-            <li>
-              Click the "Next Molecule button" to move to the next molecule.
-            </li>
-            <li>The completed question number will be outlined in blue.</li>
-            <li>You may restart the game to your heart's desire.</li>
-          </ul> */}
-          {/* <UserMessages message={message} /> */}
-          {/* <Buttons
-            // updateMoleculeApp={updateMolecule}
-            verifyStructureValidityApp={verifyStructureValidity}
-            submissionsApp={submissions}
-            submitClickedApp={submitClicked}
-            resetGameApp={resetGame}
-            gameStartedApp={gameStarted}
-          /> */}
           <DisplayProgress2
             updateMoleculeApp={updateMolecule}
             verifyStructureValidityApp={verifyStructureValidity}
@@ -662,6 +629,21 @@ function AppContent() {
                 id={"stage"}
                 width={window.innerWidth}
                 height={window.innerHeight}
+                onMouseMove={(e) => {
+                  if (drawing) {
+                    // console.log(e);
+                    handleMoveMouse(e);
+                  }
+                }}
+                onMouseUp={() => {
+                  if (!drawing) {
+                    return;
+                  }
+                  if (!touchingTarget) {
+                    setDrawing(false);
+                    removeLastPoint();
+                  }
+                }}
               >
                 <Layer>
                   {atoms.map((atom) => (
