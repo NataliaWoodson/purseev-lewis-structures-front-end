@@ -638,7 +638,7 @@ function AppContent() {
     } else if (atomSymbol === "P") {
       return "orange";
     } else if (atomSymbol === "B") {
-      return "#800080";
+      return "#c266ff";
     } else if (atomSymbol === "Br") {
       return "#A62929";
     }
