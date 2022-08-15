@@ -637,10 +637,18 @@ function AppContent() {
       return "yellow";
     } else if (atomSymbol === "P") {
       return "orange";
-    } else if (atomSymbol === "Be") {
-      return "#C2FF00";
+    } else if (atomSymbol === "B") {
+      return "#800080";
     } else if (atomSymbol === "Br") {
       return "#A62929";
+    }
+  };
+
+  const setAtomRadius = (text) => {
+    if (text === "H") {
+      return 40;
+    } else {
+      return 46;
     }
   };
 
@@ -733,7 +741,7 @@ function AppContent() {
                         y={0}
                         // fill="#72D6C9"
                         fill={setAtomColor(atom.text)}
-                        radius={45}
+                        radius={setAtomRadius(atom.text)}
                         opacity={0.7}
                         // shadowColor="black"
                         shadowBlur={10}
