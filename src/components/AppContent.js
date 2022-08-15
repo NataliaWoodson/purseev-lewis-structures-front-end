@@ -646,7 +646,7 @@ function AppContent() {
 
   const setAtomRadius = (text) => {
     if (text === "H") {
-      return 40;
+      return 32;
     } else {
       return 46;
     }

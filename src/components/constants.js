@@ -20,7 +20,7 @@ const electronPositionDisplacements = {
   1: {
     1: {
       x: 0,
-      y: pixelsDisplacement,
+      y: pixelsDisplacement / 1.5,
       isPaired: false,
     },
   },
