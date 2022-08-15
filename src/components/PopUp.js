@@ -7,8 +7,8 @@ const PopUp = (props) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal_content">
+    <div className="instructions-modal">
+      <div className="modal-content">
         <span className="close" onClick={handleClick}>
           &times;
         </span>

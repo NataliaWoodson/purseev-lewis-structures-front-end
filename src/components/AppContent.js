@@ -662,12 +662,13 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
-          <ul className="short-directions">
+          <h3>How to Play</h3>
+          {/* <ul className="short-directions">
             <h3>How to Play</h3>
             <li>- Click and drag bonds between unpaired electrons.</li>
             <li>- Click a bond to delete it.</li>
             <li>- Keep going until all unpaired electrons are bonded!</li>
-          </ul>
+          </ul> */}
           <DisplayProgress2
             updateMoleculeApp={updateMolecule}
             verifyStructureValidityApp={verifyStructureValidity}
