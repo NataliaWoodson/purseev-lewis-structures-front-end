@@ -65,19 +65,21 @@
     /* border-color: blue; */
     /* border-color: #FFCC00; */
     /* border-color: #72D6C9; */
-    background-color: #72D6C9;
+    /* background-color: #72D6C9; */
+    background-color: white;
+    /* color: black; */
   }
 
   .circle.green {
     /* background-color: green; */
     border-color: rgb(6, 187, 6);
-    color: white;
+    color: black;
   }
 
   .circle.red {
     /* background-color: red; */
     border-color: red;
-    color: white;
+    color: black;
   }
   
   .button {
