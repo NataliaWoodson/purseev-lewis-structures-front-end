@@ -102,7 +102,7 @@ function AppContent() {
   const [drawing, setDrawing] = useState(false);
   const [touchingTarget, setTouchingTarget] = useState(false);
   const [points, setPoints] = useState(null);
-  const [clicked, setClicked] = useState(false);
+  // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -476,6 +476,7 @@ function AppContent() {
 
   const returnPointsUsingElectronIds = (entry) => {
     // console.log("entry in returnPointsUsingElectronIds is", entry);
+    console.log("electronIds passed into returnPoints are", entry);
     const electronId1 = entry[0];
     const electronId2 = entry[1];
     const electron1 = getElectronById(electronId1);
@@ -573,30 +574,76 @@ function AppContent() {
   };
 
   const handleMoveMouse = (e) => {
+    // console.log("in handleMoveMouse");
+    // console.log("drawing is", drawing);
     const cursor = e.currentTarget.getPointerPosition();
-    setPoints((current) => [current[0], current[1], cursor.x, cursor.y]);
-    console.log("points in handle move mouse are", points);
+    const currentPoint = points;
+    // console.log("current point is", currentPoint);
+    const updatedPoint = [currentPoint[0], currentPoint[1], cursor.x, cursor.y];
+    setPoints(updatedPoint);
+    // setPoints((current) => [current[0], current[1], cursor.x, cursor.y]);
+    // console.log("points in handle move mouse are", points);
   };
 
   const removeLastPoint = () => {
     setPoints(null);
-    console.log("points in remove last point are:", points);
+    const updatedLineData = lineData.slice(0, -1);
+    // console.log("updatedLineData in removeLastPoint is", updatedLineData);
+    setLineData(updatedLineData);
+    // console.log("points in remove last point are:", points);
   };
 
-  const handleSetPoints = (x, y) => {
-    setPoints((current) => [current[0], current[1], x, y]);
-    console.log("points in handle set points are:", points);
+  const handleSetLineData = (electronId) => {
+    // console.log("electronId passed into handleSetLineData is", electronId);
+    // console.log("lineData is", lineData);
+    const finalElectronIdPair = lineData.pop();
+    // console.log("finalElectronIdPair is", finalElectronIdPair);
+    finalElectronIdPair.push(electronId);
+    // console.log("finalElectronIdPair is", finalElectronIdPair);
+    const updatedLineData = [];
+    if (lineData.length === 0) {
+      setLineData(updatedLineData);
+      return;
+    }
+    for (let i = 0; i < lineData.length; i++) {
+      updatedLineData.push(lineData[i]);
+      console.log("i is", i, ". updatedLineData is", updatedLineData);
+    }
+    // updatedLineData.push(finalElectronIdPair);
+    setLineData(updatedLineData);
+    setPoints(null);
+    // console.log("points in handle set points are:", points);
   };
 
   const handleClickFirstTarget = (e) => {
-    const pos = e.currentTarget.getPointerPosition();
-    setPoints([
-      e.target.attrs.x,
-      e.target.attrs.y,
-      e.target.attrs.x,
-      e.target.attrs.y,
-    ]);
-    console.log(points);
+    console.log("in handleClickFirst, drawing is", drawing);
+    const electron = getElectronById(parseInt(e.target.attrs.id));
+    const atomId = electron.atomId;
+    const position = getAtomPositionById(atomId);
+    const xPos = position[0] - electron.xDisplace;
+    const yPos = position[1] - electron.yDisplace;
+    setPoints([xPos, yPos, xPos, yPos]);
+    setLineData((current) => [...current, [electron.id]]);
+    // return;
+    // if (points.length === 0) {
+    //   setPoints([[xPos, yPos, xPos, yPos]]);
+    //   return;
+    // }
+    // setLineData((current) => [...current, [xPos, yPos, xPos, yPos]]);
+  };
+
+  const choosePointsSource = (entry) => {
+    if (entry.length === 1) {
+      // console.log("in Line, drawing found to be true");
+      return points;
+    } else {
+      console.log("in Line, drawing found to be false");
+      console.log("in choosePointsSource, entry is", entry);
+      // if (entry.length === 1) {
+      //   return;
+      // }
+      return returnPointsUsingElectronIds(entry);
+    }
   };
 
   return (
@@ -666,6 +713,7 @@ function AppContent() {
                   if (!touchingTarget) {
                     setDrawing(false);
                     removeLastPoint();
+                    setFromShapeId(null);
                   }
                 }}
               >
@@ -708,25 +756,25 @@ function AppContent() {
                           offsetX={electron.xDisplace}
                           offsetY={electron.yDisplace}
                           radius={5}
-                          // onClick={(e) => {
-                          //   setMessage(
-                          //     "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
-                          //   );
-                          //   if (fromShapeId) {
-                          //     const prevElectron = getElectronById(
-                          //       fromShapeId[0]
-                          //     );
-                          //     const thisElectron = getElectronById(electron.id);
-                          //     bondElectrons(
-                          //       [prevElectron, thisElectron],
-                          //       e,
-                          //       fromShapeId[1]
-                          //     );
-                          //     setFromShapeId(null);
-                          //   } else {
-                          //     setFromShapeId([electron.id, e]);
-                          //   }
-                          // }}
+                          onClick={(e) => {
+                            setMessage(
+                              "Click two unpaired electrons to draw bonds until they're all bonded. Click a bond to delete it."
+                            );
+                            // if (fromShapeId) {
+                            //   const prevElectron = getElectronById(
+                            //     fromShapeId[0]
+                            //   );
+                            //   const thisElectron = getElectronById(electron.id);
+                            //   bondElectrons(
+                            //     [prevElectron, thisElectron],
+                            //     e,
+                            //     fromShapeId[1]
+                            //   );
+                            //   setFromShapeId(null);
+                            // } else {
+                            //   setFromShapeId([electron.id, e]);
+                            // }
+                          }}
                           // onMouseOver={hoverElectron}
                           // onMouseOut={() => {
                           //   // console.log("entered onMouseOut");
@@ -746,13 +794,27 @@ function AppContent() {
                             console.log(touchingTarget);
                           }}
                           onMouseDown={(e) => {
-                            handleClickFirstTarget(e);
+                            setFromShapeId([electron.id, e]);
                             setDrawing(true);
+                            handleClickFirstTarget(e);
+                            console.log("drawing is", drawing);
                           }}
                           onMouseUp={(e) => {
                             console.log("in onMouseUp electron circle");
-                            handleSetPoints(e.target.attrs.x, e.target.attrs.y);
                             setDrawing(false);
+                            if (fromShapeId) {
+                              const prevElectron = getElectronById(
+                                fromShapeId[0]
+                              );
+                              const thisElectron = getElectronById(electron.id);
+                              handleSetLineData(electron.id);
+                              bondElectrons(
+                                [prevElectron, thisElectron],
+                                e,
+                                fromShapeId[1]
+                              );
+                              setFromShapeId(null);
+                            }
                           }}
                         />
                       ))}
@@ -767,11 +829,12 @@ function AppContent() {
                   {lineData.map((entry) => (
                     // Dragged Line
                     <Line
-                      id={"line"}
+                      // id={entry}
                       listening={false}
                       strokeWidth={7}
-                      stroke="white"
-                      points={points}
+                      stroke="red"
+                      points={choosePointsSource(entry)}
+                      // points={returnPointsUsingElectronIds}
                     />
 
                     // <Line
