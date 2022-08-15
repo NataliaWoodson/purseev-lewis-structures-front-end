@@ -21,6 +21,12 @@
     width: 70%;
 }
 
+.nav-links a:hover {
+    opacity: 0.8 2s ease-in-out;
+    text-decoration: underline;
+    color: white;
+}
+
 .home,
 .aboutus{
     text-decoration: none;
