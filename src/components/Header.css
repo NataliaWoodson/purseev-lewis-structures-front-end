@@ -8,7 +8,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 130px;
+    height: 90px;
     background-color: #22577A;
     color: white;
 
@@ -19,9 +19,11 @@
     justify-content: flex-end;
     list-style: none;
     width: 70%;
+    
 }
 
 .nav-links a:hover {
+    text-shadow: 0px 4px 10px rgba(179, 147, 211, 0.8);
     opacity: 0.8 2s ease-in-out;
     text-decoration: underline;
     color: white;
@@ -31,7 +33,7 @@
 .aboutus{
     text-decoration: none;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     padding: 5px 5px;
     margin: 0 5px;
     cursor: pointer;
