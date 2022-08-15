@@ -6,13 +6,14 @@ import Header from "./Header";
 import MolecFormula from "./MolecFormula";
 import DisplayProgress2 from "./DisplayProgress2";
 import UserMessages from "./UserMessages";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Buttons from "./Buttons";
 import { numElectronsObj, electronPositionDisplacements } from "./constants";
 import PopUp from "./PopUp";
 import PeriodicPopup from "./PeriodicPopup";
 import { FaUndo } from "react-icons/fa";
 import { BsInfoSquare } from "react-icons/bs";
+import Footer from "./Footer";
 
 import {
   getMolecules,
@@ -578,7 +579,6 @@ function AppContent() {
 
   return (
     <main className="window-comp">
-      {/* <Header /> */}
       <section className="Main-container">
         <Header />
         <div className="Left-comp">
@@ -780,6 +780,7 @@ function AppContent() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
