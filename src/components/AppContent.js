@@ -26,6 +26,7 @@ const STATE = {
   submitClicked: false,
   message: "",
   fiveFormulas: null,
+  unchangingElectrons: null,
 };
 
 const getElectronDataArray = (numElectrons, atomId, xAtom, yAtom) => {
@@ -111,6 +112,7 @@ function AppContent() {
   const [rotating, setRotating] = useState(false);
   const [yDisplacement, setYDisplacement] = useState(0);
   const [atomRotating, setAtomRotating] = useState(null);
+  // const [unchangingElectrons, setUnchangingElectrons] = useState(null);
   // const [amountRotation, setAmountRotation] = useState(null);
   // const [clicked, setClicked] = useState(false);
 
@@ -141,9 +143,23 @@ function AppContent() {
         })
       );
     }
-
+    STATE.unchangingElectrons = electronList;
+    console.log(
+      "setting unchangingElectrons. They are",
+      STATE.unchangingElectrons
+    );
     setElectrons(electronList);
   }, [atoms, resetClicked]);
+
+  // const getUnchangingElectronsArray = useCallback(() => {
+  //   console.log("inside getUnchangingElectronsArray");
+  //   if (unchangingElectrons && unchangingElectrons.length) {
+  //     return;
+  //   } else {
+  //     const unchangingElectronList = [...electrons];
+  //     setUnchangingElectrons(unchangingElectronList);
+  //   }
+  // }, [unchangingElectrons, electrons]);
 
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
@@ -215,6 +231,58 @@ function AppContent() {
     [atoms]
   );
 
+  const getAtomById = useCallback(
+    (atomId) => {
+      for (const atom of atoms) {
+        if (atom.id === atomId) {
+          return atom;
+        }
+      }
+    },
+    [atoms]
+  );
+
+  const findRadius = (xOffset, yOffset) => {
+    const radius = Math.sqrt(xOffset * xOffset + yOffset * yOffset);
+    return radius;
+  };
+
+  const updateAllElectronOffsets = useCallback(
+    (atomId) => {
+      const updatedElectronData = [];
+      const atom = getAtomById(atomId);
+      const atomRotation = atom.rotation;
+      console.log("rotation is", atomRotation);
+      let radius = null;
+      // if (atom.text === "H") {
+      //   radius = 32;
+      // } else {
+      //   radius = 46;
+      // }
+
+      for (const electron of electrons) {
+        if (atomId === electron.atomId) {
+          const unchangingElectron = getUnchangingElectronById(electron.id);
+          // console.log("unchangingElectron is", unchangingElectron);
+          console.log("radius is", radius);
+          console.log("sin is", Math.sin((atomRotation * Math.PI) / 180));
+          const originalXDisp = unchangingElectron.xDisplace;
+          const originalYDisp = unchangingElectron.yDisplace;
+          radius = findRadius(originalXDisp, originalYDisp);
+          updatedElectronData.push({
+            ...electron,
+            xDisplace: radius * Math.sin((atomRotation * Math.PI) / 180),
+            yDisplace: -radius * Math.cos((atomRotation * Math.PI) / 180),
+          });
+        } else {
+          updatedElectronData.push(electron);
+        }
+      }
+      setElectrons(updatedElectronData);
+    },
+    [electrons, getAtomById]
+  );
+
   const updateOneAtomRotationState = useCallback(
     (selectedAtomId, updatedYDisplace) => {
       // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
@@ -236,8 +304,31 @@ function AppContent() {
         }
       }
       setAtoms(updatedAtomData);
+      updateAllElectronOffsets(selectedAtomId);
     },
-    [atoms]
+    [atoms, updateAllElectronOffsets]
+  );
+
+  const updateOneElectronOffset = useCallback(
+    (selectedElectronId, yDisplacement) => {
+      // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      // console.log("newElectronData are", newElectronData);
+      const updatedElectronData = [];
+      const angle = yDisplacement * 2;
+      for (const electron of electrons) {
+        if (electron.id === selectedElectronId) {
+          updatedElectronData.push({
+            ...electron,
+            xDisplace: electron.xDisplace * Math.sin((angle * Math.PI) / 180),
+            yDisplace: electron.yDisplace * Math.cos((angle * Math.PI) / 180),
+          });
+        } else {
+          updatedElectronData.push(electron);
+        }
+      }
+      setElectrons(updatedElectronData);
+    },
+    [electrons]
   );
 
   const getAtomPositionById = (atomId) => {
@@ -269,14 +360,6 @@ function AppContent() {
 
     //   }
     // }
-  };
-
-  const getAtomById = (atomId) => {
-    for (const atom of atoms) {
-      if (atom.id === atomId) {
-        return atom;
-      }
-    }
   };
 
   const bondElectrons = (
@@ -384,6 +467,14 @@ function AppContent() {
     }
   };
 
+  const getUnchangingElectronById = (id) => {
+    for (const unchangingElectron of STATE.unchangingElectrons) {
+      if (id === unchangingElectron.id) {
+        return unchangingElectron;
+      }
+    }
+  };
+
   const updateMolecule = useCallback(() => {
     setLineData([]);
     setGameStarted(true);
@@ -435,6 +526,10 @@ function AppContent() {
   useEffect(() => {
     getElectronsArray();
   }, [getElectronsArray]);
+
+  // useEffect(() => {
+  //   getUnchangingElectronsArray();
+  // }, [electrons]);
 
   const updateSubmissions = (result) => {
     if (submissions.length === 5) {
@@ -522,6 +617,7 @@ function AppContent() {
     setGameStarted(false);
     STATE.numRounds = 0;
     updateMolecule();
+    STATE.unchangingElectrons = null;
   };
 
   const returnPointsUsingElectronIds = (entry) => {
