@@ -685,7 +685,7 @@ function AppContent() {
         <Header />
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
-          <h3>How to Play</h3>
+          <h3 id="how-to-play">How to Play</h3>
           <button className="tutorial-button" onClick={toggleTutorial}>
             <MdOndemandVideo />
           </button>

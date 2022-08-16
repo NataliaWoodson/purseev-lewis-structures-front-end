@@ -29,3 +29,9 @@
     color: white;
 }
 
+.tutorial-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+}
+
