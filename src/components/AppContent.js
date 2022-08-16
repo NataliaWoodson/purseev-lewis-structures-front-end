@@ -107,6 +107,8 @@ function AppContent() {
   const [drawing, setDrawing] = useState(false);
   const [touchingTarget, setTouchingTarget] = useState(false);
   const [points, setPoints] = useState(null);
+  const [rotating, setRotating] = useState(false);
+  const [yDisplacement, setYDisplacement] = useState(0);
   // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
@@ -588,6 +590,12 @@ function AppContent() {
     setPoints(updatedPoint);
   };
 
+  const handleRotateAtom = (e) => {
+    const cursor = e.currentTarget.getPointerPosition();
+    const yDisplace = cursor.y;
+    setYDisplacement(yDisplace);
+  };
+
   const removeLastPoint = () => {
     setPoints(null);
     const updatedLineData = lineData.slice(0, -1);
@@ -728,11 +736,14 @@ function AppContent() {
                 width={window.innerWidth}
                 height={window.innerHeight}
                 onMouseMove={(e) => {
-                  if (drawing) {
+                  if (rotating) {
+                    handleRotateAtom(e);
+                  } else if (drawing) {
                     handleMoveMouse(e);
                   }
                 }}
                 onMouseUp={() => {
+                  setRotating(false);
                   if (!drawing) {
                     return;
                   }
@@ -754,6 +765,20 @@ function AppContent() {
                         updateAtomPosition(e);
                       }}
                       onDragEnd={handleDragEnd}
+                      onMouseDown={(e) => {
+                        console.log(e);
+                        if (e.evt.button === 2) {
+                          e.evt.preventDefault();
+                          console.log("detected right click");
+                          setRotating(true);
+                        }
+
+                        console.log("clicked atom");
+                      }}
+                      onContextMenu={(e) => {
+                        e.evt.preventDefault();
+                      }}
+                      rotation={yDisplacement * 2}
                     >
                       <Circle
                         key={atom.id}
@@ -820,6 +845,7 @@ function AppContent() {
                         offsetY={10}
                         text={atom.text}
                         fontSize={30}
+                        rotation={-yDisplacement * 2}
                       />
                     </Group>
                   ))}
