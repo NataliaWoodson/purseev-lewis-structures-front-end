@@ -59,11 +59,13 @@ header {
 
 .Left-comp{
   display: flex;
-  margin-top: 50px;
+  margin-left: 150px;
   height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 40px;
+  /* padding-bottom: 50px; */
 } 
 
 .Left-comp ul {
@@ -80,6 +82,8 @@ header {
   text-align: center;
   padding: 20px 0 0 0;
   margin-bottom: 20px;
+  margin-right: 150px;
+  width: 80%;
   
 }
 
@@ -96,8 +100,7 @@ header {
   flex-direction: column;
   background-color: #22577A;
   color: white;
-  padding: 20px;
-  margin: 0;
+    margin: 0;
   font-size: 20px;
   /* border-top-left-radius: 3px;
   border-top-right-radius: 3px; */
@@ -114,11 +117,12 @@ header {
   border-top: none;
   border-radius: 3px; 
   position: relative;
+  margin-left: 150px;
 }
 
 .stage-container {
-  height: calc(100vh - 100px);
-  width: calc(100vw - 300px);
+  height: calc(100vh - 200px);
+  width: calc(100vw - 200px);
 }  
 
 .header{
