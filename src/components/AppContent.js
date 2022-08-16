@@ -271,8 +271,8 @@ function AppContent() {
           radius = findRadius(originalXDisp, originalYDisp);
           updatedElectronData.push({
             ...electron,
-            xDisplace: radius * Math.sin((atomRotation * Math.PI) / 180),
-            yDisplace: -radius * Math.cos((atomRotation * Math.PI) / 180),
+            xDisplace: radius * Math.cos((atomRotation * Math.PI) / 180),
+            yDisplace: radius * Math.sin((atomRotation * Math.PI) / 180),
           });
         } else {
           updatedElectronData.push(electron);
