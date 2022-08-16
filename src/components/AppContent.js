@@ -79,6 +79,7 @@ const generateAtoms = (atomObj) => {
       y: y,
       text: element.elementSymbol,
       isDragging: false,
+      rotation: 0,
       electrons: getElectronDataArray(
         numElectronsObj[element.elementSymbol],
         element.id,
@@ -110,7 +111,7 @@ function AppContent() {
   const [rotating, setRotating] = useState(false);
   const [yDisplacement, setYDisplacement] = useState(0);
   const [atomRotating, setAtomRotating] = useState(null);
-  const [amountRotation, setAmountRotation] = useState(null);
+  // const [amountRotation, setAmountRotation] = useState(null);
   // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
@@ -202,6 +203,32 @@ function AppContent() {
             y: updatedAtomY,
             text: atom.text,
             isDragging: true,
+            rotation: atom.rotation,
+            electrons: atom.electrons,
+          });
+        } else {
+          updatedAtomData.push(atom);
+        }
+      }
+      setAtoms(updatedAtomData);
+    },
+    [atoms]
+  );
+
+  const updateOneAtomRotationState = useCallback(
+    (selectedAtomId, updatedYDisplace) => {
+      // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      // console.log("newElectronData are", newElectronData);
+      const updatedAtomData = [];
+      for (let atom of atoms) {
+        if (atom.id === selectedAtomId) {
+          updatedAtomData.push({
+            id: atom.id,
+            x: atom.x,
+            y: atom.y,
+            text: atom.text,
+            isDragging: false,
+            rotation: updatedYDisplace,
             electrons: atom.electrons,
           });
         } else {
@@ -596,6 +623,8 @@ function AppContent() {
     const cursor = e.currentTarget.getPointerPosition();
     const yDisplace = cursor.y;
     setYDisplacement(yDisplace);
+    console.log("atomRotating is", atomRotating);
+    updateOneAtomRotationState(atomRotating, yDisplace);
     setRotation(e);
   };
 
@@ -683,8 +712,10 @@ function AppContent() {
   };
 
   const setRotation = (e) => {
+    console.log("in setRotation. e is", e);
     if (parseInt(e.target.attrs.id) === atomRotating) {
-      setAmountRotation(yDisplacement * 2);
+      // setAmountRotation(yDisplacement * 2);
+      updateOneAtomRotationState(atomRotating, yDisplacement);
     }
     // else {
     //   setAmountRotation 0;
@@ -755,6 +786,7 @@ function AppContent() {
                   }
                 }}
                 onMouseUp={() => {
+                  setAtomRotating(null);
                   setRotating(false);
                   if (!drawing) {
                     return;
@@ -785,14 +817,14 @@ function AppContent() {
                           setRotating(true);
                           setAtomRotating(atom.id);
                         }
-
+                        console.log("atomRotating is", atomRotating);
                         console.log("clicked atom");
                       }}
                       onContextMenu={(e) => {
                         e.evt.preventDefault();
                       }}
                       // Need to attach amountRotation to each atom in atom state
-                      rotation={atom.amountRotation}
+                      rotation={atom.rotation}
                     >
                       <Circle
                         key={atom.id}
@@ -838,6 +870,7 @@ function AppContent() {
                           }}
                           onMouseUp={(e) => {
                             setDrawing(false);
+                            setRotating(false);
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
                                 fromShapeId[0]
@@ -859,7 +892,7 @@ function AppContent() {
                         offsetY={10}
                         text={atom.text}
                         fontSize={30}
-                        rotation={-amountRotation}
+                        rotation={-atom.rotation}
                       />
                     </Group>
                   ))}
