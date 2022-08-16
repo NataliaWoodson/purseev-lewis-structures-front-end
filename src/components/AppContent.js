@@ -13,6 +13,9 @@ import PopUp from "./PopUp";
 import PeriodicPopup from "./PeriodicPopup";
 import { FaUndo } from "react-icons/fa";
 import { BsInfoSquare } from "react-icons/bs";
+import { MdOndemandVideo } from "react-icons/md";
+import TutorialPopUp from "./TutorialPopup";
+import Footer from "./Footer";
 
 import {
   getMolecules,
@@ -114,6 +117,7 @@ function AppContent() {
   const [atomRotating, setAtomRotating] = useState(null);
   // const [unchangingElectrons, setUnchangingElectrons] = useState(null);
   // const [amountRotation, setAmountRotation] = useState(null);
+  const [viewTutorial, setViewTutorial] = useState(false);
   // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
@@ -725,6 +729,10 @@ function AppContent() {
     settablePopup((tablePopup) => !tablePopup);
   };
 
+  const toggleTutorial = () => {
+    setViewTutorial((viewTutorial) => !viewTutorial);
+  };
+
   const handleMoveMouse = (e) => {
     const cursor = e.currentTarget.getPointerPosition();
     const currentPoint = points;
@@ -842,6 +850,9 @@ function AppContent() {
         <div className="Left-comp">
           <MolecFormula display={molecFormula} />
           <h3>How to Play</h3>
+          <button className="tutorial-button" onClick={toggleTutorial}>
+            <MdOndemandVideo />
+          </button>
           {/* <ul className="short-directions">
             <h3>How to Play</h3>
             <li>- Click and drag bonds between unpaired electrons.</li>
@@ -884,6 +895,9 @@ function AppContent() {
                 {seen ? <PopUp toggle={togglePop} /> : null}
                 {tablePopup ? (
                   <PeriodicPopup toggle={togglePeriodicPopup} />
+                ) : null}
+                {viewTutorial ? (
+                  <TutorialPopUp toggle={toggleTutorial} />
                 ) : null}
               </div>
 
@@ -1030,6 +1044,7 @@ function AppContent() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

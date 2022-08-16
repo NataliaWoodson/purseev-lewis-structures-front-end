@@ -19,7 +19,7 @@ const Header = () => {
             <img src="noun-menu.png" alt="" width={50} />
           </li> */}
           <Link to="/" className="home">
-            <li>Game page</li>
+            <li>Game</li>
           </Link>
           <Link to="/aboutus" className="aboutus">
             <li>About us</li>
