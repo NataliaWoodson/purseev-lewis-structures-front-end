@@ -263,16 +263,33 @@ function AppContent() {
       for (const electron of electrons) {
         if (atomId === electron.atomId) {
           const unchangingElectron = getUnchangingElectronById(electron.id);
-          // console.log("unchangingElectron is", unchangingElectron);
+          console.log("unchangingElectron is", unchangingElectron);
           console.log("radius is", radius);
           console.log("sin is", Math.sin((atomRotation * Math.PI) / 180));
           const originalXDisp = unchangingElectron.xDisplace;
           const originalYDisp = unchangingElectron.yDisplace;
           radius = findRadius(originalXDisp, originalYDisp);
+          // if (originalXDisp > 0 && originalYDisp > 0) {
+
+          // } else if (originalXDisp < 0 && originalYDisp > 0) {
+
+          // } else if (originalXDisp < 0 && originalYDisp < 0) {
+
+          // } else {
+
+          // }
+
+          const xDisplace =
+            originalXDisp * Math.cos((atomRotation * Math.PI) / 180) -
+            originalYDisp * Math.sin((atomRotation * Math.PI) / 180);
+          const yDisplace =
+            originalXDisp * Math.sin((atomRotation * Math.PI) / 180) +
+            originalYDisp * Math.cos((atomRotation * Math.PI) / 180);
+
           updatedElectronData.push({
             ...electron,
-            xDisplace: radius * Math.cos((atomRotation * Math.PI) / 180),
-            yDisplace: radius * Math.sin((atomRotation * Math.PI) / 180),
+            xDisplace: xDisplace,
+            yDisplace: yDisplace,
           });
         } else {
           updatedElectronData.push(electron);
