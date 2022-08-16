@@ -109,6 +109,8 @@ function AppContent() {
   const [points, setPoints] = useState(null);
   const [rotating, setRotating] = useState(false);
   const [yDisplacement, setYDisplacement] = useState(0);
+  const [atomRotating, setAtomRotating] = useState(null);
+  const [amountRotation, setAmountRotation] = useState(null);
   // const [clicked, setClicked] = useState(false);
 
   const getElectronsArray = useCallback(() => {
@@ -594,6 +596,7 @@ function AppContent() {
     const cursor = e.currentTarget.getPointerPosition();
     const yDisplace = cursor.y;
     setYDisplacement(yDisplace);
+    setRotation(e);
   };
 
   const removeLastPoint = () => {
@@ -677,6 +680,15 @@ function AppContent() {
     } else {
       return 46;
     }
+  };
+
+  const setRotation = (e) => {
+    if (parseInt(e.target.attrs.id) === atomRotating) {
+      setAmountRotation(yDisplacement * 2);
+    }
+    // else {
+    //   setAmountRotation 0;
+    // }
   };
 
   return (
@@ -771,6 +783,7 @@ function AppContent() {
                           e.evt.preventDefault();
                           console.log("detected right click");
                           setRotating(true);
+                          setAtomRotating(atom.id);
                         }
 
                         console.log("clicked atom");
@@ -778,7 +791,8 @@ function AppContent() {
                       onContextMenu={(e) => {
                         e.evt.preventDefault();
                       }}
-                      rotation={yDisplacement * 2}
+                      // Need to attach amountRotation to each atom in atom state
+                      rotation={atom.amountRotation}
                     >
                       <Circle
                         key={atom.id}
@@ -845,7 +859,7 @@ function AppContent() {
                         offsetY={10}
                         text={atom.text}
                         fontSize={30}
-                        rotation={-yDisplacement * 2}
+                        rotation={-amountRotation}
                       />
                     </Group>
                   ))}
