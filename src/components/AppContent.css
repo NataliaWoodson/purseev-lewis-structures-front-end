@@ -20,6 +20,13 @@ body {
 
 .main-stage-container {
   padding-left: 0;
+  margin-left: 5vw;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 40vw;
+  margin-left: -3vw;
 }
 
 .Main-container{
@@ -64,6 +71,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 8vw;
 } 
 
 .Left-comp ul {
@@ -96,7 +104,6 @@ header {
   flex-direction: column;
   background-color: #22577A;
   color: white;
-  padding: 20px;
   margin: 0;
   font-size: 20px;
   /* border-top-left-radius: 3px;
@@ -117,8 +124,8 @@ header {
 }
 
 .stage-container {
-  height: calc(100vh - 100px);
-  width: calc(100vw - 300px);
+  height: calc(100vh - 200px);
+  width: calc(100vw - 200px);
 }  
 
 .header{
@@ -163,6 +170,10 @@ header {
   background: none;
   /* background-color: #22577A; */
   opacity: .9;
+}
+
+#how-to-play {
+  font-size: 1.5rem;
 }
 
 /* .instruction-container {

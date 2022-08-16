@@ -30,8 +30,14 @@
 }
 
 .tutorial-button {
+    font-size: 2rem;
     background: none;
     border: none;
-    font-size: 20px;
 }
 
+.tutorial-button:hover {
+    /* background-color: black; */
+    background-color: #22577A;
+    color: white;
+    opacity: 0.8 2s ease-in-out;
+}
