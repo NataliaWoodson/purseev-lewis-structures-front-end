@@ -713,6 +713,9 @@ function AppContent() {
     setResetClicked(true);
     setLineData([]);
     getElectronsArray();
+    for (let atom of atoms) {
+      atom.rotation = 0;
+    }
   };
 
   const handleDragEnd = (e) => {
