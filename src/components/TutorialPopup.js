@@ -15,7 +15,7 @@ const TutorialPopUp = (props) => {
         <iframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/Mb7iEv0RrHQ"
+          src="https://www.youtube.com/embed/HsTYqb9jTAg"
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
