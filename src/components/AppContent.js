@@ -72,30 +72,6 @@ const elementSymbolArray = (atomObj) => {
   return elementArray;
 };
 
-const generateAtoms = (atomObj) => {
-  const atomData = [];
-  for (let element of elementSymbolArray(atomObj)) {
-    let x = (Math.random() * window.innerWidth) / 2;
-    let y = (Math.random() * window.innerHeight) / 2;
-    atomData.push({
-      id: element.id,
-      x: x,
-      y: y,
-      text: element.elementSymbol,
-      isDragging: false,
-      rotation: 0,
-      electrons: getElectronDataArray(
-        numElectronsObj[element.elementSymbol],
-        element.id,
-        x,
-        y
-      ),
-    });
-  }
-  // console.log("atomData in generateAtoms is", atomData);
-  return atomData;
-};
-
 function AppContent() {
   const [fromShapeId, setFromShapeId] = React.useState(null);
   const [electrons, setElectrons] = React.useState(null);
@@ -119,6 +95,53 @@ function AppContent() {
   // const [amountRotation, setAmountRotation] = useState(null);
   const [viewTutorial, setViewTutorial] = useState(false);
   // const [clicked, setClicked] = useState(false);
+
+  const getAtomOpacity = useCallback(
+    (atomId) => {
+      if (rotating) {
+        if (atomRotating === atomId) {
+          return 1;
+        } else {
+          return 0.3;
+        }
+      } else {
+        return 0.7;
+      }
+    },
+    [atomRotating, rotating]
+  );
+
+  // const updateAllAtomOpacity = useCallback((atomId) => {
+  //   const updatedAtomData = [];
+  //   for (const atom of atoms) {
+  //     if (atom.id ===)
+  //   }
+  // })
+
+  const generateAtoms = (atomObj) => {
+    const atomData = [];
+    for (let element of elementSymbolArray(atomObj)) {
+      let x = (Math.random() * window.innerWidth) / 2;
+      let y = (Math.random() * window.innerHeight) / 2;
+      atomData.push({
+        id: element.id,
+        x: x,
+        y: y,
+        text: element.elementSymbol,
+        isDragging: false,
+        rotation: 0,
+        opacity: getAtomOpacity(element.id),
+        electrons: getElectronDataArray(
+          numElectronsObj[element.elementSymbol],
+          element.id,
+          x,
+          y
+        ),
+      });
+    }
+    // console.log("atomData in generateAtoms is", atomData);
+    return atomData;
+  };
 
   const getElectronsArray = useCallback(() => {
     // Only continues to next part if there aren't already electrons in the electron state.
@@ -224,6 +247,7 @@ function AppContent() {
             text: atom.text,
             isDragging: true,
             rotation: atom.rotation,
+            opacity: getAtomOpacity(atom.id),
             electrons: atom.electrons,
           });
         } else {
@@ -317,6 +341,7 @@ function AppContent() {
             y: atom.y,
             text: atom.text,
             isDragging: false,
+            opacity: getAtomOpacity(atom.id),
             rotation: updatedYDisplace,
             electrons: atom.electrons,
           });
@@ -327,7 +352,7 @@ function AppContent() {
       setAtoms(updatedAtomData);
       updateAllElectronOffsets(selectedAtomId);
     },
-    [atoms, updateAllElectronOffsets]
+    [atoms, updateAllElectronOffsets, getAtomOpacity]
   );
 
   const updateOneElectronOffset = useCallback(
@@ -798,7 +823,12 @@ function AppContent() {
     }
   };
   // set atom colors
-  const setAtomColor = (atomSymbol) => {
+  const setAtomColor = (atomSymbol, atomId) => {
+    if (rotating) {
+      if (atomId !== atomRotating) {
+        return "#E5E4E2";
+      }
+    }
     if (atomSymbol === "H") {
       return "white";
     } else if (atomSymbol === "O") {
@@ -830,6 +860,17 @@ function AppContent() {
     } else {
       return 46;
     }
+  };
+
+  const setAtomOpacity = (atomId) => {
+    if (rotating) {
+      if (atomId === atomRotating) {
+        return 0.7;
+      } else {
+        return 0.5;
+      }
+    }
+    return 0.7;
   };
 
   const setRotation = (e) => {
@@ -958,12 +999,14 @@ function AppContent() {
                         x={0}
                         y={0}
                         // fill="#72D6C9"
-                        fill={setAtomColor(atom.text)}
+                        fill={setAtomColor(atom.text, atom.id)}
                         radius={setAtomRadius(atom.text)}
-                        opacity={0.7}
+                        opacity={atom.id === atomRotating ? 0.9 : 0.7}
                         // shadowColor="black"
+                        stroke="#ffcc00"
+                        strokeWidth={atom.id === atomRotating ? 7 : 0}
                         shadowBlur={10}
-                        shadowOpacity={0.7}
+                        shadowOpacity={setAtomOpacity(atom.id)}
                         shadowOffsetX={atom.isDragging ? 8 : 5}
                         shadowOffsetY={atom.isDragging ? 8 : 5}
                         scaleX={atom.isDragging ? 1.1 : 1}
