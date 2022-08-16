@@ -29,6 +29,7 @@ const STATE = {
   submitClicked: false,
   message: "",
   fiveFormulas: null,
+  unchangingElectrons: null,
 };
 
 const getElectronDataArray = (numElectrons, atomId, xAtom, yAtom) => {
@@ -82,6 +83,7 @@ const generateAtoms = (atomObj) => {
       y: y,
       text: element.elementSymbol,
       isDragging: false,
+      rotation: 0,
       electrons: getElectronDataArray(
         numElectronsObj[element.elementSymbol],
         element.id,
@@ -110,6 +112,11 @@ function AppContent() {
   const [drawing, setDrawing] = useState(false);
   const [touchingTarget, setTouchingTarget] = useState(false);
   const [points, setPoints] = useState(null);
+  const [rotating, setRotating] = useState(false);
+  const [yDisplacement, setYDisplacement] = useState(0);
+  const [atomRotating, setAtomRotating] = useState(null);
+  // const [unchangingElectrons, setUnchangingElectrons] = useState(null);
+  // const [amountRotation, setAmountRotation] = useState(null);
   const [viewTutorial, setViewTutorial] = useState(false);
   // const [clicked, setClicked] = useState(false);
 
@@ -140,9 +147,23 @@ function AppContent() {
         })
       );
     }
-
+    STATE.unchangingElectrons = electronList;
+    console.log(
+      "setting unchangingElectrons. They are",
+      STATE.unchangingElectrons
+    );
     setElectrons(electronList);
   }, [atoms, resetClicked]);
+
+  // const getUnchangingElectronsArray = useCallback(() => {
+  //   console.log("inside getUnchangingElectronsArray");
+  //   if (unchangingElectrons && unchangingElectrons.length) {
+  //     return;
+  //   } else {
+  //     const unchangingElectronList = [...electrons];
+  //     setUnchangingElectrons(unchangingElectronList);
+  //   }
+  // }, [unchangingElectrons, electrons]);
 
   const updateElectronsArray = useCallback(
     (updatedElectronsArray) => {
@@ -202,6 +223,7 @@ function AppContent() {
             y: updatedAtomY,
             text: atom.text,
             isDragging: true,
+            rotation: atom.rotation,
             electrons: atom.electrons,
           });
         } else {
@@ -211,6 +233,123 @@ function AppContent() {
       setAtoms(updatedAtomData);
     },
     [atoms]
+  );
+
+  const getAtomById = useCallback(
+    (atomId) => {
+      for (const atom of atoms) {
+        if (atom.id === atomId) {
+          return atom;
+        }
+      }
+    },
+    [atoms]
+  );
+
+  const findRadius = (xOffset, yOffset) => {
+    const radius = Math.sqrt(xOffset * xOffset + yOffset * yOffset);
+    return radius;
+  };
+
+  const updateAllElectronOffsets = useCallback(
+    (atomId) => {
+      const updatedElectronData = [];
+      const atom = getAtomById(atomId);
+      const atomRotation = atom.rotation;
+      console.log("rotation is", atomRotation);
+      let radius = null;
+      // if (atom.text === "H") {
+      //   radius = 32;
+      // } else {
+      //   radius = 46;
+      // }
+
+      for (const electron of electrons) {
+        if (atomId === electron.atomId) {
+          const unchangingElectron = getUnchangingElectronById(electron.id);
+          console.log("unchangingElectron is", unchangingElectron);
+          console.log("radius is", radius);
+          console.log("sin is", Math.sin((atomRotation * Math.PI) / 180));
+          const originalXDisp = unchangingElectron.xDisplace;
+          const originalYDisp = unchangingElectron.yDisplace;
+          radius = findRadius(originalXDisp, originalYDisp);
+          // if (originalXDisp > 0 && originalYDisp > 0) {
+
+          // } else if (originalXDisp < 0 && originalYDisp > 0) {
+
+          // } else if (originalXDisp < 0 && originalYDisp < 0) {
+
+          // } else {
+
+          // }
+
+          const xDisplace =
+            originalXDisp * Math.cos((atomRotation * Math.PI) / 180) -
+            originalYDisp * Math.sin((atomRotation * Math.PI) / 180);
+          const yDisplace =
+            originalXDisp * Math.sin((atomRotation * Math.PI) / 180) +
+            originalYDisp * Math.cos((atomRotation * Math.PI) / 180);
+
+          updatedElectronData.push({
+            ...electron,
+            xDisplace: xDisplace,
+            yDisplace: yDisplace,
+          });
+        } else {
+          updatedElectronData.push(electron);
+        }
+      }
+      setElectrons(updatedElectronData);
+    },
+    [electrons, getAtomById]
+  );
+
+  const updateOneAtomRotationState = useCallback(
+    (selectedAtomId, updatedYDisplace) => {
+      // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      // console.log("newElectronData are", newElectronData);
+      const updatedAtomData = [];
+      for (let atom of atoms) {
+        if (atom.id === selectedAtomId) {
+          updatedAtomData.push({
+            id: atom.id,
+            x: atom.x,
+            y: atom.y,
+            text: atom.text,
+            isDragging: false,
+            rotation: updatedYDisplace,
+            electrons: atom.electrons,
+          });
+        } else {
+          updatedAtomData.push(atom);
+        }
+      }
+      setAtoms(updatedAtomData);
+      updateAllElectronOffsets(selectedAtomId);
+    },
+    [atoms, updateAllElectronOffsets]
+  );
+
+  const updateOneElectronOffset = useCallback(
+    (selectedElectronId, yDisplacement) => {
+      // const newElectronData = getUpdatedElectronsInOneAtomState(selectedAtomId);
+      // console.log("newElectronData are", newElectronData);
+      const updatedElectronData = [];
+      const angle = yDisplacement * 2;
+      for (const electron of electrons) {
+        if (electron.id === selectedElectronId) {
+          updatedElectronData.push({
+            ...electron,
+            xDisplace: electron.xDisplace * Math.sin((angle * Math.PI) / 180),
+            yDisplace: electron.yDisplace * Math.cos((angle * Math.PI) / 180),
+          });
+        } else {
+          updatedElectronData.push(electron);
+        }
+      }
+      setElectrons(updatedElectronData);
+    },
+    [electrons]
   );
 
   const getAtomPositionById = (atomId) => {
@@ -242,14 +381,6 @@ function AppContent() {
 
     //   }
     // }
-  };
-
-  const getAtomById = (atomId) => {
-    for (const atom of atoms) {
-      if (atom.id === atomId) {
-        return atom;
-      }
-    }
   };
 
   const bondElectrons = (
@@ -357,6 +488,14 @@ function AppContent() {
     }
   };
 
+  const getUnchangingElectronById = (id) => {
+    for (const unchangingElectron of STATE.unchangingElectrons) {
+      if (id === unchangingElectron.id) {
+        return unchangingElectron;
+      }
+    }
+  };
+
   const updateMolecule = useCallback(() => {
     setLineData([]);
     setGameStarted(true);
@@ -408,6 +547,10 @@ function AppContent() {
   useEffect(() => {
     getElectronsArray();
   }, [getElectronsArray]);
+
+  // useEffect(() => {
+  //   getUnchangingElectronsArray();
+  // }, [electrons]);
 
   const updateSubmissions = (result) => {
     if (submissions.length === 5) {
@@ -495,6 +638,7 @@ function AppContent() {
     setGameStarted(false);
     STATE.numRounds = 0;
     updateMolecule();
+    STATE.unchangingElectrons = null;
   };
 
   const returnPointsUsingElectronIds = (entry) => {
@@ -596,6 +740,15 @@ function AppContent() {
     setPoints(updatedPoint);
   };
 
+  const handleRotateAtom = (e) => {
+    const cursor = e.currentTarget.getPointerPosition();
+    const yDisplace = cursor.y;
+    setYDisplacement(yDisplace * 2);
+    console.log("atomRotating is", atomRotating);
+    updateOneAtomRotationState(atomRotating, yDisplace * 2);
+    setRotation(e);
+  };
+
   const removeLastPoint = () => {
     setPoints(null);
     const updatedLineData = lineData.slice(0, -1);
@@ -679,6 +832,17 @@ function AppContent() {
     }
   };
 
+  const setRotation = (e) => {
+    console.log("in setRotation. e is", e);
+    if (parseInt(e.target.attrs.id) === atomRotating) {
+      // setAmountRotation(yDisplacement * 2);
+      updateOneAtomRotationState(atomRotating, yDisplacement);
+    }
+    // else {
+    //   setAmountRotation 0;
+    // }
+  };
+
   return (
     <main className="window-comp">
       <section className="Main-container">
@@ -742,11 +906,15 @@ function AppContent() {
                 width={window.innerWidth}
                 height={window.innerHeight}
                 onMouseMove={(e) => {
-                  if (drawing) {
+                  if (rotating) {
+                    handleRotateAtom(e);
+                  } else if (drawing) {
                     handleMoveMouse(e);
                   }
                 }}
                 onMouseUp={() => {
+                  setAtomRotating(null);
+                  setRotating(false);
                   if (!drawing) {
                     return;
                   }
@@ -768,6 +936,22 @@ function AppContent() {
                         updateAtomPosition(e);
                       }}
                       onDragEnd={handleDragEnd}
+                      onMouseDown={(e) => {
+                        console.log(e);
+                        if (e.evt.button === 2) {
+                          e.evt.preventDefault();
+                          console.log("detected right click");
+                          setRotating(true);
+                          setAtomRotating(atom.id);
+                        }
+                        console.log("atomRotating is", atomRotating);
+                        console.log("clicked atom");
+                      }}
+                      onContextMenu={(e) => {
+                        e.evt.preventDefault();
+                      }}
+                      // Need to attach amountRotation to each atom in atom state
+                      rotation={atom.rotation}
                     >
                       <Circle
                         key={atom.id}
@@ -813,6 +997,7 @@ function AppContent() {
                           }}
                           onMouseUp={(e) => {
                             setDrawing(false);
+                            setRotating(false);
                             if (fromShapeId) {
                               const prevElectron = getElectronById(
                                 fromShapeId[0]
@@ -834,6 +1019,7 @@ function AppContent() {
                         offsetY={10}
                         text={atom.text}
                         fontSize={30}
+                        rotation={-atom.rotation}
                       />
                     </Group>
                   ))}
