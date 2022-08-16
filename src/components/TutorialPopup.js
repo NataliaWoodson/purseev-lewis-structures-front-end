@@ -13,8 +13,8 @@ const TutorialPopUp = (props) => {
           &times;
         </span>
         <iframe
-          width="560"
-          height="315"
+          // width="560"
+          // height="315"
           src="https://www.youtube.com/embed/HsTYqb9jTAg"
           title="YouTube video player"
           frameborder="0"
