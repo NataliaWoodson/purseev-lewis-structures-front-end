@@ -22,7 +22,7 @@ const getMolecules = async () => {
 
       // setMolecularFormula = chemicalFormula
       console.log("fiveFormulas are", fiveFormulas);
-      return ["NH3", "O2", "SiNH3", "CO2", "N2H2"];
+      return ["C2H2", "CO2", "SiNH3", "O2", "NH3"];
     });
   } catch (err) {
     console.log(err);
