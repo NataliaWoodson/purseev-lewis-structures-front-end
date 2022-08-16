@@ -13,6 +13,7 @@ import PopUp from "./PopUp";
 import PeriodicPopup from "./PeriodicPopup";
 import { FaUndo } from "react-icons/fa";
 import { BsInfoSquare } from "react-icons/bs";
+import Footer from "./Footer";
 
 import {
   getMolecules,
@@ -829,6 +830,7 @@ function AppContent() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

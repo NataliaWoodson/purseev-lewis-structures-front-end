@@ -7,6 +7,7 @@ import adrianaSource from "../assets/adriana.png";
 import humaSource from "../assets/huma.jpg";
 import nataliaSource from "../assets/natalia.jpg";
 import jennySource from "../assets/jenny.jpeg";
+import Footer from "./Footer";
 
 const AboutUs = () => {
   return (
@@ -115,6 +116,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 };
