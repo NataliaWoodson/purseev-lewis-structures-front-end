@@ -735,9 +735,9 @@ function AppContent() {
   const handleRotateAtom = (e) => {
     const cursor = e.currentTarget.getPointerPosition();
     const yDisplace = cursor.y;
-    setYDisplacement(yDisplace);
+    setYDisplacement(yDisplace * 2);
     console.log("atomRotating is", atomRotating);
-    updateOneAtomRotationState(atomRotating, yDisplace);
+    updateOneAtomRotationState(atomRotating, yDisplace * 2);
     setRotation(e);
   };
 
