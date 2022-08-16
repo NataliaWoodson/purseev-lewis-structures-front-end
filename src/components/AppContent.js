@@ -25,6 +25,7 @@ const STATE = {
   numRounds: 0,
   submitClicked: false,
   message: "",
+  fiveFormulas: null,
 };
 
 const getElectronDataArray = (numElectrons, atomId, xAtom, yAtom) => {
@@ -366,17 +367,31 @@ function AppContent() {
     STATE.numRounds++;
 
     setSubmitClicked(false);
-
-    if (STATE.numRounds <= 5) {
-      getMolecules().then((chemicalFormula) => {
-        setMolecFormula(chemicalFormula);
-        const atomObj = generateNumAtomsDict(chemicalFormula);
+    console.log("STATE.numRounds is", STATE.numRounds);
+    if (STATE.numRounds === 1) {
+      getMolecules().then((chemicalFormulas) => {
+        STATE.fiveFormulas = chemicalFormulas;
+        console.log("STATE.fiveFormulas is", STATE.fiveFormulas);
+        const oneFormula = STATE.fiveFormulas.pop();
+        console.log("popped a formula in if (STATE.numRounds === 1");
+        setMolecFormula(oneFormula);
+        const atomObj = generateNumAtomsDict(oneFormula);
         setAtoms(generateAtoms(atomObj));
       });
-      STATE.ids = 0;
     } else {
-      console.log("played five rounds");
+      if (STATE.numRounds <= 5) {
+        const oneFormula = STATE.fiveFormulas.pop();
+        console.log("popped a formula in if (STATE.numRounds <= 5");
+        console.log("STATE.fiveFormulas is", STATE.fiveFormulas);
+        setMolecFormula(oneFormula);
+        const atomObj = generateNumAtomsDict(oneFormula);
+        setAtoms(generateAtoms(atomObj));
+        STATE.ids = 0;
+      } else {
+        console.log("played five rounds");
+      }
     }
+
     // setLevelInfo(STATE.submissions.score);
     // console.log(STATE.submissions.score);
   }, []);

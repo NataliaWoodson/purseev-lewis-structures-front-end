@@ -7,11 +7,22 @@ const getMolecules = async () => {
   try {
     return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
       const formulas = response.data.molecules;
-      const rand_formula =
-        formulas[Math.floor(Math.random() * formulas.length)];
-      const chemicalFormula = rand_formula["molecular_formula"];
+      const fiveFormulas = [];
+      for (let i = 0; i < 5; ) {
+        const rand_formula =
+          formulas[Math.floor(Math.random() * formulas.length)];
+        const chemicalFormula = rand_formula["molecular_formula"];
+        if (fiveFormulas.includes(chemicalFormula)) {
+          continue;
+        } else {
+          fiveFormulas.push(chemicalFormula);
+          i++;
+        }
+      }
+
       // setMolecularFormula = chemicalFormula
-      return chemicalFormula;
+      console.log("fiveFormulas are", fiveFormulas);
+      return fiveFormulas;
     });
   } catch (err) {
     console.log(err);
