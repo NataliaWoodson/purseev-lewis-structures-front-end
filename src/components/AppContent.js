@@ -21,6 +21,7 @@ import {
   getMolecules,
   generateNumAtomsDict,
   molecFormulaInit,
+  CHEMICALFORMULAS,
 } from "./initializeGame";
 
 const STATE = {
@@ -537,15 +538,13 @@ function AppContent() {
     setSubmitClicked(false);
     console.log("STATE.numRounds is", STATE.numRounds);
     if (STATE.numRounds === 1) {
-      getMolecules().then((chemicalFormulas) => {
-        STATE.fiveFormulas = chemicalFormulas;
-        console.log("STATE.fiveFormulas is", STATE.fiveFormulas);
-        const oneFormula = STATE.fiveFormulas.pop();
-        console.log("popped a formula in if (STATE.numRounds === 1");
-        setMolecFormula(oneFormula);
-        const atomObj = generateNumAtomsDict(oneFormula);
-        setAtoms(generateAtoms(atomObj));
-      });
+      STATE.fiveFormulas = CHEMICALFORMULAS;
+      console.log("STATE.fiveFormulas is", STATE.fiveFormulas);
+      const oneFormula = STATE.fiveFormulas.pop();
+      console.log("popped a formula in if (STATE.numRounds === 1");
+      setMolecFormula(oneFormula);
+      const atomObj = generateNumAtomsDict(oneFormula);
+      setAtoms(generateAtoms(atomObj));
     } else {
       if (STATE.numRounds <= 5) {
         const oneFormula = STATE.fiveFormulas.pop();

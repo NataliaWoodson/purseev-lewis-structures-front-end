@@ -3,6 +3,8 @@ import axios from "axios";
 const kBaseUrl =
   "https://lewis-structures.purseev-api.com/lewis_structures_main";
 
+const CHEMICALFORMULAS = ["H2O", "CO2", "NH4", "O2"];
+
 const getMolecules = async () => {
   try {
     return await axios.get(`${kBaseUrl}/molecules/`).then((response) => {
