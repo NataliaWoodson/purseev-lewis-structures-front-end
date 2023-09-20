@@ -534,7 +534,7 @@ function AppContent() {
       "Draw lines between unpaired electrons to bond. Click a bond to delete it."
     );
     STATE.numRounds++;
-
+    console.log("Hello there");
     setSubmitClicked(false);
     console.log("STATE.numRounds is", STATE.numRounds);
     if (STATE.numRounds === 1) {
