@@ -3,7 +3,24 @@ import axios from "axios";
 // const kBaseUrl =
 //   "https://lewis-structures.purseev-api.com/lewis_structures_main";
 
-export const CHEMICALFORMULAS = ["H2O", "CO2", "NH4", "O2"];
+export const CHEMICALFORMULAS = [
+  "H2O",
+  "CO2",
+  "NH4",
+  "O2",
+  "CCl4",
+  "C2H6",
+  "CH4",
+  "C2H4",
+  "C2H2",
+  "NH3",
+  "F2",
+  "H2",
+  "NF3",
+  "HF",
+  "BH3",
+  "HCN",
+];
 
 // const getMolecules = async () => {
 //   try {
@@ -31,57 +48,57 @@ export const CHEMICALFORMULAS = ["H2O", "CO2", "NH4", "O2"];
 //   }
 // };
 
-// const getFormulaComponents = (chemicalFormula) => {
-//   let formula = chemicalFormula.slice();
+const getFormulaComponents = (chemicalFormula) => {
+  let formula = chemicalFormula.slice();
 
-//   const getOneComponent = () => {
-//     const pattern = /^[A-Z][a-z]*[0-9]*/;
-//     const result = pattern.exec(formula);
-//     return result;
-//   };
+  const getOneComponent = () => {
+    const pattern = /^[A-Z][a-z]*[0-9]*/;
+    const result = pattern.exec(formula);
+    return result;
+  };
 
-//   let components = [];
+  let components = [];
 
-//   while (getOneComponent() != null) {
-//     let thisComponent = getOneComponent();
-//     components.push(thisComponent[0]);
-//     let thisComponentLength = thisComponent[0].length;
-//     formula = formula.slice(thisComponentLength);
-//   }
-//   return components;
-// };
+  while (getOneComponent() != null) {
+    let thisComponent = getOneComponent();
+    components.push(thisComponent[0]);
+    let thisComponentLength = thisComponent[0].length;
+    formula = formula.slice(thisComponentLength);
+  }
+  return components;
+};
 
-// const generateNumAtomsDict = (chemicalFormula) => {
-//   let formulaObj = {};
-//   const components = getFormulaComponents(chemicalFormula);
-//   for (let component of components) {
-//     let element;
-//     let numInc;
-//     if (component.length === 3) {
-//       numInc = parseInt(component[2]);
-//       element = component.slice(0, 2);
-//     } else if (component.length === 2) {
-//       if (isNaN(component[1])) {
-//         numInc = 1;
-//         element = component;
-//       } else {
-//         numInc = parseInt(component[1]);
-//         element = component.slice(0, 1);
-//       }
-//     } else if (component.length === 1) {
-//       numInc = 1;
-//       element = component[0];
-//     } else {
-//       console.log("Formula components not parsed correctly");
-//     }
+export const generateNumAtomsDict = (chemicalFormula) => {
+  let formulaObj = {};
+  const components = getFormulaComponents(chemicalFormula);
+  for (let component of components) {
+    let element;
+    let numInc;
+    if (component.length === 3) {
+      numInc = parseInt(component[2]);
+      element = component.slice(0, 2);
+    } else if (component.length === 2) {
+      if (isNaN(component[1])) {
+        numInc = 1;
+        element = component;
+      } else {
+        numInc = parseInt(component[1]);
+        element = component.slice(0, 1);
+      }
+    } else if (component.length === 1) {
+      numInc = 1;
+      element = component[0];
+    } else {
+      console.log("Formula components not parsed correctly");
+    }
 
-//     if (formulaObj[element] === undefined) {
-//       formulaObj[element] = numInc;
-//     } else {
-//       formulaObj[element] = parseInt(formulaObj[element]) + numInc;
-//     }
-//   }
-//   return formulaObj;
-// };
+    if (formulaObj[element] === undefined) {
+      formulaObj[element] = numInc;
+    } else {
+      formulaObj[element] = parseInt(formulaObj[element]) + numInc;
+    }
+  }
+  return formulaObj;
+};
 
 // export { getMolecules, generateNumAtomsDict };
